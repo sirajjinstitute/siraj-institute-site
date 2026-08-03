@@ -1,6 +1,9 @@
 {
   "name": "Siraj Institute",
   "short_name": "Siraj Institute",
+  "start_url": "/",
+  "scope": "/",
+  "id": "/",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
