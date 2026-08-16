@@ -44,7 +44,9 @@ remain UNVERIFIED:
 - transfer encoding and caching behaviour in production
 - third-party request behaviour in production
 
-Everything in §4 (canonical) is blocked on the first item.
+The first item is what keeps F-01 open: the canonical **decision** is now
+settled (§4), but the live routing that must match it is still unverified and
+still unchanged.
 
 DNS did resolve, and is recorded as REPO-adjacent factual evidence:
 
@@ -116,7 +118,7 @@ from static in-script data with no user-controlled input.
 | `www.youtube.com/embed/Ng5P2SusEsQ` | "Why families choose us" video | `<iframe loading="lazy">` |
 
 Outbound user destinations: `wa.me/201004751455` (booking + contact),
-`siraj-lms.vercel.app/login` (Login, two links), `mailto:sirjjinstitute@gmail.com`,
+`siraj-lms.vercel.app/login` (Login, two links), `mailto:sirajjinstitute@gmail.com`,
 and Facebook / YouTube / Instagram profile links.
 
 ---
@@ -144,7 +146,7 @@ Candidate values that exist and were each classified rather than flagged:
 | --- | --- | --- | --- | --- |
 | `G-667Q0LLEH2` | GA4 Measurement ID | Yes — required client-side by design | Write-only event ingestion; cannot read reports or alter the property | Not a vulnerability. Worst case is event spam, a known property of every GA4 site. |
 | `201004751455` | WhatsApp business number | Yes — published contact | None | Not a secret. |
-| `sirjjinstitute@gmail.com` | Contact email | Yes — published contact | None | Not a secret. See F-09 for a spelling question. |
+| `sirajjinstitute@gmail.com` | Contact email | Yes — published contact | None | Not a secret. Corrected spelling — see F-09. |
 | `siraj-lms.vercel.app/login` | LMS login URL | Yes | None; auth enforced by the LMS | Not a secret. |
 | `Ng5P2SusEsQ` | YouTube video ID | Yes | None | Not a secret. |
 
@@ -244,14 +246,25 @@ uses are disabled.
 
 ---
 
-## 4. Canonical / domain consistency — BLOCKED, NOT CHANGED
+## 4. Canonical / domain consistency — OWNER DECISION RESOLVED, PRODUCTION ROUTING STILL REQUIRED
 
-**No canonical or hostname value was changed in Wave 1A.** The change is
-specified and ready, but it is gated on evidence this session could not obtain.
+**Owner-selected canonical host:**
 
-### Current state (REPO)
+```
+https://sirajinst.com/          (non-www apex)
+```
 
-Every public URL signal uses the **non-www apex**:
+The owner/CTO has chosen the shorter non-www form. This supersedes the earlier
+working assumption that the site would standardise on `www`.
+
+**No canonical or hostname value needed changing.** The repository already used
+the apex everywhere, so the owner's decision confirms the existing state rather
+than altering it. This section is now a record of that alignment plus the
+Production work that is still outstanding.
+
+### Current state (REPO) — already correct
+
+Every public URL signal uses the **non-www apex**, matching the owner decision:
 
 | # | Location | Value |
 | --- | --- | --- |
@@ -269,44 +282,60 @@ Every public URL signal uses the **non-www apex**:
 
 A twelfth signal sits outside the repository: the GitHub repository's
 **homepage** field is `https://sirajinstitute.vercel.app` — a *third* hostname,
-neither apex nor www. It is a weak signal but it is inconsistent with both
-candidates and should be corrected to whichever hostname wins.
+neither apex nor www. It is a weak signal, but it is inconsistent with the
+chosen canonical and should be corrected to `https://sirajinst.com/`.
 
 `site.webmanifest` correctly uses **relative** URLs (`/`, `/android-chrome-*.png`)
-and therefore needs no change under either outcome.
+and therefore needs no change.
 
-### Why this was not changed
+There are **no active `www.sirajinst.com` signals anywhere in the repository**.
+Every `www` string that remains in this document is prose describing DNS,
+egress logs, or the Production routing work below — none of it is a canonical
+signal. See §14 for the full classified occurrence list.
 
-The task conditions the rewrite on reproducing the redirect: *"If current live
-evidence still confirms `https://www.sirajinst.com/` as the final Production
-hostname, standardize…"*. That evidence was unobtainable (§1), and a wrong guess
-is not a neutral outcome — pointing `rel=canonical` at a URL that 301-redirects
-elsewhere is a self-inflicted SEO defect worse than the present inconsistency.
-"Current public behaviour cannot be reliably reproduced" is an explicit stop
-condition for this task, so the correct action is to stop and report.
+### Why F-01 is NOT closed
 
-A relative canonical (`href="/"`) is **not** a workaround: it would
-self-canonicalise on *both* hostnames and defeat canonicalisation entirely.
+The repository side is done, but a canonical host is only truly switched when
+**live Production routing agrees with the metadata**. Those are two different
+systems, and only one of them is in this repository.
 
-### The change, ready to apply
+Live routing could not be observed from this session (§1). The prior working
+assumption — from the original task brief — was that `sirajinst.com` currently
+**301s to** `www.sirajinst.com`. If that is still true, then today the site
+serves a canonical tag pointing at a URL that redirects away, which is exactly
+the state the rollout must end.
 
-Confirm the redirect direction with one command:
+So F-01's accurate status is:
 
-```sh
-curl -sSI -L https://sirajinst.com/ -o /dev/null -w '%{url_effective} %{http_code}\n'
-curl -sSI    https://sirajinst.com/ | grep -i '^location:'
-```
+> **OWNER CANONICAL DECISION RESOLVED — PRODUCTION ROUTING CHANGE STILL REQUIRED.**
+> Ready for a coordinated Production domain switch.
 
-If the final hostname is `https://www.sirajinst.com/`, rewrite rows 1–11 above
-to `www`, update the GitHub homepage field, and re-verify that
-`rel=canonical` == `og:url` == both JSON-LD `url` values == `sitemap <loc>` ==
-the URL that returns `200` without redirecting.
+It must **not** be reported as empirically fixed merely because the repository
+metadata says `sirajinst.com`.
 
-If instead the apex is final, the repository is **already correct** and only the
-GitHub homepage field needs changing.
+### Remaining Production work (NOT authorised in Wave 1A)
 
-Do not global-replace `sirajinst.com`: rows 3, 4, 6, 7 and 9 are asset URLs and
-row 10 is a sitemap reference; each was classified individually above.
+The redirect direction on Vercel is controlled by **project domain settings**,
+not by anything in this repository. The switch therefore cannot be made by
+merging this PR, and must be sequenced deliberately:
+
+1. In the Vercel project, make **`sirajinst.com` the primary/preferred domain**.
+2. Configure **`www.sirajinst.com` → `sirajinst.com` as a permanent (308/301)
+   redirect**, reversing the current direction.
+3. Leave canonical metadata on `https://sirajinst.com/` (already true).
+4. After deploying, verify **both** hosts:
+   ```sh
+   curl -sSI -L https://www.sirajinst.com/ -o /dev/null -w '%{url_effective} %{http_code}\n'  # expect apex, 200
+   curl -sSI    https://sirajinst.com/     -o /dev/null -w '%{http_code}\n'                   # expect 200, no redirect
+   ```
+5. Only then check Search Console for the canonical/indexing state.
+
+⚠️ **Do not** add an application-level `www → apex` redirect to `vercel.json` as
+a shortcut. If the platform-level domain setting still points apex → www, an
+app-level redirect pointing www → apex creates a **redirect loop**. The
+platform setting and the app config must not both own this. The clean fix is
+step 1–2 in the Vercel dashboard, with `vercel.json` staying out of it — which
+is why no redirect rule was added in this PR.
 
 ---
 
@@ -315,12 +344,27 @@ row 10 is a sitemap reference; each was classified individually above.
 The stated goal is for Google to display **Siraj Institute** rather than the raw
 domain above the result title.
 
-### Before (REPO)
+### Owner-specified search identity
+
+The owner/CTO has specified the preference order directly:
+
+| Role | Value |
+| --- | --- |
+| Primary site name (`name`) | **Siraj Institute** |
+| Alternate 1 (`alternateName[0]`) | **Siraj-Institute** |
+| Alternate 2 (`alternateName[1]`) | **Siraj Institute Online** |
+| Alternate 3 (`alternateName[2]`) | **sirajinst.com** — final domain fallback only |
+
+`Siraj-Institute` exists to give Google a second candidate should the preferred
+name collide with another global site of a similar name. `sirajinst.com` is a
+last-resort fallback, **not** a preferred display name.
+
+### Before (REPO, at base SHA)
 
 | Signal | Value | Assessment |
 | --- | --- | --- |
 | WebSite `name` | `Siraj Institute` | Correct |
-| WebSite `alternateName` | `["Siraj Institute Online", "sirajinst.com"]` | **Defect** — see below |
+| WebSite `alternateName` | `["Siraj Institute Online", "sirajinst.com"]` | Did not express the owner's preference order; missing `Siraj-Institute`, and the domain was not marked as a last resort |
 | `og:site_name` | `Siraj Institute` | Correct |
 | `<title>` | `Siraj Institute — Learn Quran & Arabic Online, 1-on-1` | Correct; brand leads |
 | `application-name` | `Siraj Institute` | Correct |
@@ -329,55 +373,77 @@ domain above the result title.
 | Visible brand (nav, hero, footer) | `Siraj Institute` | Correct |
 | Favicon | `favicon.ico` includes a **48×48** entry | Meets Google's favicon requirement |
 
-Ten of eleven signals already said "Siraj Institute". The single exception was
-`alternateName`, which contained the literal string **`sirajinst.com`** — the
-only place in the entire document that told Google the site is named after its
-domain. That is precisely the string the owner does not want displayed.
-
 ### After (this PR)
 
 ```json
-"name": "Siraj Institute",
-"alternateName": "Siraj Institute Online"
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Siraj Institute",
+  "alternateName": [
+    "Siraj-Institute",
+    "Siraj Institute Online",
+    "sirajinst.com"
+  ],
+  "url": "https://sirajinst.com/",
+  "publisher": {
+    "@type": "EducationalOrganization",
+    "name": "Siraj Institute",
+    "logo": "https://sirajinst.com/logo.png"
+  }
+}
 ```
 
-Two changes, both host-independent and therefore safe to land while §4 is blocked:
+`name` carries the primary site name; `alternateName` carries the three
+fallbacks in descending preference. `WebSite.url` is the owner-selected
+canonical apex (§4).
 
-1. **Removed `"sirajinst.com"`** — deleted the one counterproductive signal.
-2. **Collapsed the array to a single string.** Google's site-name documentation
-   describes and illustrates a single alternate name; an array is not the
-   documented shape.
+### Correction to earlier guidance in this document
 
-`WebSite.url` was **not** touched — it moves with the §4 hostname decision.
+An earlier revision of this document and of PR #2 stated that Google supports
+**only one** `alternateName`, and reasoned from that premise that adopting
+`Siraj-Institute` would mean **giving up** `Siraj Institute Online`.
 
-### On `Siraj-Institute` — reported, not implemented
+**Both statements were wrong and have been removed.** Current Google Search
+Central guidance supports **multiple** `alternateName` values for `WebSite`
+structured data, ordered by preference — so no trade-off between the two names
+was ever required.
 
-The task names `Siraj-Institute` as the preferred fallback and simultaneously
-requires reporting evidence rather than improvising. The evidence points away
-from using it, so it is left as an owner decision:
+Provenance of this correction, stated plainly: it was supplied by **CTO
+review**, not verified against Google's live documentation from this session.
+`developers.google.com` is blocked by the session's egress policy (§1), so
+independent re-verification was not possible here. The correction is applied on
+CTO authority; the blocked lookup is recorded, not treated as a blocker.
 
-- `alternateName` means *another name people actually use for this site*.
-  `Siraj-Institute` is not a name anyone uses; it is a punctuation variant.
-  Google may simply ignore it, and it does not disambiguate from similarly-named
-  organisations — that is what Organization structured data, `sameAs` profile
-  links and general entity signals do.
-- Only one alternate name is supported, so adopting it means **giving up**
-  `Siraj Institute Online`.
-- Adopting it as the *primary* name would change the visible brand, which
-  §24 forbids without explicit owner approval.
+### Visible brand — unchanged
 
-If disambiguation is the real goal, the higher-leverage work is strengthening
-the Organization entity (complete `sameAs`, consistent NAP details, a real
-`logo`) — Wave 4 territory.
+The visible brand remains **Siraj Institute** everywhere: logo text, navbar,
+hero, footer, and the Organization entity. `Siraj-Institute` is a
+*search-identity signal only* and was deliberately **not** propagated to any
+user-visible branding.
+
+### Consistency audit
+
+| Signal | Value | Agrees? |
+| --- | --- | --- |
+| `WebSite.name` | `Siraj Institute` | ✅ |
+| `WebSite.alternateName` | ordered 3-value array | ✅ owner order |
+| `EducationalOrganization.name` | `Siraj Institute` | ✅ |
+| `WebSite.publisher.name` | `Siraj Institute` | ✅ |
+| `og:site_name` | `Siraj Institute` | ✅ |
+| `<title>` | leads with `Siraj Institute` | ✅ |
+| `<h1>` / visible nav / hero / footer | `Siraj Institute` | ✅ |
+| Favicon | `favicon.ico` with 48×48 entry | ✅ |
+| Canonical | `https://sirajinst.com/` | ✅ matches `WebSite.url` |
 
 ### Limitation
 
-**Google's final site-name rendering cannot be guaranteed by the site.** Google
-selects the displayed name from several converging signals and may keep showing
-the domain regardless of correct markup. These changes remove a contradictory
-signal and make the remaining set unanimous; they do not compel an outcome.
-Any change also requires Google to recrawl and reprocess the homepage **after**
-a production deployment, which has not happened and is not authorised here.
+**Google controls the final rendered Site Name.** Structured data expresses a
+*preference*; it does not guarantee the displayed result. Google selects the
+displayed name from several converging signals and may keep showing the domain
+regardless of correct markup. Any change also requires Google to recrawl and
+reprocess the homepage **after** a Production deployment — which has not
+happened and is not authorised here.
 
 ---
 
@@ -524,6 +590,25 @@ The only console errors in either run were `ERR_TUNNEL_CONNECTION_FAILED` /
 `ERR_CONNECTION_RESET` for gtag, Google Fonts and YouTube — the sandbox's egress
 policy, not site defects. They are identical in both runs.
 
+### CTO correction pass — re-verification (LAB)
+
+Re-run after the correction pass, comparing the previous PR head
+(`5ba4afe`) against the corrected tree, served identically.
+
+The only `index.html` difference is the two intended changes: the JSON-LD
+`alternateName` array and the contact email. Everything else is byte-identical.
+
+| Area | Result |
+| --- | --- |
+| 31 functional assertions | **0 changed** — all identical to the previous head |
+| 8 mobile assertions | **0 changed** |
+| Widths 320 / 375 / 430 / 768 / 1024 / 1440 | no horizontal overflow at any width, both trees |
+| JavaScript page errors | **0** in both trees |
+| JSON-LD as parsed by the browser | `name` = `Siraj Institute`; `alternateName` = `['Siraj-Institute', 'Siraj Institute Online', 'sirajinst.com']`; `url` = `https://sirajinst.com/` |
+| Rendered `mailto:` | `mailto:sirajjinstitute@gmail.com` (corrected) |
+| Login / WhatsApp / video / pricing / tabs / FAQ | unchanged |
+| Secret scanner after the workflow pin | real repo clean (16 files, 0 findings); 9/9 synthetic caught; values not printed |
+
 ### Visual proof
 
 Screenshots are not byte-reproducible by default, because the hero generates 22
@@ -590,10 +675,13 @@ None of these could be performed from this session. Run them against the
   'content-security-policy|x-content-type|referrer-policy|permissions-policy|strict-transport'
 
 # Is Vercel already sending HSTS? If absent, add it to vercel.json.
-curl -sSI https://www.sirajinst.com/ | grep -i strict-transport-security
+curl -sSI https://sirajinst.com/ | grep -i strict-transport-security
 
-# Redirect direction — this unblocks §4
-curl -sSI -L https://sirajinst.com/ -o /dev/null -w '%{url_effective} %{http_code}\n'
+# Current redirect direction — records whether the F-01 domain switch (§4) is
+# still outstanding. Expected TODAY: apex redirects to www (the state to undo).
+# Expected AFTER the switch: apex returns 200, and www redirects to apex.
+curl -sSI -L https://sirajinst.com/     -o /dev/null -w 'apex -> %{url_effective} %{http_code}\n'
+curl -sSI -L https://www.sirajinst.com/ -o /dev/null -w 'www  -> %{url_effective} %{http_code}\n'
 ```
 
 Then confirm in a real browser that the YouTube embed still plays (the one
@@ -645,16 +733,16 @@ fix before broader SEO work · **P2** important improvement · **P3** optional.
 
 | ID | Sev | Finding | Evidence | Status |
 | --- | --- | --- | --- | --- |
-| F-01 | P1 | Canonical identity split across apex/www; 11 repo signals use apex while the live redirect direction is unconfirmed | §4 table | **Deferred — blocked**, live host unreachable |
-| F-02 | P1 | `WebSite.alternateName` contained the literal `sirajinst.com`, reinforcing the domain as the site name | `index.html:59` before | **Fixed** |
+| F-01 | P1 | Canonical host must be `https://sirajinst.com/` (owner-selected). All 11 repo signals already match, but live Production routing is believed to still redirect apex → www and was not verifiable from this session | §4 | **Owner decision resolved; Production routing change still required.** Ready for a coordinated domain switch — NOT empirically fixed |
+| F-02 | P1 | `WebSite.alternateName` did not express the owner's search-identity preference order (missing `Siraj-Institute`; domain not ranked last) | `index.html:59` before | **Fixed** — ordered 3-value array per §5 |
 | F-03 | P1 | No CSP, no `X-Content-Type-Options`, no `Referrer-Policy`, no `Permissions-Policy` configured by the repo (no `vercel.json` existed) | repo had no config file | **Fixed** (safe subset; strict CSP deferred) |
 | F-04 | P1 | No secret scanning or CI of any kind | no `.github/` directory | **Fixed** |
 | F-05 | P1 | 42.7 KiB logo inlined 4× = 80.2% of the document; one occurrence a no-op preload | §7 | **Partly fixed** — preload removed; 3× duplication → Wave 1B |
 | F-06 | P2 | LCP 3.2 s exceeds the 2.5 s target, measured *without* third parties loading | Lighthouse | **Deferred** → Wave 1B |
 | F-07 | P2 | Contrast 3.32:1 for `#a9812f` on `#faf6ec` (`.eyebrow`, `.dur`, `.meta`); WCAG AA needs 4.5:1 | Lighthouse `color-contrast` | **Deferred** — brand colour, needs owner approval. `#8f6c26` → 4.48:1, `#8a6a1f` → 4.68:1 |
 | F-08 | P2 | No `<main>` landmark; heading order skips levels (h2→h4, h2→h5) in About, Programs, Pricing, Next Steps, Footer | Lighthouse `landmark-one-main`, `heading-order` | **Deferred** — structural, → Accessibility wave |
-| F-09 | P2 | Footer email is `sirjjinstitute@gmail.com` while the GitHub org is `sirajjinstitute`. One of the two is likely a typo; if the mailto is wrong, contact email is silently lost | `index.html:882` | **Deferred — owner must confirm.** Not guessed. |
-| F-10 | P2 | GitHub repo `homepage` is `https://sirajinstitute.vercel.app`, a third hostname inconsistent with both candidates | GitHub API | **Deferred** — fix with F-01 |
+| F-09 | P2 | Footer contact email was misspelled `sirjjinstitute@gmail.com` (missing the first `a`), so mail to the published address was silently lost | `index.html:882` | **FIXED — owner-confirmed official email** `sirajjinstitute@gmail.com` |
+| F-10 | P2 | GitHub repo `homepage` is `https://sirajinstitute.vercel.app`, a third hostname inconsistent with the chosen canonical | GitHub API | **Deferred** — set to `https://sirajinst.com/` with F-01 |
 | F-11 | P3 | Program/pricing tabs use `role="tablist"`/`role="tab"` but have no `aria-controls`, no `role="tabpanel"`, and no arrow-key navigation. Buttons are real `<button>`s so they remain focusable and Enter-activatable | LAB: `tabArrowKeyMoves` = false | **Deferred** → Accessibility wave |
 | F-12 | P3 | Pricing tab advertises "20% off" but the rendered line shows "Save 19%" (28.90/35.90 = 19.5%, rounded down) | LAB: `billedLineSample` | **Deferred** — pricing is frozen (§17); reported only |
 | F-13 | P3 | `favicon.png` is a byte-identical duplicate of `android-chrome-512x512.png` (297,819 B each) | SHA-256 match | **Deferred** → Wave 1B |
@@ -698,3 +786,53 @@ No marketing redesign. No hero rewrite. No pricing redesign or logic change. No
 LMS modification. No LMS showcase. No Student View video. No replacement of the
 current video. No production deployment. No invented legal policy. No large
 performance refactor. No program SEO pages. No visible brand rename.
+
+---
+
+## 14. Repository-wide domain occurrence audit
+
+Run after the CTO correction pass. Every occurrence of `sirajinst.com` in the
+repository, classified. Owner-selected canonical identity: **`https://sirajinst.com/`**.
+
+### Active canonical / public-identity signals — all apex, all correct
+
+| Location | Value | Class |
+| --- | --- | --- |
+| `index.html:8` `rel=canonical` | `https://sirajinst.com/` | canonical/public identity |
+| `index.html:14` `og:url` | `https://sirajinst.com/` | canonical/public identity |
+| `index.html:15` `og:image` | `https://sirajinst.com/logo.png` | canonical/public identity (asset) |
+| `index.html:24` `twitter:image` | `https://sirajinst.com/logo.png` | canonical/public identity (asset) |
+| `index.html:42` Organization `url` | `https://sirajinst.com/` | canonical/public identity |
+| `index.html:43` Organization `logo` | `https://sirajinst.com/logo.png` | canonical/public identity (asset) |
+| `index.html:44` Organization `image` | `https://sirajinst.com/logo.png` | canonical/public identity (asset) |
+| `index.html:64` WebSite `url` | `https://sirajinst.com/` | canonical/public identity |
+| `index.html:68` WebSite publisher `logo` | `https://sirajinst.com/logo.png` | canonical/public identity (asset) |
+| `robots.txt:4` `Sitemap:` | `https://sirajinst.com/sitemap.xml` | canonical/public identity |
+| `sitemap.xml:4` `<loc>` | `https://sirajinst.com/` | canonical/public identity |
+
+One further apex occurrence is **intentionally non-canonical**:
+`index.html:62` — `"sirajinst.com"` as the third and last `alternateName`. It is
+a bare string, not a URL, and is the deliberate final fallback in the owner's
+search-identity preference order (§5).
+
+### `www.sirajinst.com` occurrences
+
+**Zero active www canonical signals.** Every remaining `www` string is prose in
+this document:
+
+| Location | Context | Class |
+| --- | --- | --- |
+| §1 egress log | `www.sirajinst.com:443 -> EGRESS_BLOCKED` | historical documentation |
+| §1 DNS record | `www.sirajinst.com -> 216.198.79.65, …` | historical documentation |
+| §4 routing plan | the `www → apex` redirect to be configured | future Production action |
+| §9 verification | `curl` that checks the redirect direction | verification command |
+| §11 F-01 row | describes the routing still to change | historical documentation |
+
+Nothing unexpected. No www canonical signal needs removing, because none exists.
+
+### Unrelated domains — deliberately untouched
+
+`siraj-lms.vercel.app` (Login), `wa.me` (WhatsApp), `youtube.com`,
+`facebook.com`, `instagram.com`, `fonts.googleapis.com`, `fonts.gstatic.com`,
+`googletagmanager.com`, `schema.org`, and the Vercel preview hostname were all
+classified as out-of-scope external services and **not modified**.
