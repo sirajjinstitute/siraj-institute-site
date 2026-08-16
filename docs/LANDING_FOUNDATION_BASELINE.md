@@ -553,12 +553,40 @@ channel delta, confirming it is the random motes rather than the change.
 
 ## 9. Post-deployment verification checklist
 
+### Preview deployment
+
+Vercel built a preview automatically from the Wave 1A pull request (project
+`sirajinstitute`), status **Ready**:
+
+```
+https://sirajinstitute-git-claude-4acd32-sirajjinstitute-5235s-projects.vercel.app
+```
+
+No production deployment was created.
+
+That the build reached **Ready** confirms Vercel parsed and accepted
+`vercel.json` — an invalid config fails the build. It does **not** confirm the
+headers on the wire: the preview hostname is denied by the same egress policy
+as production.
+
+```
+sirajinstitute-git-claude-4acd32-…vercel.app:443
+  -> gateway answered 403 to CONNECT (policy denial)
+```
+
+⚠️ A curl to a blocked host returns the **proxy's own** 403 error page, which
+itself carries `X-Content-Type-Options: nosniff`. That header comes from the
+proxy, not from the site, and must not be read as evidence that the site's
+headers are live.
+
+### Checks to run
+
 None of these could be performed from this session. Run them against the
-**preview** deployment, and again after any eventual production deploy.
+**preview** deployment above, and again after any eventual production deploy.
 
 ```sh
 # Headers actually delivered
-curl -sSI https://<preview-url>/ | grep -iE \
+ curl -sSI https://sirajinstitute-git-claude-4acd32-sirajjinstitute-5235s-projects.vercel.app/ | grep -iE \
   'content-security-policy|x-content-type|referrer-policy|permissions-policy|strict-transport'
 
 # Is Vercel already sending HSTS? If absent, add it to vercel.json.
