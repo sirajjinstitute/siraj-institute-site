@@ -44,9 +44,11 @@ remain UNVERIFIED:
 - transfer encoding and caching behaviour in production
 - third-party request behaviour in production
 
-The first item is what keeps F-01 open: the canonical **decision** is now
-settled (§4), but the live routing that must match it is still unverified and
-still unchanged.
+On the first item: the redirect direction was **verified visually by the
+owner/CTO** (`sirajinst.com` → 308 → `www.sirajinst.com`) and is recorded in §4
+on that authority. This session did not and could not observe it. What keeps
+F-01 open is not the routing — that is already correct — but that this PR's
+corrected metadata is not live until deployed.
 
 DNS did resolve, and is recorded as REPO-adjacent factual evidence:
 
@@ -246,96 +248,94 @@ uses are disabled.
 
 ---
 
-## 4. Canonical / domain consistency — OWNER DECISION RESOLVED, PRODUCTION ROUTING STILL REQUIRED
+## 4. Canonical / domain consistency — FINAL CTO DECISION: www
 
-**Owner-selected canonical host:**
+**Canonical public URL:**
 
 ```
-https://sirajinst.com/          (non-www apex)
+https://www.sirajinst.com/
 ```
 
-The owner/CTO has chosen the shorter non-www form. This supersedes the earlier
-working assumption that the site would standardise on `www`.
+### Production routing — already configured, unchanged, out of scope
 
-**No canonical or hostname value needed changing.** The repository already used
-the apex everywhere, so the owner's decision confirms the existing state rather
-than altering it. This section is now a record of that alignment plus the
-Production work that is still outstanding.
+The Vercel Production domain configuration was **visually verified by the
+owner/CTO** (not by this session — see §1 for why live hosts are unreachable
+from here):
 
-### Current state (REPO) — already correct
+```
+https://sirajinst.com/       -> HTTP 308 -> https://www.sirajinst.com/
+https://www.sirajinst.com/   -> Production
+```
 
-Every public URL signal uses the **non-www apex**, matching the owner decision:
+This routing is **intentional and must remain unchanged**. Vercel domain
+settings are out of scope and were not modified.
 
-| # | Location | Value |
-| --- | --- | --- |
-| 1 | `index.html:8` `<link rel="canonical">` | `https://sirajinst.com/` |
-| 2 | `index.html:14` `og:url` | `https://sirajinst.com/` |
-| 3 | `index.html:15` `og:image` | `https://sirajinst.com/logo.png` |
-| 4 | `index.html:24` `twitter:image` | `https://sirajinst.com/logo.png` |
-| 5 | `index.html:43` Organization `url` | `https://sirajinst.com/` |
-| 6 | `index.html:44` Organization `logo` | `https://sirajinst.com/logo.png` |
-| 7 | `index.html:45` Organization `image` | `https://sirajinst.com/logo.png` |
-| 8 | `index.html:60` WebSite `url` | `https://sirajinst.com/` |
-| 9 | `index.html:64` WebSite publisher `logo` | `https://sirajinst.com/logo.png` |
-| 10 | `robots.txt:4` `Sitemap:` | `https://sirajinst.com/sitemap.xml` |
-| 11 | `sitemap.xml` `<loc>` | `https://sirajinst.com/` |
+**Browser UX note.** The owner's actual requirement was that Chrome's address
+bar visually show `sirajinst.com` without the `www`. Chrome hides the `www`
+prefix in its display regardless of the underlying host, so that requirement is
+**already satisfied** by the current routing. Address-bar presentation is a
+browser display choice and is not a reason to reverse Production routing.
 
-A twelfth signal sits outside the repository: the GitHub repository's
-**homepage** field is `https://sirajinstitute.vercel.app` — a *third* hostname,
-neither apex nor www. It is a weak signal, but it is inconsistent with the
-chosen canonical and should be corrected to `https://sirajinst.com/`.
+An earlier revision of this document recorded the opposite decision (apex
+canonical, with a plan to reverse the redirect to `www -> apex`). That decision
+was **revoked by the CTO** and all of that language has been removed.
 
-`site.webmanifest` correctly uses **relative** URLs (`/`, `/android-chrome-*.png`)
-and therefore needs no change.
+### What this PR changed
 
-There are **no active `www.sirajinst.com` signals anywhere in the repository**.
-Every `www` string that remains in this document is prose describing DNS,
-egress logs, or the Production routing work below — none of it is a canonical
-signal. See §14 for the full classified occurrence list.
+The repository metadata pointed at the apex, which 308-redirects away —
+i.e. `rel=canonical` named a URL that is not the one Production serves. This PR
+aligns all 11 signals with the existing Production routing:
 
-### Why F-01 is NOT closed
+| # | Location | Before | After |
+| --- | --- | --- | --- |
+| 1 | `index.html` `rel=canonical` | `https://sirajinst.com/` | `https://www.sirajinst.com/` |
+| 2 | `index.html` `og:url` | `https://sirajinst.com/` | `https://www.sirajinst.com/` |
+| 3 | `index.html` `og:image` | `https://sirajinst.com/logo.png` | `https://www.sirajinst.com/logo.png` |
+| 4 | `index.html` `twitter:image` | `https://sirajinst.com/logo.png` | `https://www.sirajinst.com/logo.png` |
+| 5 | `index.html` Organization `url` | `https://sirajinst.com/` | `https://www.sirajinst.com/` |
+| 6 | `index.html` Organization `logo` | `https://sirajinst.com/logo.png` | `https://www.sirajinst.com/logo.png` |
+| 7 | `index.html` Organization `image` | `https://sirajinst.com/logo.png` | `https://www.sirajinst.com/logo.png` |
+| 8 | `index.html` WebSite `url` | `https://sirajinst.com/` | `https://www.sirajinst.com/` |
+| 9 | `index.html` WebSite publisher `logo` | `https://sirajinst.com/logo.png` | `https://www.sirajinst.com/logo.png` |
+| 10 | `robots.txt` `Sitemap:` | `https://sirajinst.com/sitemap.xml` | `https://www.sirajinst.com/sitemap.xml` |
+| 11 | `sitemap.xml` `<loc>` | `https://sirajinst.com/` | `https://www.sirajinst.com/` |
 
-The repository side is done, but a canonical host is only truly switched when
-**live Production routing agrees with the metadata**. Those are two different
-systems, and only one of them is in this repository.
+Only URL-form occurrences were rewritten. The bare string `"sirajinst.com"`
+inside `WebSite.alternateName` is a **site-name candidate, not a URL**, and was
+deliberately left as-is (§5).
 
-Live routing could not be observed from this session (§1). The prior working
-assumption — from the original task brief — was that `sirajinst.com` currently
-**301s to** `www.sirajinst.com`. If that is still true, then today the site
-serves a canonical tag pointing at a URL that redirects away, which is exactly
-the state the rollout must end.
+`site.webmanifest` uses relative URLs (`/`, `/android-chrome-*.png`) and needs
+no change. LMS, WhatsApp, YouTube, social, font and analytics URLs were
+classified as out-of-scope external services and left untouched.
 
-So F-01's accurate status is:
+### F-01 status
 
-> **OWNER CANONICAL DECISION RESOLVED — PRODUCTION ROUTING CHANGE STILL REQUIRED.**
-> Ready for a coordinated Production domain switch.
+> **CODE FIXED IN PR — REQUIRES PRODUCTION DEPLOYMENT & LIVE VERIFICATION TO CLOSE.**
 
-It must **not** be reported as empirically fixed merely because the repository
-metadata says `sirajinst.com`.
+Production routing already matches the final decision, so **no Vercel routing
+change is required** and the earlier "Production routing change still required"
+status is stale and removed. What remains is purely that this PR's metadata is
+not live until it is deployed.
 
-### Remaining Production work (NOT authorised in Wave 1A)
+Three states, kept distinct on purpose:
 
-The redirect direction on Vercel is controlled by **project domain settings**,
-not by anything in this repository. The switch therefore cannot be made by
-merging this PR, and must be sequenced deliberately:
+| State | Status |
+| --- | --- |
+| Production routing (apex 308 → www) | **Already configured** — owner-verified, unchanged by this PR |
+| Repository canonical metadata | **Fixed in this PR** (table above) |
+| Live metadata as served | **Not yet corrected** — requires an authorised deployment |
 
-1. In the Vercel project, make **`sirajinst.com` the primary/preferred domain**.
-2. Configure **`www.sirajinst.com` → `sirajinst.com` as a permanent (308/301)
-   redirect**, reversing the current direction.
-3. Leave canonical metadata on `https://sirajinst.com/` (already true).
-4. After deploying, verify **both** hosts:
-   ```sh
-   curl -sSI -L https://www.sirajinst.com/ -o /dev/null -w '%{url_effective} %{http_code}\n'  # expect apex, 200
-   curl -sSI    https://sirajinst.com/     -o /dev/null -w '%{http_code}\n'                   # expect 200, no redirect
-   ```
-5. Only then check Search Console for the canonical/indexing state.
+Do **not** claim the live site's metadata is corrected until deployed. After a
+future authorised Production deployment, verify:
 
-⚠️ **Do not** add an application-level `www → apex` redirect to `vercel.json` as
-a shortcut. If the platform-level domain setting still points apex → www, an
-app-level redirect pointing www → apex creates a **redirect loop**. The
-platform setting and the app config must not both own this. The clean fix is
-step 1–2 in the Vercel dashboard, with `vercel.json` staying out of it — which
-is why no redirect rule was added in this PR.
+1. `sirajinst.com` returns a permanent redirect to `www`
+2. `www.sirajinst.com` serves Production
+3. `rel=canonical` points to `www`
+4. `sitemap.xml` uses `www`
+5. structured data uses `www`
+6. security headers are actually delivered on the wire
+
+That deployment is **not authorised in Wave 1A** and was not performed.
 
 ---
 
@@ -385,18 +385,23 @@ last-resort fallback, **not** a preferred display name.
     "Siraj Institute Online",
     "sirajinst.com"
   ],
-  "url": "https://sirajinst.com/",
+  "url": "https://www.sirajinst.com/",
   "publisher": {
     "@type": "EducationalOrganization",
     "name": "Siraj Institute",
-    "logo": "https://sirajinst.com/logo.png"
+    "logo": "https://www.sirajinst.com/logo.png"
   }
 }
 ```
 
 `name` carries the primary site name; `alternateName` carries the three
-fallbacks in descending preference. `WebSite.url` is the owner-selected
-canonical apex (§4).
+fallbacks in descending preference. `WebSite.url` is the canonical **www**
+host (§4).
+
+Note the deliberate distinction: `alternateName` still contains the bare string
+`sirajinst.com`. That is a **site-name candidate**, not a URL — it is the
+last-resort name Google may display, and it is unrelated to `WebSite.url`. The
+two are different concepts and were treated separately.
 
 ### Correction to earlier guidance in this document
 
@@ -434,7 +439,7 @@ user-visible branding.
 | `<title>` | leads with `Siraj Institute` | ✅ |
 | `<h1>` / visible nav / hero / footer | `Siraj Institute` | ✅ |
 | Favicon | `favicon.ico` with 48×48 entry | ✅ |
-| Canonical | `https://sirajinst.com/` | ✅ matches `WebSite.url` |
+| Canonical | `https://www.sirajinst.com/` | ✅ matches `WebSite.url` |
 
 ### Limitation
 
@@ -675,13 +680,15 @@ None of these could be performed from this session. Run them against the
   'content-security-policy|x-content-type|referrer-policy|permissions-policy|strict-transport'
 
 # Is Vercel already sending HSTS? If absent, add it to vercel.json.
-curl -sSI https://sirajinst.com/ | grep -i strict-transport-security
+curl -sSI https://www.sirajinst.com/ | grep -i strict-transport-security
 
-# Current redirect direction — records whether the F-01 domain switch (§4) is
-# still outstanding. Expected TODAY: apex redirects to www (the state to undo).
-# Expected AFTER the switch: apex returns 200, and www redirects to apex.
-curl -sSI -L https://sirajinst.com/     -o /dev/null -w 'apex -> %{url_effective} %{http_code}\n'
-curl -sSI -L https://www.sirajinst.com/ -o /dev/null -w 'www  -> %{url_effective} %{http_code}\n'
+# Confirm the (already correct, owner-verified) routing is unchanged:
+# expect apex -> 308 -> www, and www serving 200.
+curl -sSI    https://sirajinst.com/     | grep -iE '^HTTP|^location:'
+curl -sSI -L https://www.sirajinst.com/ -o /dev/null -w 'www -> %{url_effective} %{http_code}\n'
+
+# After deployment, confirm the canonical served is www:
+curl -sS https://www.sirajinst.com/ | grep -i 'rel="canonical"'
 ```
 
 Then confirm in a real browser that the YouTube embed still plays (the one
@@ -733,7 +740,7 @@ fix before broader SEO work · **P2** important improvement · **P3** optional.
 
 | ID | Sev | Finding | Evidence | Status |
 | --- | --- | --- | --- | --- |
-| F-01 | P1 | Canonical host must be `https://sirajinst.com/` (owner-selected). All 11 repo signals already match, but live Production routing is believed to still redirect apex → www and was not verifiable from this session | §4 | **Owner decision resolved; Production routing change still required.** Ready for a coordinated domain switch — NOT empirically fixed |
+| F-01 | P1 | Repository canonical signals named the apex, which 308-redirects to `www` — so `rel=canonical` pointed at a URL Production does not serve. Final canonical is `https://www.sirajinst.com/` | §4 | **CODE FIXED IN PR — requires Production deployment & live verification to close.** No Vercel routing change needed |
 | F-02 | P1 | `WebSite.alternateName` did not express the owner's search-identity preference order (missing `Siraj-Institute`; domain not ranked last) | `index.html:59` before | **Fixed** — ordered 3-value array per §5 |
 | F-03 | P1 | No CSP, no `X-Content-Type-Options`, no `Referrer-Policy`, no `Permissions-Policy` configured by the repo (no `vercel.json` existed) | repo had no config file | **Fixed** (safe subset; strict CSP deferred) |
 | F-04 | P1 | No secret scanning or CI of any kind | no `.github/` directory | **Fixed** |
@@ -791,44 +798,41 @@ performance refactor. No program SEO pages. No visible brand rename.
 
 ## 14. Repository-wide domain occurrence audit
 
-Run after the CTO correction pass. Every occurrence of `sirajinst.com` in the
-repository, classified. Owner-selected canonical identity: **`https://sirajinst.com/`**.
+Run after the final canonical correction. Canonical public URL:
+**`https://www.sirajinst.com/`**.
 
-### Active canonical / public-identity signals — all apex, all correct
+### Active canonical / public-identity signals — all www, all correct
 
 | Location | Value | Class |
 | --- | --- | --- |
-| `index.html:8` `rel=canonical` | `https://sirajinst.com/` | canonical/public identity |
-| `index.html:14` `og:url` | `https://sirajinst.com/` | canonical/public identity |
-| `index.html:15` `og:image` | `https://sirajinst.com/logo.png` | canonical/public identity (asset) |
-| `index.html:24` `twitter:image` | `https://sirajinst.com/logo.png` | canonical/public identity (asset) |
-| `index.html:42` Organization `url` | `https://sirajinst.com/` | canonical/public identity |
-| `index.html:43` Organization `logo` | `https://sirajinst.com/logo.png` | canonical/public identity (asset) |
-| `index.html:44` Organization `image` | `https://sirajinst.com/logo.png` | canonical/public identity (asset) |
-| `index.html:64` WebSite `url` | `https://sirajinst.com/` | canonical/public identity |
-| `index.html:68` WebSite publisher `logo` | `https://sirajinst.com/logo.png` | canonical/public identity (asset) |
-| `robots.txt:4` `Sitemap:` | `https://sirajinst.com/sitemap.xml` | canonical/public identity |
-| `sitemap.xml:4` `<loc>` | `https://sirajinst.com/` | canonical/public identity |
+| `index.html` `rel=canonical` | `https://www.sirajinst.com/` | canonical/public identity |
+| `index.html` `og:url` | `https://www.sirajinst.com/` | canonical/public identity |
+| `index.html` `og:image` | `https://www.sirajinst.com/logo.png` | canonical/public identity (asset) |
+| `index.html` `twitter:image` | `https://www.sirajinst.com/logo.png` | canonical/public identity (asset) |
+| `index.html` Organization `url` | `https://www.sirajinst.com/` | canonical/public identity |
+| `index.html` Organization `logo` | `https://www.sirajinst.com/logo.png` | canonical/public identity (asset) |
+| `index.html` Organization `image` | `https://www.sirajinst.com/logo.png` | canonical/public identity (asset) |
+| `index.html` WebSite `url` | `https://www.sirajinst.com/` | canonical/public identity |
+| `index.html` WebSite publisher `logo` | `https://www.sirajinst.com/logo.png` | canonical/public identity (asset) |
+| `robots.txt` `Sitemap:` | `https://www.sirajinst.com/sitemap.xml` | canonical/public identity |
+| `sitemap.xml` `<loc>` | `https://www.sirajinst.com/` | canonical/public identity |
 
-One further apex occurrence is **intentionally non-canonical**:
-`index.html:62` — `"sirajinst.com"` as the third and last `alternateName`. It is
-a bare string, not a URL, and is the deliberate final fallback in the owner's
-search-identity preference order (§5).
+**Zero active non-www canonical URLs remain.** Verified by
+`grep "https://sirajinst\.com" index.html robots.txt sitemap.xml` returning nothing.
 
-### `www.sirajinst.com` occurrences
+### Remaining non-www `sirajinst.com` occurrences — all explained
 
-**Zero active www canonical signals.** Every remaining `www` string is prose in
-this document:
+| Location | Occurrence | Class | Why it stays |
+| --- | --- | --- | --- |
+| `index.html` `WebSite.alternateName[2]` | bare string `"sirajinst.com"` | **intentionally non-canonical** | A site-**name** candidate, not a URL. It is the last-resort name Google may display and has no relationship to `WebSite.url`. Approved in §5. |
+| `docs/…BASELINE.md` §1 | egress-denial log, DNS records | historical documentation | Records what this session could not reach |
+| `docs/…BASELINE.md` §4 | the `apex → 308 → www` routing description and the before/after table | documentation of Production routing and of this fix | Describes the redirect source and the prior values |
+| `docs/…BASELINE.md` §5 | discussion of the `alternateName` fallback | documentation | Explains the name/URL distinction |
+| `docs/…BASELINE.md` §9 | verification `curl` for the apex redirect | verification command | Confirms routing is unchanged |
+| `docs/…BASELINE.md` §11 | F-01 row | historical documentation | Describes the defect that was fixed |
 
-| Location | Context | Class |
-| --- | --- | --- |
-| §1 egress log | `www.sirajinst.com:443 -> EGRESS_BLOCKED` | historical documentation |
-| §1 DNS record | `www.sirajinst.com -> 216.198.79.65, …` | historical documentation |
-| §4 routing plan | the `www → apex` redirect to be configured | future Production action |
-| §9 verification | `curl` that checks the redirect direction | verification command |
-| §11 F-01 row | describes the routing still to change | historical documentation |
-
-Nothing unexpected. No www canonical signal needs removing, because none exists.
+Nothing unexpected. Every non-www occurrence is either the deliberate
+site-name fallback or prose.
 
 ### Unrelated domains — deliberately untouched
 
