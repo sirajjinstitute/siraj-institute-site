@@ -757,7 +757,7 @@ fix before broader SEO work · **P2** important improvement · **P3** optional.
 | F-12 | P3 | Pricing tab advertises "20% off" but the rendered line shows "Save 19%" (28.90/35.90 = 19.5%, rounded down) | LAB: `billedLineSample` | **Deferred** — pricing is frozen (§17); reported only |
 | F-13 | P3 | `favicon.png` is a byte-identical duplicate of `android-chrome-512x512.png` (297,819 B each) | SHA-256 match | **CLOSED in Wave 1B** — duplicate re-confirmed byte-identical, the single reference repointed at `android-chrome-512x512.png`, and `favicon.png` deleted (−290.8 KiB) |
 | F-14 | P3 | `og:image` is the 512×512 square logo; social platforms expect 1200×630 | `index.html:15-17` | **Deferred** → Wave 4 social preview |
-| F-15 | P3 | YouTube embed uses `youtube.com` rather than `youtube-nocookie.com` | `index.html`, §15.5 | **STILL OPEN — Wave 1B subtask stopped deliberately.** The click-to-load façade that carries this change needs a poster image verified to belong to video `Ng5P2SusEsQ`, and every YouTube host is blocked by this session's egress policy. No asset was invented. See §15.5 |
+| F-15 | P3 | YouTube embed used `youtube.com` rather than `youtube-nocookie.com` | `index.html`, §15.5 | **CLOSED in Wave 1B.** Owner supplied the verified poster for `Ng5P2SusEsQ`; the page now loads only a local poster before interaction and creates a `youtube-nocookie.com` iframe after an explicit click |
 | F-16 | P3 | `.wa-link` elements ship as `href="#"` and are rewritten by JS; without JS they jump to the top of the page instead of contacting anyone | `index.html`, §15.4 | **CLOSED in Wave 1B** — all four ship the real `wa.me` deep link in the HTML; the script now only re-asserts the identical value |
 
 **Not findings** (checked and healthy): 1 `<h1>`, `lang="en"`, indexable
@@ -770,10 +770,9 @@ carry `rel="noopener noreferrer"`, and `favicon.ico` includes a 48×48 entry.
 
 ## 12. Deferred work
 
-**Wave 1B — Performance Architecture:** **delivered** (§15) except the YouTube
-façade. F-05, F-06, F-13 and F-16 are closed; F-15 and the "no YouTube request
-before interaction" target remain open and are blocked on a verified poster
-image for video `Ng5P2SusEsQ` — see §15.5.
+**Wave 1B — Performance Architecture:** **delivered** (§15). F-05, F-06,
+F-13, F-15 and F-16 are closed. The owner supplied the verified YouTube poster,
+and the "no YouTube request before interaction" requirement is now met.
 
 **Accessibility wave:** contrast tokens (F-07), `<main>` landmark and heading
 order (F-08), full ARIA tab pattern (F-11).
@@ -978,34 +977,23 @@ link in the HTML, so they work with JavaScript disabled. The script still
 assigns the same URL; that assignment is now a no-op, kept so the link text has
 one source of truth.
 
-### 15.5 YouTube façade — SUBTASK STOPPED, NOT DELIVERED
+### 15.5 YouTube façade — DELIVERED
 
-**This item was not implemented, and the iframe is unchanged.**
+The owner supplied a poster verified to belong to video `Ng5P2SusEsQ`
+(SHA-256 `40df876a…`, 1536×1152 JPEG). It is stored locally as
+`assets/video-poster-Ng5P2SusEsQ.jpg`.
 
-The brief requires a poster image *verified to belong to video `Ng5P2SusEsQ`*,
-and explicitly forbids substituting an unrelated or generated image. Every host
-that could supply it is denied by this session's egress policy:
+The initial HTML now contains an accessible button, local poster and play icon;
+there is no YouTube iframe, thumbnail URL, preconnect or other YouTube request.
+Only after explicit activation does `assets/app.js` create an iframe at
+`https://www.youtube-nocookie.com/embed/Ng5P2SusEsQ?autoplay=1&rel=0`.
+Autoplay therefore begins only after user interaction. The existing title,
+fullscreen and media permissions are preserved. The fixed 16:9 container and
+intrinsic poster dimensions preserve layout stability.
 
-```
-i.ytimg.com:443       -> gateway answered 403 to CONNECT (policy denial)
-img.youtube.com:443   -> gateway answered 403 to CONNECT (policy denial)
-www.youtube.com:443   -> gateway answered 403 to CONNECT (policy denial)
-```
-
-Per the proxy's operating rules a policy denial is reported, not routed around,
-so no third-party fetching service was used to obtain the thumbnail indirectly.
-Inventing or generating a poster would have violated the brief. The subtask was
-therefore stopped whole rather than half-delivered.
-
-**Consequently unmet:** the "no YouTube request before interaction" target, and
-F-15 (`youtube-nocookie.com`). The iframe still loads `www.youtube.com/embed/…`
-with `loading="lazy"`, exactly as at the base commit.
-
-**Smallest next action:** supply `assets/video-poster-Ng5P2SusEsQ.jpg` — either
-the owner exports the frame from YouTube Studio, or this runs in a session whose
-egress policy permits `i.ytimg.com`. Everything else in the façade (markup,
-focus handling, click-to-load `youtube-nocookie`) is mechanical once the verified
-poster exists, and the CSP in §15.6 already permits `youtube-nocookie.com`.
+**Acceptance:** static resource inspection confirms zero YouTube origins in the
+initial loading path and exactly one post-click `youtube-nocookie.com` embed.
+Live Preview playback and request capture remain the final wire verification.
 
 ### 15.6 CSP — Report-Only candidate
 
@@ -1094,11 +1082,11 @@ Median of 3 runs each; spread was ≤2 ms on every metric.
 | `index.html` raw | 232,461 B (227.0 KiB) | **30,954 B (30.2 KiB)** | ≤ 70 KiB | ✅ |
 | `index.html` gzip -9 | 147.3 KiB | **9,455 B (9.2 KiB)** | ≤ 20 KiB | ✅ |
 | Base64 logo payloads | 3 (175,014 chars) | **0** | 0 | ✅ |
-| YouTube request before interaction | 1 | **1** | 0 | ❌ **not met** — §15.5 |
+| YouTube request before interaction | 1 | **0** | 0 | ✅ **met** — §15.5 |
 
 Asset totals: HTML −201,507 B; CSS 0 → 21,715 B external; JS 6,383 chars inline
-→ 6,871 B external (`app.js` 6,443 + `analytics.js` 428); images 0 → 53,544 B on
-disk, of which **one file per element** is fetched (17,026 B at 2×);
+→ 6,871 B external (`app.js` 6,443 + `analytics.js` 428); images 0 → 250,808 B on
+disk including the verified local video poster; each logo still fetches only its selected responsive variant (17,026 B total at 2×);
 `favicon.png` −297,819 B.
 
 Deployable payload (every file Vercel serves, excluding `.github/` and `docs/`):

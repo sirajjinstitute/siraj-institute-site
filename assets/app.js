@@ -20,6 +20,21 @@ const revealWa = () => {
 revealWa();
 window.addEventListener('scroll', revealWa, { passive: true });
 
+/* privacy-friendly YouTube façade: no YouTube request until activation */
+const videoFacade = document.querySelector('.video-facade');
+if (videoFacade) {
+  videoFacade.addEventListener('click', () => {
+    const videoId = videoFacade.dataset.videoId;
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
+    iframe.title = 'Siraj Institute — Why families choose us';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    iframe.allowFullscreen = true;
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    videoFacade.replaceWith(iframe);
+  }, { once: true });
+}
+
 /* mobile menu */
 const menuBtn = document.getElementById('menuBtn');
 const navLinks = document.getElementById('navLinks');
