@@ -1,9 +1,12 @@
 # Siraj Institute Landing Page — Technical Baseline
 
-**Wave:** 1A — Foundation, Security, Technical SEO & Search Identity
-**Audit date:** 2026-08-16
-**Base commit (`origin/main`):** `8161890e7d88fecb8f87adc1838f20376a735d7d`
-**Branch:** `claude/siraj-landing-wave-1a-yzag91`
+**Waves recorded:** 1A — Foundation, Security, Technical SEO & Search Identity
+· 1B — Performance Architecture & Technical Cleanup
+**Audit dates:** 1A 2026-08-16 · 1B 2026-08-21
+**Wave 1A base commit:** `8161890e7d88fecb8f87adc1838f20376a735d7d`
+**Wave 1A merge commit (now in Production):** `5f40bf315d48ca7bfc286b570aa9fce4b9164a27`
+**Wave 1B base commit (`origin/main`):** `5f40bf315d48ca7bfc286b570aa9fce4b9164a27`
+**Wave 1B branch:** `claude/siraj-landing-wave-1b-performance-u7noq3`
 
 This document records the measured state of the repository at the Wave 1A
 baseline. It is intentionally factual: measurements are labelled with how they
@@ -740,22 +743,22 @@ fix before broader SEO work · **P2** important improvement · **P3** optional.
 
 | ID | Sev | Finding | Evidence | Status |
 | --- | --- | --- | --- | --- |
-| F-01 | P1 | Repository canonical signals named the apex, which 308-redirects to `www` — so `rel=canonical` pointed at a URL Production does not serve. Final canonical is `https://www.sirajinst.com/` | §4 | **CODE FIXED IN PR — requires Production deployment & live verification to close.** No Vercel routing change needed |
+| F-01 | P1 | Repository canonical signals named the apex, which 308-redirects to `www` — so `rel=canonical` pointed at a URL Production does not serve. Final canonical is `https://www.sirajinst.com/` | §4, §15.1 | **CLOSED.** Wave 1A is live in Production at `5f40bf3`; apex → 308 → www, and canonical/OG/robots/sitemap all serve www. Owner-verified — see §15.1 |
 | F-02 | P1 | `WebSite.alternateName` did not express the owner's search-identity preference order (missing `Siraj-Institute`; domain not ranked last) | `index.html:59` before | **Fixed** — ordered 3-value array per §5 |
 | F-03 | P1 | No CSP, no `X-Content-Type-Options`, no `Referrer-Policy`, no `Permissions-Policy` configured by the repo (no `vercel.json` existed) | repo had no config file | **Fixed** (safe subset; strict CSP deferred) |
 | F-04 | P1 | No secret scanning or CI of any kind | no `.github/` directory | **Fixed** |
-| F-05 | P1 | 42.7 KiB logo inlined 4× = 80.2% of the document; one occurrence a no-op preload | §7 | **Partly fixed** — preload removed; 3× duplication → Wave 1B |
-| F-06 | P2 | LCP 3.2 s exceeds the 2.5 s target, measured *without* third parties loading | Lighthouse | **Deferred** → Wave 1B |
+| F-05 | P1 | 42.7 KiB logo inlined 4× = 80.2% of the document; one occurrence a no-op preload | §7, §15.3 | **CLOSED in Wave 1B.** All three remaining data URIs replaced by right-sized local WebP variants; `index.html` now contains **zero** `data:image` payloads |
+| F-06 | P2 | LCP 3.2 s exceeds the 2.5 s target, measured *without* third parties loading | Lighthouse, §15.7 | **CLOSED under the controlled baseline** — LCP 2.93 s → **2.10 s** (target ≤ 2.5 s). Not yet confirmed with third parties reachable; see §15.9 |
 | F-07 | P2 | Contrast 3.32:1 for `#a9812f` on `#faf6ec` (`.eyebrow`, `.dur`, `.meta`); WCAG AA needs 4.5:1 | Lighthouse `color-contrast` | **Deferred** — brand colour, needs owner approval. `#8f6c26` → 4.48:1, `#8a6a1f` → 4.68:1 |
 | F-08 | P2 | No `<main>` landmark; heading order skips levels (h2→h4, h2→h5) in About, Programs, Pricing, Next Steps, Footer | Lighthouse `landmark-one-main`, `heading-order` | **Deferred** — structural, → Accessibility wave |
 | F-09 | P2 | Footer contact email was misspelled `sirjjinstitute@gmail.com` (missing the first `a`), so mail to the published address was silently lost | `index.html:882` | **FIXED — owner-confirmed official email** `sirajjinstitute@gmail.com` |
 | F-10 | P2 | GitHub repo `homepage` is `https://sirajinstitute.vercel.app`, a third hostname inconsistent with the chosen canonical | GitHub API | **Deferred** — set to `https://sirajinst.com/` with F-01 |
 | F-11 | P3 | Program/pricing tabs use `role="tablist"`/`role="tab"` but have no `aria-controls`, no `role="tabpanel"`, and no arrow-key navigation. Buttons are real `<button>`s so they remain focusable and Enter-activatable | LAB: `tabArrowKeyMoves` = false | **Deferred** → Accessibility wave |
 | F-12 | P3 | Pricing tab advertises "20% off" but the rendered line shows "Save 19%" (28.90/35.90 = 19.5%, rounded down) | LAB: `billedLineSample` | **Deferred** — pricing is frozen (§17); reported only |
-| F-13 | P3 | `favicon.png` is a byte-identical duplicate of `android-chrome-512x512.png` (297,819 B each) | SHA-256 match | **Deferred** → Wave 1B |
+| F-13 | P3 | `favicon.png` is a byte-identical duplicate of `android-chrome-512x512.png` (297,819 B each) | SHA-256 match | **CLOSED in Wave 1B** — duplicate re-confirmed byte-identical, the single reference repointed at `android-chrome-512x512.png`, and `favicon.png` deleted (−290.8 KiB) |
 | F-14 | P3 | `og:image` is the 512×512 square logo; social platforms expect 1200×630 | `index.html:15-17` | **Deferred** → Wave 4 social preview |
-| F-15 | P3 | YouTube embed uses `youtube.com` rather than `youtube-nocookie.com` | `index.html:589` | **Deferred** — see §10 Q3 |
-| F-16 | P3 | `.wa-link` elements ship as `href="#"` and are rewritten by JS; without JS they jump to the top of the page instead of contacting anyone | `index.html:549` etc. | **Deferred** — low impact, progressive-enhancement fix |
+| F-15 | P3 | YouTube embed uses `youtube.com` rather than `youtube-nocookie.com` | `index.html`, §15.5 | **STILL OPEN — Wave 1B subtask stopped deliberately.** The click-to-load façade that carries this change needs a poster image verified to belong to video `Ng5P2SusEsQ`, and every YouTube host is blocked by this session's egress policy. No asset was invented. See §15.5 |
+| F-16 | P3 | `.wa-link` elements ship as `href="#"` and are rewritten by JS; without JS they jump to the top of the page instead of contacting anyone | `index.html`, §15.4 | **CLOSED in Wave 1B** — all four ship the real `wa.me` deep link in the HTML; the script now only re-asserts the identical value |
 
 **Not findings** (checked and healthy): 1 `<h1>`, `lang="en"`, indexable
 (`robots.txt` allows all, no `noindex`), valid sitemap, both JSON-LD blocks
@@ -767,7 +770,10 @@ carry `rel="noopener noreferrer"`, and `favicon.ico` includes a 48×48 entry.
 
 ## 12. Deferred work
 
-**Wave 1B — Performance Architecture:** §7 items 1–7 (F-05 remainder, F-06, F-13).
+**Wave 1B — Performance Architecture:** **delivered** (§15) except the YouTube
+façade. F-05, F-06, F-13 and F-16 are closed; F-15 and the "no YouTube request
+before interaction" target remain open and are blocked on a verified poster
+image for video `Ng5P2SusEsQ` — see §15.5.
 
 **Accessibility wave:** contrast tokens (F-07), `<main>` landmark and heading
 order (F-08), full ARIA tab pattern (F-11).
@@ -840,3 +846,389 @@ site-name fallback or prose.
 `facebook.com`, `instagram.com`, `fonts.googleapis.com`, `fonts.gstatic.com`,
 `googletagmanager.com`, `schema.org`, and the Vercel preview hostname were all
 classified as out-of-scope external services and **not modified**.
+
+---
+
+## 15. Wave 1B — Performance Architecture & Technical Cleanup
+
+**Base commit:** `5f40bf315d48ca7bfc286b570aa9fce4b9164a27` (verified at session start:
+`git ls-remote origin refs/heads/main` returned exactly this SHA).
+**Branch:** `claude/siraj-landing-wave-1b-performance-u7noq3`
+**Date:** 2026-08-21
+
+Evidence classes are unchanged from §1: **REPO**, **LAB**, **UNVERIFIED**, plus
+**OWNER** for facts established by the owner/CTO outside this session.
+
+### 15.1 Wave 1A outcome (OWNER)
+
+Recorded on the owner's authority; this session could not reach Production
+(§15.9) and did not observe any of it directly.
+
+| Item | State |
+| --- | --- |
+| Wave 1A Production merge SHA | `5f40bf315d48ca7bfc286b570aa9fce4b9164a27` |
+| Wave 1A Production deployment | Verified live and successful |
+| F-01 (canonical/domain) | **Closed** — apex 308-redirects to www; canonical, OG, robots and sitemap all serve www |
+| Security headers | **Verified delivered on the wire** |
+| YouTube playback under `Permissions-Policy` | **Owner-verified working** — the one functional risk flagged in §9 is retired |
+
+The §9 post-deployment checklist is therefore satisfied for Wave 1A. It still
+applies to Wave 1B, which has not been deployed anywhere but a Vercel Preview.
+
+### 15.2 AS-IS baseline re-confirmed before any write (REPO)
+
+Every figure the Wave 1B brief specified was re-measured and matched:
+
+| Property | Expected | Measured | |
+| --- | --- | --- | --- |
+| `index.html` size | ~232,461 B | **232,461 B** | ✅ exact |
+| `index.html` lines | ~1064 | 1064 (`wc -l` 1063 + no trailing newline) | ✅ |
+| Inline logo occurrences | 3, byte-identical | **3**, all SHA-256 `b40b6799…`, 43,735 B each | ✅ exact |
+| Combined logo Base64 | ~175,014 chars | **175,014 chars** (174,948 payload + 3×22 prefix) | ✅ exact |
+| Inline CSS block | ~20,968 chars | **20,968 chars** | ✅ exact |
+| Executable inline JS | ~6,383 chars | **6,383 chars** (172 + 6,211), excluding JSON-LD | ✅ exact |
+| YouTube iframe | `youtube.com/embed/Ng5P2SusEsQ`, lazy | present, `loading="lazy"` | ✅ |
+| `favicon.png` vs `android-chrome-512x512.png` | byte-identical | SHA-256 `29e2565b…` both, `cmp` clean | ✅ |
+
+The source artwork is a **640×640 palette PNG with 170 palette entries but only
+128 distinct colours in use**. That matters for §15.3.
+
+### 15.3 Logo externalisation (F-05)
+
+The three data URIs were confirmed identical, decoded once, and resampled with
+Lanczos. No recolour, no crop, no sharpening, no regeneration — only a scale
+change, then re-quantisation to a 256-colour palette (the source's own colour
+depth, so quantisation costs essentially nothing).
+
+**Format choice — measured, not assumed.** At the hero's 2× size (236 px):
+
+| Encoding | Bytes | PSNR vs ideal Lanczos RGBA |
+| --- | --- | --- |
+| RGBA PNG, optimised | 52,197 | (reference) |
+| RGBA lossless WebP | 36,730 | (reference) |
+| Lossy WebP q90 | 24,888 | 42.54 dB |
+| 256-colour PNG | 10,438 | 41.79 dB |
+| **256-colour lossless WebP** | **9,266** | **41.79 dB** |
+
+The last row wins on both axes: it is lossless *with respect to the quantised
+image*, so it carries the same fidelity as the palette PNG for ~12% fewer bytes,
+and it beats lossy WebP on size **and** on error. Chosen for all nine variants.
+
+PSNR was measured on the alpha-composited result over the actual `#0d1b30`
+backdrop. Measuring raw RGBA is misleading here, because lossy encoders discard
+colour in fully transparent pixels and score ~11 dB for differences no one can
+see.
+
+**Ladder shipped** (density descriptors; CSS fixes the display size, so `1x/2x/3x`
+is the correct selector, not `sizes`):
+
+| Element | CSS px | 1× | 2× | 3× |
+| --- | --- | --- | --- | --- |
+| nav `.brand img` | 42 | `logo-42.webp` 1,704 B | `logo-84.webp` 3,386 B | `logo-126.webp` 4,944 B |
+| hero `.hero-logo` | 118 | `logo-118.webp` 4,596 B | `logo-236.webp` 9,266 B | `logo-354.webp` 16,394 B |
+| footer `.footer-brand img` | 56 | `logo-56.webp` 2,290 B | `logo-112.webp` 4,374 B | `logo-168.webp` 6,590 B |
+
+A device downloads exactly **one file per element**: 8,590 B at 1×, **17,026 B at
+2×**, 27,928 B at 3× — against 131,205 B of decoded image (175,014 Base64 chars)
+before, on *every* visit, uncacheable.
+
+Verified in LAB at deviceScaleFactor 1, 2 and 3: the correct variant is selected
+at each density, all three render at exactly 42/118/56 CSS px, hero keeps
+`fetchpriority="high"`, and the footer logo is still deferred — it is fetched
+only after scrolling, confirming `loading="lazy"` survives.
+
+`width`/`height` attributes are retained and updated 640×640 → the true intrinsic
+size of each variant. Both are square, so the 1:1 aspect ratio the browser
+reserves is unchanged and **CLS stays 0**.
+
+**WebP without a PNG fallback** is deliberate: the stylesheet already depends on
+CSS custom properties (96 uses) and `backdrop-filter`, so every browser that can
+render this page at all has supported WebP since 2020.
+
+### 15.4 CSS / JS extraction
+
+| File | Bytes | Contents |
+| --- | --- | --- |
+| `assets/styles.css` | 21,715 | the former inline `<style>`, verbatim, + 5 utility classes |
+| `assets/app.js` | 6,443 | the former end-of-body script, **byte-identical** (`diff` clean) + a header comment |
+| `assets/analytics.js` | 428 | the GA4 bootstrap, verbatim |
+
+- `app.js` loads with `defer` from `<head>`. It previously ran at the end of
+  `<body>`; both run against a fully-parsed DOM, so ordering is unchanged, and
+  `defer` lets the download start earlier.
+- `analytics.js` stays **synchronous and in the same position**, immediately
+  after the `async` gtag loader, so `gtag()` is defined exactly as before. GA4
+  behaviour is deliberately not "improved" here.
+- Both JSON-LD blocks remain inline as `application/ld+json` and still parse
+  (`@type` `EducationalOrganization` and `WebSite`).
+- **The 12 inline `style=""` attributes were also removed**, into 5 utility
+  classes. They are not executable, but they would each violate a `style-src`
+  policy without `'unsafe-inline'`, which §15.6 is meant to make unnecessary.
+
+**One defect was introduced and caught here.** `.h-on-dark` (specificity 0,1,0)
+lost to the existing `.section-head h2` (0,1,1), so two headings on dark
+backgrounds turned dark-on-dark — a contrast failure the inline `style`
+attribute had been winning at specificity 1000. Caught by full-page pixel
+diffing, not by the functional suite. Fixed by promoting the selector to
+`h2.h-on-dark` (0,1,1, and later in source order). Computed-style parity across
+all 12 converted elements is now exact.
+
+**WhatsApp links (F-16).** All four `.wa-link` elements now carry the real deep
+link in the HTML, so they work with JavaScript disabled. The script still
+assigns the same URL; that assignment is now a no-op, kept so the link text has
+one source of truth.
+
+### 15.5 YouTube façade — SUBTASK STOPPED, NOT DELIVERED
+
+**This item was not implemented, and the iframe is unchanged.**
+
+The brief requires a poster image *verified to belong to video `Ng5P2SusEsQ`*,
+and explicitly forbids substituting an unrelated or generated image. Every host
+that could supply it is denied by this session's egress policy:
+
+```
+i.ytimg.com:443       -> gateway answered 403 to CONNECT (policy denial)
+img.youtube.com:443   -> gateway answered 403 to CONNECT (policy denial)
+www.youtube.com:443   -> gateway answered 403 to CONNECT (policy denial)
+```
+
+Per the proxy's operating rules a policy denial is reported, not routed around,
+so no third-party fetching service was used to obtain the thumbnail indirectly.
+Inventing or generating a poster would have violated the brief. The subtask was
+therefore stopped whole rather than half-delivered.
+
+**Consequently unmet:** the "no YouTube request before interaction" target, and
+F-15 (`youtube-nocookie.com`). The iframe still loads `www.youtube.com/embed/…`
+with `loading="lazy"`, exactly as at the base commit.
+
+**Smallest next action:** supply `assets/video-poster-Ng5P2SusEsQ.jpg` — either
+the owner exports the frame from YouTube Studio, or this runs in a session whose
+egress policy permits `i.ytimg.com`. Everything else in the façade (markup,
+focus handling, click-to-load `youtube-nocookie`) is mechanical once the verified
+poster exists, and the CSP in §15.6 already permits `youtube-nocookie.com`.
+
+### 15.6 CSP — Report-Only candidate
+
+The enforced policy is **unchanged** from Wave 1A and still enforced:
+
+```
+base-uri 'none'; object-src 'none'; frame-ancestors 'self'
+```
+
+Added alongside it, as `Content-Security-Policy-Report-Only`:
+
+```
+default-src 'self';
+base-uri 'none';
+object-src 'none';
+frame-ancestors 'self';
+form-action 'none';
+script-src 'self' https://www.googletagmanager.com;
+style-src  'self' https://fonts.googleapis.com;
+font-src   'self' https://fonts.gstatic.com;
+img-src    'self' https://www.googletagmanager.com https://*.google-analytics.com;
+connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com;
+frame-src  https://www.youtube.com https://www.youtube-nocookie.com
+```
+
+No `'unsafe-inline'`. No `'unsafe-eval'`. Every directive traces to a resource
+the document actually loads, and each restriction was checked against the tree:
+0 `<form>`, 0 `<object>`/`<embed>`/`<applet>`, 0 `<base>`, 0 `<video>`/`<audio>`,
+0 workers, 0 `eval`, 0 inline event handlers, 0 `javascript:` URLs.
+
+`frame-src` lists **both** YouTube hosts: `www.youtube.com` is what the page
+loads today (§15.5), and `youtube-nocookie.com` is pre-authorised so the façade
+can land without a second CSP change.
+
+**Violations observed (LAB): 0.** Served with the real header and exercised —
+load, scroll, pricing controls, duration controls, program tabs:
+
+| Check | Result |
+| --- | --- |
+| Total `securitypolicyviolation` events | **0** |
+| Both JSON-LD blocks under `script-src` without `'unsafe-inline'` | no violation — data blocks are not executed |
+| 22 motes written via `element.style.*` under `style-src` | no violation — CSSOM writes are not subject to `style-src`; all 22 rendered |
+| Pricing grid via `innerHTML` | 4 cards rendered, no violation |
+| Stylesheet applied | `body` background `rgb(250,246,236)` ✅ |
+
+**Third-party directives — what is and isn't proven.** `script-src`
+(googletagmanager), `style-src` (fonts.googleapis.com) and `frame-src`
+(www.youtube.com) are **confirmed permitted**: under the Report-Only header the
+browser *attempted* all three requests and they failed only at the network
+layer (`ERR_TUNNEL_CONNECTION_FAILED` / `ERR_CONNECTION_RESET`), which cannot
+happen for a CSP-blocked request — CSP blocks before the socket. Still
+**UNVERIFIED**, because the upstream resources never loaded here:
+
+- `font-src https://fonts.gstatic.com` — the Google Fonts CSS never loaded, so
+  no font file was ever requested.
+- `img-src` / `connect-src` for GA4 — `gtag.js` never loaded, so no beacon fired.
+  The `*.google-analytics.com` / `*.analytics.google.com` wildcards come from
+  Google's documented GA4 endpoints, not from observation.
+
+**Do not enforce this policy on these results.** Report-Only exists precisely to
+collect the two unproven groups above from a Preview with third parties
+reachable. Enforce only after a Preview run shows zero reports.
+
+### 15.7 Performance (LAB)
+
+Lighthouse **13.4.1**, Chromium **1194**, mobile form factor, simulated
+throttling, local static server — the **same methodology and versions as Wave
+1A**, re-run against both trees in this session. Third parties are blocked in
+both runs, so these exclude Google Fonts, gtag and YouTube. That the BEFORE run
+reproduced Wave 1A's published numbers exactly (81 / 2.6 s / 2.9 s / 279 KiB)
+is the control that makes the comparison trustworthy.
+
+Median of 3 runs each; spread was ≤2 ms on every metric.
+
+| Metric | Wave 1A (before) | Wave 1B (after) | Target | |
+| --- | --- | --- | --- | --- |
+| Performance | 81 | **89** | — | ▲ +8 |
+| Accessibility | 93 | 93 | no regression | ✅ |
+| Best practices | 96 | 96 | no regression | ✅ |
+| SEO | 100 | 100 | no regression | ✅ |
+| First Contentful Paint | 2,582 ms | **1,531 ms** | — | ▲ −41% |
+| **Largest Contentful Paint** | 2,930 ms | **2,102 ms** | ≤ 2,500 ms | ✅ **met** |
+| Total Blocking Time | 0 ms | **0 ms** | 0 / no regression | ✅ |
+| Cumulative Layout Shift | 0 | **0** | ≤ 0.1 | ✅ |
+| Total transfer | 279.9 KiB | **124.9 KiB** | lower than 1A | ✅ −55% |
+| `index.html` raw | 232,461 B (227.0 KiB) | **30,954 B (30.2 KiB)** | ≤ 70 KiB | ✅ |
+| `index.html` gzip -9 | 147.3 KiB | **9,455 B (9.2 KiB)** | ≤ 20 KiB | ✅ |
+| Base64 logo payloads | 3 (175,014 chars) | **0** | 0 | ✅ |
+| YouTube request before interaction | 1 | **1** | 0 | ❌ **not met** — §15.5 |
+
+Asset totals: HTML −201,507 B; CSS 0 → 21,715 B external; JS 6,383 chars inline
+→ 6,871 B external (`app.js` 6,443 + `analytics.js` 428); images 0 → 53,544 B on
+disk, of which **one file per element** is fetched (17,026 B at 2×);
+`favicon.png` −297,819 B.
+
+Deployable payload (every file Vercel serves, excluding `.github/` and `docs/`):
+**1,239,416 B → 822,158 B (−417,258 B, −33.7%)** across 14 → 24 files. The file
+count rises because one uncacheable inline copy became nine cacheable variants;
+the bytes fall because the 640×640 source is no longer shipped three times per
+page view.
+
+### 15.8 Regression verification (LAB)
+
+Chromium 1194 via Playwright, base tree vs Wave 1B tree served identically.
+**52 assertions: 44 byte-identical, 8 differing — all 8 intended.**
+
+The 8: `rawDataImage` 3→0, `rawInlineStyleBlocks` 1→0, `rawInlineStyleAttrs`
+12→0, `rawExecInlineScripts` 2→0, `waHrefRawHTML` `["#"×4]`→4 real `wa.me`
+links, `waHrefRawAllValid` false→true, and `imgRendered`/`imgBroken` reflecting
+right-sized files (the footer entry reports "incomplete" only because
+`loading="lazy"` has correctly not fetched it yet — proven loaded after scroll
+at all three densities).
+
+Identical across both trees: pricing ($35.90 / $28.90 / annual $28.90 /
+reset $35.90, and the billed line), program tabs, FAQ, mobile menu open/close/
+`aria-expanded`, Login targets, floating WhatsApp reveal at 260 px, dynamic
+year, motes (22, and **0** under `prefers-reduced-motion`), 43 focusable
+elements, the gold focus ring, canonical/OG/title, both JSON-LD `@type`s,
+`lang`, `<h1>` count, 0 images missing `alt`, and **0 page errors** in both.
+The only console errors are the egress-policy failures for gtag / Fonts /
+YouTube, identical in both runs.
+
+**Responsive / visual — full-page pixel diff at 320 / 375 / 430 / 768 / 1024 / 1440:**
+
+| Width | Horizontal overflow | Full-page height Δ | Differing pixels |
+| --- | --- | --- | --- |
+| 320 | none | **0 px** | 693 (0.015%) |
+| 375 | none | **0 px** | 687 (0.014%) |
+| 430 | none | **0 px** | 684 (0.014%) |
+| 768 | none | **0 px** | 680 (0.010%) |
+| 1024 | none | **0 px** | 679 (0.008%) |
+| 1440 | none | **0 px** | 682 (0.006%) |
+
+Identical page height at every width, and the differing pixels fall in exactly
+three bands per width — the three logos. Nothing else on the page differs by a
+single pixel. At 4× magnification the before/after logos are indistinguishable.
+
+### 15.9 Limitations — what this session could not test (UNVERIFIED)
+
+The egress policy denies the same hosts as in Wave 1A, plus the YouTube hosts:
+
+```
+www.sirajinst.com:443   -> 403 to CONNECT (policy denial)
+i.ytimg.com:443         -> 403 to CONNECT (policy denial)
+img.youtube.com:443     -> 403 to CONNECT (policy denial)
+www.youtube.com:443     -> 403 to CONNECT (policy denial)
+```
+
+`fonts.googleapis.com`, `fonts.gstatic.com` and `pypi.org` **are** reachable,
+which is what made §15.10's font measurements possible.
+
+Not established here, and to be checked on the Vercel Preview:
+
+1. Lighthouse **with third parties reachable**. §15.7 is a controlled floor, not
+   a field number.
+2. `font-src` and the GA4 `img-src`/`connect-src` groups in the Report-Only CSP
+   (§15.6).
+3. That the Report-Only header is delivered by Vercel and reports nothing.
+4. Preview asset delivery: all nine WebP variants, `styles.css`, `app.js`,
+   `analytics.js` returning 200 with the `/assets/` cache header.
+5. YouTube playback (unchanged code, but it is the one third party in the page).
+6. That `favicon.png`'s removal broke no cached client reference.
+
+### 15.10 Fonts — evidence, and the decision not to self-host
+
+**Removed: Work Sans 800.** The stylesheet's complete weight usage is
+300 ×1, 400 ×3, 500 ×1, 600 ×8, 700 ×13 — **no rule uses 800**, so the face was
+requested and never applied. Measured effect on the render-blocking Google
+Fonts stylesheet: **12,568 B → 11,320 B (−1,248 B), 27 → 24 `@font-face`
+declarations.** Stated precisely: because no rule used weight 800, the browser
+would not have downloaded its 50,316 B `latin` file either — the *guaranteed*
+saving is the 1,248 B of blocking CSS plus three fewer declarations to parse,
+not 50 KiB. Amiri's `ital 400` is **kept**: `em` inside Amiri headings is real
+italic usage.
+
+**Self-hosting was evaluated and rejected.** Measured from the live Google
+Fonts CSS (modern-Chrome UA), per-face WOFF2 sizes:
+
+| Set | Faces | Bytes |
+| --- | --- | --- |
+| Everything the CSS declares | 24 | 900,468 B (879.4 KiB) |
+| What an en+ar visit actually needs (`latin` for both families, `arabic` for Amiri) | 11 | 631,052 B (616.3 KiB) |
+| Work Sans `latin`, per weight ×5 | 5 | 251,580 B |
+| Amiri `arabic`, per face | 3 | 99,968–111,720 B each |
+
+Rejected on three grounds, in the brief's own terms:
+
+1. **The benefit cannot be evidenced from here.** The win is one saved
+   third-party connection — but in this lab Google Fonts is *blocked entirely*,
+   so a self-hosted build would load fonts the Google build cannot, and the
+   comparison would flatter self-hosting for a reason that has nothing to do
+   with the critical path. The brief forbids claiming a font improvement
+   without before/after evidence, and honest evidence is not obtainable here.
+2. **Cost is concrete and large.** ~616 KiB of binaries committed to a
+   repository whose entire Wave 1B purpose is removing weight, plus 24
+   hand-reproduced `@font-face` blocks with exact `unicode-range` values.
+3. **The failure mode is the worst one available.** A single wrong
+   `unicode-range` silently drops Arabic or Qur'anic diacritic coverage — the
+   one thing this site cannot get wrong — and it would not be caught by any
+   check that runs here.
+
+Licensing is *not* the blocker (Amiri and Work Sans are both SIL OFL 1.1, which
+permits self-hosting); the blocker is that the gain is unmeasurable here and the
+downside is unrecoverable. **Google Fonts is retained, with only the faces the
+CSS actually uses.** Re-evaluate when a Preview run can measure the real
+critical path.
+
+### 15.11 Files changed in Wave 1B
+
+**Added (12):** `assets/styles.css`, `assets/app.js`, `assets/analytics.js`,
+and `assets/logo-{42,56,84,112,118,126,168,236,354}.webp`.
+
+**Changed (3):** `index.html` (232,461 → 30,954 B), `vercel.json`
+(Report-Only CSP + `/assets/` cache header; enforced headers untouched),
+`docs/LANDING_FOUNDATION_BASELINE.md`.
+
+**Removed (1):** `favicon.png` (297,819 B, byte-identical duplicate — F-13).
+
+**Not touched, by design:** marketing copy, branding, pricing values and
+discount logic, programs, LMS links, the WhatsApp destination number, the GA4
+measurement ID, the video ID, conversion flows, `robots.txt`, `sitemap.xml`,
+`site.webmanifest`, `logo.png`, the remaining icons, and the secret-scan
+workflow. No framework, bundler, package manager or runtime dependency was
+added — the site remains dependency-free static files.
+
+Secret scan after the change: **27 files scanned, 0 findings, exit 0.**
