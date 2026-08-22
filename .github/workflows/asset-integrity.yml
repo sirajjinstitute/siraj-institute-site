@@ -1,0 +1,38 @@
+name: Asset integrity
+
+# Guards the immutable caching introduced in Wave 1B.1.
+#
+# Everything under assets/ is served with `Cache-Control: public,
+# max-age=31536000, immutable`, so a browser is entitled to keep a copy for a
+# year without revalidating. That is only correct while a file's URL changes
+# whenever its bytes change. The site has no bundler to guarantee that, so the
+# guarantee is a filename convention -- <stem>.<sha256[:8]>.<ext> -- and this
+# workflow is what stops a contributor from editing a file in place and
+# shipping a version users would never see.
+#
+# It also fails on a /assets/ URL that resolves to nothing and on an asset
+# nothing references, which are the two ways a rename goes half-done.
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify asset content hashes and references
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        # Pinned to an immutable commit SHA rather than a moving tag, matching
+        # the secret-scan workflow. Resolved from upstream git refs:
+        # refs/tags/v5.1.0 (and refs/tags/v5) both point at this commit.
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+
+      - name: Verify asset hashes
+        run: python3 .github/scripts/verify_asset_hashes.py .

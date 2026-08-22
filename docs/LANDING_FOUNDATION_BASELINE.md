@@ -1201,6 +1201,12 @@ downside is unrecoverable. **Google Fonts is retained, with only the faces the
 CSS actually uses.** Re-evaluate when a Preview run can measure the real
 critical path.
 
+> **Superseded in Wave 1B.1 — see §16.5.** The real PageSpeed report supplied
+> the missing measurement (750 ms of render-blocking), and the coverage risk
+> was removed by generating the `@font-face` rules from Google's own stylesheet
+> rather than authoring `unicode-range` values by hand. The fonts are now
+> self-hosted.
+
 ### 15.11 Files changed in Wave 1B
 
 **Added (12):** `assets/styles.css`, `assets/app.js`, `assets/analytics.js`,
@@ -1220,3 +1226,383 @@ workflow. No framework, bundler, package manager or runtime dependency was
 added — the site remains dependency-free static files.
 
 Secret scan after the change: **27 files scanned, 0 findings, exit 0.**
+
+---
+
+## 16. Wave 1B.1 — Real-World PageSpeed Performance Hotfix
+
+Base verified before any write: `main` at
+`f55c3b861925651fbf6de786d75441f3352672a3`, PR #3 merged, no open pull
+requests, worktree clean.
+
+### 16.1 The real Production baseline (OWNER-SUPPLIED, EXTERNAL)
+
+Wave 1B closed against a *lab* score of 89. The first real-world measurement
+after that deployment came back materially lower, and it is the number this
+wave is accountable to:
+
+> PageSpeed Insights, `https://www.sirajinst.com/`, mobile, captured after the
+> Wave 1B Production deployment —
+> `https://pagespeed.web.dev/analysis/https-www-sirajinst-com/t7srfc1gbz?form_factor=mobile`
+
+| Metric | Production (real) |
+|---|---|
+| Performance | **85** |
+| Accessibility | 93 |
+| Best Practices | 100 |
+| SEO | 100 |
+| FCP | 3.3 s |
+| LCP | 3.3 s |
+| TBT | 40 ms |
+| CLS | 0.006 |
+| Speed Index | 3.3 s |
+
+Bottlenecks named in that report:
+
+| Evidence | Figure |
+|---|---|
+| Render-blocking, estimated saving | **2,780 ms** |
+| `assets/styles.css` | 7.2 KiB / 170 ms, render-blocking |
+| `assets/analytics.js` | 1.8 KiB / **490 ms**, render-blocking |
+| Google Fonts CSS | 1.7 KiB / **750 ms**, render-blocking |
+| Google Fonts, total transfer | ~219 KiB |
+| Google Tag Manager | ~143 KiB, 160 ms main thread |
+| Unused GTM JavaScript | ~67 KiB |
+| Video poster | 197,264 B, est. saving 154,747 B |
+| Asset cache lifetime | 1 day; est. repeat-visit saving 89 KiB |
+| LCP element | Hero logo |
+| LCP: resource load delay | 470 ms |
+| LCP: resource load duration | 400 ms |
+| LCP: element render delay | 140 ms |
+
+This is the authoritative external baseline. Nothing below replaces it with a
+lab number.
+
+### 16.2 Why the Wave 1B lab number was optimistic
+
+Wave 1B measured with third parties blocked (§15.7). That removed from the
+measurement precisely the three requests that turned out to dominate the real
+critical path: the Google Fonts stylesheet, its font files, and gtag.js. The
+lab was not wrong about what it measured; it measured the wrong thing.
+
+The fix for this wave was to build a controlled harness that **keeps the third
+parties in the request graph** instead of dropping them.
+
+### 16.3 Controlled measurement methodology (LAB — read the caveats)
+
+Lighthouse 13.4.1, Chromium 1194, mobile emulation (412×823, DPR 1.75),
+simulated throttling, **median of 7 runs** after one discarded warm-up
+navigation. Both the before and after trees are served by the same local
+replay server, which stands in for the third-party origins:
+
+| Origin | How it is served | Fidelity |
+|---|---|---|
+| `fonts.googleapis.com` | the real captured CSS | byte-for-byte |
+| `fonts.gstatic.com` | the real captured WOFF2 files | byte-for-byte |
+| `www.googletagmanager.com` | **size-matched inert stand-in** | transfer only |
+| `*.google-analytics.com` | 204, as the real collect endpoint answers | behavioural |
+| `www.youtube-nocookie.com` | minimal embed stub | behavioural |
+
+**Disclosed limitation.** `www.googletagmanager.com` is blocked by this
+sandbox's egress policy (the proxy answers 403 to CONNECT), so the real
+gtag.js could not be captured. The stand-in reproduces its URL, its async
+position in the document and its transfer size (146,475 B gzipped against the
+report's ~143 KiB), but **not its main-thread execution**. Controlled TBT is
+therefore 0 in both runs and understates Production TBT identically on each
+side; TBT is the one metric below that carries no signal. Everything else is
+measured on a like-for-like graph.
+
+The harness is validated by how closely the *before* tree reproduces the real
+report:
+
+| Evidence | Production report | Controlled replay (before) |
+|---|---|---|
+| Render-blocking saving | 2,780 ms | **2,690 ms** |
+| Google Fonts CSS | 1.7 KiB / 750 ms | 1,204 B / **751 ms** |
+| `analytics.js` | 1.8 KiB / 490 ms | 1,463 B / **452 ms** |
+| `styles.css` | 7.2 KiB / 170 ms | 6,563 B / **152 ms** |
+| Fonts, total transfer | ~219 KiB | **218,264 B** (213.1 KiB) |
+| Video poster | 197,264 B | **197,264 B** |
+| Poster est. saving | 154,747 B | ~151 KiB |
+| LCP element | Hero logo | Hero logo (`logo-236.webp`) |
+| LCP element render delay | 140 ms | 138 ms |
+
+The controlled environment is harsher in absolute terms than Production
+(before-LCP 4,798 ms lab vs 3,300 ms real), so the **deltas**, not the
+absolute values, are the result.
+
+### 16.4 Controlled before/after
+
+Median of 7 runs, identical methodology on both sides.
+
+| Metric | Before (`f55c3b8`) | After | Delta |
+|---|---|---|---|
+| Performance | 74 | **91** | **+17** |
+| FCP | 3,620 ms | **2,706 ms** | **−914 ms (−25%)** |
+| LCP | 4,798 ms | **2,856 ms** | **−1,942 ms (−40%)** |
+| TBT | 0 ms | 0 ms | no signal (see §16.3) |
+| CLS | 0.0021 | **0.0021** | unchanged |
+| Speed Index | 3,620 ms | **2,706 ms** | −914 ms |
+| Accessibility | 93 | **93** | no regression |
+| Best Practices | 100 | **100** | held |
+| SEO | 100 | **100** | held |
+| Total transfer | 693,550 B | **519,437 B** | −174,113 B (−25%) |
+| Requests | 20.3 | **18.1** | −2.2 |
+| Render-blocking requests | 3 | **1** | −2 |
+| Render-blocking est. saving | 2,690 ms | **1,400 ms** | −1,290 ms |
+| Fonts transferred | 218,264 B (cross-origin) | 218,264 B (same-origin) | same bytes, no extra connection |
+| Poster transferred (mobile) | 197,264 B | **21,444 B** | **−175,820 B (−89.1%)** |
+| Hero logo selected | `logo-236.webp` | `logo-236.<hash>.webp` | 1.00× fetch, no duplicate |
+| YouTube requests before click | 0 | **0** | held |
+| YouTube requests after click | 1 (`youtube-nocookie.com`) | 1 (`youtube-nocookie.com`) | held |
+| GA4 page_view events | 1 | **1** | held |
+
+Lighthouse insight audits that flipped to passing: `image-delivery-insight`
+(was 0.5, "est. savings 151 KiB") and `cache-insight` (was failing on the
+1-day lifetime). `render-blocking-insight` still reports the one remaining
+same-origin stylesheet at 153 ms.
+
+**Extrapolation, clearly labelled as such.** The controlled harness ran the
+before tree 1.45× slower than Production measured it (4,798 vs 3,300 ms LCP).
+Applying that same ratio to the after tree suggests a Production LCP near
+2.0 s, i.e. inside the 2.5 s target. That is an inference from a ratio, not a
+measurement, and it is not a claim. **Real Production PageSpeed verification
+remains a post-merge step** — this environment cannot run PageSpeed Insights
+against a Preview URL.
+
+### 16.5 A — Fonts: self-hosted, reversing §15.10
+
+§15.10 declined to self-host on two grounds. Both have now been removed:
+
+1. *"The gain is unmeasurable here."* It is now measured, twice: the real
+   report puts the Google Fonts stylesheet at **750 ms of render-blocking**,
+   and the controlled replay independently reproduces it at **751 ms**.
+2. *"A single wrong `unicode-range` silently drops Arabic or Qur'anic
+   coverage."* This was the right fear about the wrong method. The risk came
+   from *authoring* subset ranges by hand. Nothing here is authored: the
+   `@font-face` rules are generated from the stylesheet Google itself serves
+   for this exact page, carrying over the same families, styles, weights,
+   `font-display` and — critically — the same `unicode-range` values
+   verbatim. The WOFF2 files are the same files, byte-for-byte.
+
+Consequences:
+
+* The 12 WOFF2 files are served from `/assets/fonts/`, content-hashed.
+* The 24 `@font-face` rules live at the top of the site's own stylesheet, so
+  there is **no extra request** and no cross-origin round trip to discover
+  them. This is what removes the 750 ms, not the font bytes themselves.
+* Because the `unicode-range` values are unchanged, a browser downloads
+  exactly the same subsets it downloads today. Verified: the same 5 files
+  (Amiri Arabic 400, Amiri Latin 400, Amiri Latin 700, Amiri Latin italic,
+  Work Sans Latin variable), the same **218,264 B**. Coverage — Latin, Latin
+  Extended, Vietnamese, Arabic including Qur'anic marks, Arabic Presentation
+  Forms, Arabic Mathematical Alphabetic Symbols — is unchanged by
+  construction.
+* `font-display: swap` is retained, so fonts never block paint. Fonts are
+  deliberately **not** preloaded: preloading them would put 50–108 KB in
+  front of the LCP image for text that already paints in the fallback face.
+* Work Sans turned out to be a variable font — one file backs all five
+  weights per subset — hence the `-var-` filenames.
+* This is pure CSS. There is no JavaScript font loader, no inline handler, no
+  `unsafe-inline` requirement, and the no-JavaScript path is identical to the
+  JavaScript path.
+* Licensing: Amiri and Work Sans are both SIL OFL 1.1, which permits
+  self-hosting. Both upstream licence files ship in `assets/fonts/`.
+
+### 16.6 B — Analytics off the critical path
+
+Before: `analytics.js` loaded **synchronously** in `<head>` (490 ms of
+render-blocking in the field) and gtag.js loaded `async` alongside it.
+
+After: `analytics.js` is `defer`red, and it injects gtag.js itself from a
+`requestIdleCallback`.
+
+* Ordering stays reliable because `gtag()` only appends to `dataLayer`. The
+  queue is built first; gtag.js drains it on arrival — the same contract
+  Google's own snippet relies on.
+* `requestIdleCallback(..., { timeout: 2500 })` guarantees the tag still
+  loads on a page that never goes idle, so a short visit does not lose its
+  page_view. The `load` event is the fallback where
+  `requestIdleCallback` is unavailable.
+* Exactly one `gtag('config', ...)` call exists in the codebase, and the
+  injector is guarded by element id, so no duplicate initialisation and no
+  duplicate page_view. Verified in the harness: one `config` entry, one
+  page_view hit, one gtag.js script element.
+* Measurement ID unchanged: `G-667Q0LLEH2`.
+* No inline executable JavaScript is introduced. Consent and privacy scope
+  are untouched, per the task's explicit instruction.
+
+### 16.7 C — Poster
+
+The canvas was scanned rather than guessed: rows 0–143 and 1008–1151 are black
+bars, leaving **exactly 1536×864 — exactly 16:9**. Only that canvas was
+removed. No recolour, resharpen, regeneration or substitution; the owner's
+image is the only source.
+
+Worth noting: `.why-video-frame` already reserves 16:9 (`padding-top: 56.25%`)
+and the image is `object-fit: cover`, so the browser was *already* clipping
+approximately 142 of those 144 rows. Cropping in the file makes the two
+remaining slivers of black disappear and otherwise changes nothing visible.
+
+Variants — 384 / 800 / 1200 / 1536 w, WebP and AVIF, chosen to cover 1×/2×/3×
+at both the mobile width and the 798 px desktop cap:
+
+| Width | WebP | AVIF | vs 197,264 B |
+|---|---|---|---|
+| 384 | 12,976 B | 9,217 B | 4.7 % |
+| **800** | 28,012 B | **21,444 B** | **10.9 %** |
+| 1200 | 44,120 B | 33,602 B | 17.0 % |
+| 1536 | 59,382 B | 44,797 B | 22.7 % |
+
+AVIF earns its place on evidence, not preference: at the delivered mobile
+width it is both **23 % smaller** and marginally *higher* fidelity than WebP
+(PSNR 38.54 dB vs 38.16 dB against the Lanczos reference). It carries no
+compatibility risk inside `<picture>`, where a browser without AVIF support
+falls through to the WebP `<source>` and then to the `<img>`.
+
+`sizes="(min-width: 858px) 798px, calc(100vw - 58px)"` matches the rendered
+box: the frame is capped at 800 px inside a 28 px-padded wrapper and has a
+1 px border. Explicit `width="1536" height="864"` now matches the frame's
+reserved 16:9 ratio exactly, so CLS protection is stronger than before, not
+weaker — measured CLS is unchanged at 0.0021.
+
+One CSS rule was required: `<picture>` is inline by default, which would have
+left the image's `height: 100%` resolving against an auto-height parent.
+`.video-facade picture { display: block; width: 100%; height: 100% }` keeps
+the layout byte-identical to the bare `<img>`.
+
+The façade is untouched: zero YouTube requests before interaction, and after a
+click exactly one request, to
+`https://www.youtube-nocookie.com/embed/Ng5P2SusEsQ?autoplay=1&rel=0`, with
+`allowfullscreen` and the `accelerometer; autoplay; clipboard-write;
+encrypted-media; gyroscope; picture-in-picture; web-share` permission list
+intact.
+
+### 16.8 D — Hero logo LCP discovery
+
+The report puts 470 ms of the LCP into *resource load delay* — the image was
+discoverable but started late, behind the stylesheet. A preload now sits at
+the top of `<head>`, before the stylesheet:
+
+```html
+<link rel="preload" as="image" fetchpriority="high" type="image/webp"
+      href="/assets/logo-118.<hash>.webp"
+      imagesrcset="/assets/logo-118.<hash>.webp 1x,
+                   /assets/logo-236.<hash>.webp 2x,
+                   /assets/logo-354.<hash>.webp 3x">
+```
+
+The candidate list mirrors the `<img>` exactly, and `imagesizes` is
+deliberately absent because the `<img>` uses `x` descriptors rather than a
+`sizes` attribute — so the preload and the element resolve to the same
+candidate at any DPR. **Verified: at DPR 1.75 the browser selects
+`logo-236` and fetches it exactly 1.00× per load** — the preload adds no
+duplicate download. `fetchpriority="high"` and the responsive variants are
+retained; no unused variant is preloaded; the artwork and layout are
+unchanged (hero box measures 118×118 at all six tested widths, before and
+after).
+
+### 16.9 E — Cache policy
+
+Every file under `/assets/` now carries a content hash in its filename
+(`<stem>.<sha256[:8]>.<ext>`) and is served
+`public, max-age=31536000, immutable`. HTML is explicitly
+`public, max-age=0, must-revalidate`. Unhashed root files (icons, manifest,
+`robots.txt`, `sitemap.xml`, `logo.png`) keep a revalidatable one-day
+lifetime with a 30-day `stale-while-revalidate` window, because their URLs
+cannot change.
+
+Immutable caching is only safe while a file's URL changes whenever its bytes
+change, and this site deliberately has no bundler to guarantee that. The
+guarantee is therefore enforced in CI:
+`.github/scripts/verify_asset_hashes.py` (stdlib only, matching the existing
+`scan_secrets.py` pattern) fails the build when an asset's name does not match
+the hash of its own contents, when a `/assets/` reference resolves to nothing,
+or when an asset is in the tree but nothing references it. That closes the
+stale-CSS/JS deployment risk that immutable caching would otherwise create.
+
+### 16.10 F — Security
+
+* Enforced CSP **unchanged**: `base-uri 'none'; object-src 'none';
+  frame-ancestors 'self'`.
+* Report-Only CSP tightened *only* where the resource change requires it:
+  `style-src 'self' https://fonts.googleapis.com` → `style-src 'self'`, and
+  `font-src 'self' https://fonts.gstatic.com` → `font-src 'self'`. Nothing
+  else moved; `frame-src` was deliberately left alone since no frame
+  behaviour changed.
+* No `unsafe-inline`, no `unsafe-eval`, no inline event handler, no inline
+  executable script anywhere in the document.
+* `X-Content-Type-Options`, `Referrer-Policy` and `Permissions-Policy` are
+  untouched. HSTS is not set in `vercel.json` and was not touched here — it
+  remains the open item recorded in §9.
+* Secret scan after the change: **51 files scanned, 0 findings, exit 0.**
+* Asset hash check: **32 hashed assets, 32 references resolved, exit 0.**
+
+### 16.11 Regression verification (LAB)
+
+58-check suite, run against both the before and the after tree. The before
+tree passes 54/58 — failing **only** the four checks that assert the new
+behaviour (responsive poster, tightened Report-Only CSP, HTML cache header,
+immutable asset header). Every functional check passes identically on both
+trees, which is what makes "no regression" a measurement rather than a claim.
+
+Verified: dynamic year; all 4 WhatsApp CTAs and the message text; the floating
+WhatsApp button's scroll reveal; both login links; mobile menu open/aria/close;
+program tabs; pricing at 1 and 4 students and at monthly and annual duration,
+with values recomputed independently from the published rate card and the
+billed line asserted in full; FAQ open/closed; poster loaded and visible;
+zero YouTube requests before click and the correct embed after; GA4 configured
+exactly once; keyboard focus visible; reduced-motion suppressing all 22 hero
+motes; zero console errors in every context.
+
+Responsive at 320 / 375 / 430 / 768 / 1024 / 1440: no horizontal overflow at
+any width, video frame holds 16:9 at every width, section order identical, and
+**page height identical to the byte at all six widths** (14922 / 13332 / 12310
+/ 9580 / 8968 / 8394 px, before and after).
+
+SEO: canonical `https://www.sirajinst.com/`, `og:url` matching, both JSON-LD
+blocks parsing with www URLs, `robots.txt` and `sitemap.xml` www-aligned, no
+non-www canonical signal anywhere in the document, SEO 100 in controlled
+testing.
+
+### 16.12 Post-deployment verification (UNVERIFIED HERE)
+
+1. **Run PageSpeed Insights against Production after merge.** This is the only
+   number that settles whether the ≥ 90 / ≤ 2.5 s targets are met. Nothing in
+   this document claims it.
+2. **TBT.** The controlled runs cannot execute the real gtag.js, so confirm
+   TBT is no worse than the 40 ms baseline. Deferring gtag.js to idle should
+   help it, but that is untested here.
+3. **Video playback.** Picture and sound were verified only against an embed
+   stub; confirm real playback and audio on the deployed Preview.
+4. **Vercel header precedence.** Confirm the deployed responses actually carry
+   `immutable` on `/assets/` and `max-age=0` on the document — this relies on
+   later `vercel.json` rules overriding earlier ones for the same key.
+5. **Font rendering.** Confirm Work Sans and Amiri render identically, and
+   spot-check the Qur'anic ayah glyphs in the About section.
+6. **HSTS** remains the open item from §9.
+
+### 16.13 Files changed in Wave 1B.1
+
+**Added (26):** `assets/fonts/` — 12 WOFF2 files plus
+`LICENSE-Amiri-OFL.txt` and `LICENSE-WorkSans-OFL.txt`; 8 poster variants
+(`video-poster-Ng5P2SusEsQ-{384,800,1200,1536}.{webp,avif}`);
+`.github/scripts/verify_asset_hashes.py`;
+`.github/workflows/asset-integrity.yml`.
+
+**Changed (5):** `index.html`, `assets/styles.css` (font faces + one
+`<picture>` rule), `assets/analytics.js` (rewritten), `vercel.json`,
+`docs/LANDING_FOUNDATION_BASELINE.md`. All 12 existing `/assets/` files were
+additionally renamed to content-hashed filenames.
+
+**Removed (1):** `assets/video-poster-Ng5P2SusEsQ.jpg` (197,264 B) — the
+original, now unreferenced; it is preserved in git history at `f55c3b8` and
+is the sole source of the cropped variants.
+
+**Not touched, by design:** marketing copy, branding, pricing values and
+discount logic, programs, LMS links, the WhatsApp destination number, the GA4
+measurement ID `G-667Q0LLEH2`, the YouTube video ID `Ng5P2SusEsQ`, conversion
+flows, `robots.txt`, `sitemap.xml`, `site.webmanifest`, `logo.png`, the root
+icons, the enforced CSP, and the secret-scan workflow. No framework, bundler,
+package manager or runtime dependency was added — the site remains
+dependency-free static files.
