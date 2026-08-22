@@ -3,6 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- The hero logo is the LCP element. Preloading it here, ahead of the
+     stylesheet, lets the fetch start at the very beginning of the parse
+     instead of waiting behind CSS. The candidate list and the absence of a
+     sizes attribute mirror the <img> in the hero exactly, so the browser
+     picks the same file for the DPR it is on and downloads it only once. -->
+<link rel="preload" as="image" fetchpriority="high" type="image/webp"
+      href="/assets/logo-118.cd08451c.webp"
+      imagesrcset="/assets/logo-118.cd08451c.webp 1x, /assets/logo-236.d9e2c78a.webp 2x, /assets/logo-354.04f17a99.webp 3x">
+
 <title>Siraj Institute — Learn Quran &amp; Arabic Online, 1-on-1</title>
 <meta name="description" content="Learn Quran and Arabic online in a 1-on-1 setting with highly qualified native tutors, including Al-Azhar graduates. Book your free trial lesson today.">
 <link rel="canonical" href="https://www.sirajinst.com/">
@@ -70,14 +80,15 @@
 }
 </script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/styles.css">
-<script src="/assets/app.js" defer></script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-667Q0LLEH2"></script>
-    <script src="/assets/analytics.js"></script>
+<!-- Work Sans and Amiri are self-hosted (see the @font-face block at the top
+     of the stylesheet), so there is no render-blocking round trip to
+     fonts.googleapis.com and no second cross-origin connection for the font
+     files. The families, weights and unicode-ranges are unchanged. -->
+<link rel="stylesheet" href="/assets/styles.35665f91.css">
+<script src="/assets/app.e1dd34c1.js" defer></script>
+<!-- Google Analytics 4. Deferred, and it injects gtag.js from an idle
+     callback, so neither this file nor the ~143 KiB tag blocks first paint. -->
+<script src="/assets/analytics.040b4847.js" defer></script>
 </head>
 <body>
 
@@ -85,7 +96,7 @@
 <header class="site-nav">
   <div class="nav-inner">
     <a href="#top" class="brand">
-      <img src="/assets/logo-42.webp" srcset="/assets/logo-42.webp 1x, /assets/logo-84.webp 2x, /assets/logo-126.webp 3x"
+      <img src="/assets/logo-42.25d9ea3f.webp" srcset="/assets/logo-42.25d9ea3f.webp 1x, /assets/logo-84.722e5fe2.webp 2x, /assets/logo-126.b9290545.webp 3x"
            alt="Siraj Institute logo" width="42" height="42" decoding="async">
       <span class="brand-text"><strong>Siraj Institute</strong><span>Illuminate homes with the light of the Qur&rsquo;an</span></span>
     </a>
@@ -114,7 +125,7 @@
   <div class="motes" id="motes" aria-hidden="true"></div>
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-inner">
-    <img src="/assets/logo-118.webp" srcset="/assets/logo-118.webp 1x, /assets/logo-236.webp 2x, /assets/logo-354.webp 3x"
+    <img src="/assets/logo-118.cd08451c.webp" srcset="/assets/logo-118.cd08451c.webp 1x, /assets/logo-236.d9e2c78a.webp 2x, /assets/logo-354.04f17a99.webp 3x"
          alt="Siraj Institute" class="hero-logo" width="118" height="118" fetchpriority="high" decoding="async">
     <h1>Learn <em>Quran</em> &amp; Arabic online, one on one, with native <em>Al-Azhar</em> tutors</h1>
     <p class="lede">Private, live sessions built around your child or your own pace — taught by carefully selected native Arabic speakers, including Al-Azhar University graduates and certified Quran experts.</p>
@@ -144,13 +155,33 @@
           type="button"
           data-video-id="Ng5P2SusEsQ"
           aria-label="Play video: Siraj Institute — Why families choose us">
-          <img
-            src="/assets/video-poster-Ng5P2SusEsQ.jpg"
-            alt=""
-            width="1536"
-            height="1152"
-            loading="lazy"
-            decoding="async">
+          <!-- The owner-supplied poster with its black letterbox canvas
+               removed, so the file is the true 16:9 frame the layout already
+               reserves. sizes matches the rendered box: the frame is capped at
+               800px inside a 28px-padded wrapper and has a 1px border. -->
+          <picture>
+            <source
+              type="image/avif"
+              srcset="/assets/video-poster-Ng5P2SusEsQ-384.76f77e65.avif 384w,
+                      /assets/video-poster-Ng5P2SusEsQ-800.26a0ac92.avif 800w,
+                      /assets/video-poster-Ng5P2SusEsQ-1200.5b23045c.avif 1200w,
+                      /assets/video-poster-Ng5P2SusEsQ-1536.242b8472.avif 1536w"
+              sizes="(min-width: 858px) 798px, calc(100vw - 58px)">
+            <source
+              type="image/webp"
+              srcset="/assets/video-poster-Ng5P2SusEsQ-384.3b365904.webp 384w,
+                      /assets/video-poster-Ng5P2SusEsQ-800.a0c26fee.webp 800w,
+                      /assets/video-poster-Ng5P2SusEsQ-1200.47dd08b7.webp 1200w,
+                      /assets/video-poster-Ng5P2SusEsQ-1536.4b3fe857.webp 1536w"
+              sizes="(min-width: 858px) 798px, calc(100vw - 58px)">
+            <img
+              src="/assets/video-poster-Ng5P2SusEsQ-800.a0c26fee.webp"
+              alt=""
+              width="1536"
+              height="864"
+              loading="lazy"
+              decoding="async">
+          </picture>
           <span class="video-play" aria-hidden="true">
             <svg viewBox="0 0 64 64" focusable="false">
               <circle cx="32" cy="32" r="30"></circle>
@@ -435,7 +466,7 @@
   <div class="wrap">
     <div class="footer-top">
       <div class="footer-brand">
-        <img src="/assets/logo-56.webp" srcset="/assets/logo-56.webp 1x, /assets/logo-112.webp 2x, /assets/logo-168.webp 3x"
+        <img src="/assets/logo-56.58f6e82c.webp" srcset="/assets/logo-56.58f6e82c.webp 1x, /assets/logo-112.ecb39103.webp 2x, /assets/logo-168.f3b3d788.webp 3x"
              alt="Siraj Institute logo" width="56" height="56" loading="lazy" decoding="async">
         <div>
           <h3>Siraj Institute</h3>
