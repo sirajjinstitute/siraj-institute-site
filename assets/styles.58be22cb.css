@@ -39,7 +39,13 @@
     --navy-900:#0d1b30;
     --navy-800:#132845;
     --navy-700:#1c3a5e;
-    --gold-600:#a9812f;
+    /* Text gold. Same hue and saturation as the rest of the gold ramp,
+       darkened to L=33% so small text clears WCAG 2.2 AA on both cream
+       surfaces: 5.03:1 on --cream-50, 4.61:1 on --cream-100. The colour
+       this replaces (#a9812f) measured 3.32:1 and failed 1.4.3 wherever
+       it was used for normal-size text. Do not lighten without
+       re-measuring. */
+    --gold-700:#846525;
     --gold-500:#c9a24c;
     --gold-400:#dcb968;
     --gold-300:#e9cf8f;
@@ -72,7 +78,7 @@
   .eyebrow{
     display:inline-flex; align-items:center; gap:10px;
     font-size:13px; letter-spacing:.18em; text-transform:uppercase;
-    color:var(--gold-600); font-weight:600; margin-bottom:16px;
+    color:var(--gold-700); font-weight:600; margin-bottom:16px;
   }
   .eyebrow::before{content:""; width:26px; height:1px; background:var(--gold-500);}
   section{position:relative; padding:96px 0;}
@@ -85,8 +91,14 @@
   }
 
   /* -------- focus -------- */
-  a:focus-visible, button:focus-visible, summary:focus-visible{
+  a:focus-visible, button:focus-visible, summary:focus-visible,
+  .roadmap:focus-visible{
     outline:2px solid var(--gold-500); outline-offset:3px; border-radius:4px;
+  }
+  /* The pricing choices are native radios hidden off-screen, so the ring has
+     to be drawn on the visible label instead of the focused input. */
+  .choice-input:focus-visible + .choice-pill{
+    outline:2px solid var(--gold-500); outline-offset:3px;
   }
 
   /* ============ NAV ============ */
@@ -307,7 +319,7 @@
     display:flex; align-items:baseline; gap:12px; margin-bottom:22px;
     font-family:'Amiri',serif; font-size:20px; color:var(--navy-900); font-weight:700;
   }
-  .phase-title .dur{font-family:'Work Sans',sans-serif; font-size:12.5px; font-weight:600; color:var(--gold-600); text-transform:uppercase; letter-spacing:.06em;}
+  .phase-title .dur{font-family:'Work Sans',sans-serif; font-size:12.5px; font-weight:600; color:var(--gold-700); text-transform:uppercase; letter-spacing:.06em;}
   .steps{display:grid; gap:16px;}
   .step{
     display:grid; grid-template-columns:52px 1fr; gap:18px;
@@ -315,11 +327,11 @@
   }
   .step .num{
     width:38px; height:38px; border-radius:50%; border:1.5px solid var(--gold-500);
-    color:var(--gold-600); display:flex; align-items:center; justify-content:center;
+    color:var(--gold-700); display:flex; align-items:center; justify-content:center;
     font-family:'Amiri',serif; font-weight:700; font-size:15px;
   }
   .step h5{font-size:15.5px; font-weight:700; color:var(--ink-900); margin-bottom:6px;}
-  .step .meta{font-size:12px; color:var(--gold-600); font-weight:600; letter-spacing:.03em; margin-bottom:8px; text-transform:uppercase;}
+  .step .meta{font-size:12px; color:var(--gold-700); font-weight:600; letter-spacing:.03em; margin-bottom:8px; text-transform:uppercase;}
   .step p{font-size:14.5px; color:var(--ink-600);}
   .marketing-note{
     max-width:760px; margin:36px auto 0; text-align:center; font-style:italic; color:var(--navy-800);
@@ -333,20 +345,27 @@
   }
   .pricing .section-head p{color:var(--cream-100); opacity:.7;}
   .pricing .eyebrow{color:var(--gold-400);}
-  .student-tabs{
-    display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-bottom:18px;
+  /* Student count and billing period are mutually exclusive choices, not tab
+     panels, so they are native radio groups. The inputs carry the state the
+     browser and assistive tech read; the labels carry the pill styling the
+     buttons used to have, so the rendering is unchanged. */
+  .choice-group{border:0; margin:0; padding:0; min-inline-size:0;}
+  .choice-options{
+    display:flex; justify-content:center; flex-wrap:wrap; gap:10px;
   }
-  .duration-tabs{
-    display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-bottom:28px;
-  }
-  .student-tabs button, .duration-tabs button{
+  .student-choice{margin-bottom:18px;}
+  .duration-choice{margin-bottom:28px;}
+  /* inline-block, not inline-flex: a flex container turns each text run into
+     its own item and drops the whitespace between them, which would close up
+     the space before the emoji. */
+  .choice-pill{
+    display:inline-block; text-align:center; cursor:pointer;
     background:rgba(250,246,236,0.05); border:1px solid rgba(201,162,76,.3); color:var(--cream-100);
     padding:11px 20px; border-radius:100px; font-size:13.5px; font-weight:600;
     transition:.2s;
   }
-  .duration-tabs button{ font-size:13px; padding:9px 18px; }
-  .student-tabs button.active, .student-tabs button:hover,
-  .duration-tabs button.active, .duration-tabs button:hover{
+  .duration-choice .choice-pill{ font-size:13px; padding:9px 18px; }
+  .choice-input:checked + .choice-pill, .choice-pill:hover{
     background:var(--gold-500); color:var(--navy-950); border-color:var(--gold-500);
   }
   .pricing-banner{
@@ -413,7 +432,7 @@
   summary::-webkit-details-marker{display:none;}
   summary .plus{
     flex:none; width:26px; height:26px; border-radius:50%; border:1.5px solid var(--gold-500);
-    color:var(--gold-600); display:flex; align-items:center; justify-content:center; font-size:16px; transition:transform .25s ease;
+    color:var(--gold-700); display:flex; align-items:center; justify-content:center; font-size:16px; transition:transform .25s ease;
   }
   details[open] summary .plus{transform:rotate(45deg);}
   details p{margin-top:16px; color:var(--ink-600); font-size:15px; max-width:700px;}
@@ -510,6 +529,12 @@
      allows a style-src policy without 'unsafe-inline'.
      --------------------------------------------------------------- */
   .eyebrow--center{justify-content:center;}
+  /* Off-screen but still focusable and still announced: used for the pricing
+     group legends and for the radios whose <label> carries the visible pill. */
+  .sr-only{
+    position:absolute; width:1px; height:1px; margin:-1px; padding:0;
+    border:0; overflow:hidden; white-space:nowrap; clip-path:inset(50%);
+  }
   /* h2.* : `.section-head h2` (0,1,1) also sets colour, so this utility must
      match that specificity to replace what the inline style used to win. */
   h2.h-on-dark{color:var(--cream-50);}
