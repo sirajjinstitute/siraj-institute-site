@@ -84,8 +84,8 @@
      of the stylesheet), so there is no render-blocking round trip to
      fonts.googleapis.com and no second cross-origin connection for the font
      files. The families, weights and unicode-ranges are unchanged. -->
-<link rel="stylesheet" href="/assets/styles.35665f91.css">
-<script src="/assets/app.e1dd34c1.js" defer></script>
+<link rel="stylesheet" href="/assets/styles.58be22cb.css">
+<script src="/assets/app.d098548d.js" defer></script>
 <!-- Google Analytics 4. Deferred, and it injects gtag.js from an idle
      callback, so neither this file nor the ~143 KiB tag blocks first paint. -->
 <script src="/assets/analytics.040b4847.js" defer></script>
@@ -280,15 +280,18 @@
       <p>Every path is broken into phases and steps, so progress is always visible.</p>
     </div>
 
+    <!-- Tabs follow the WAI-ARIA Authoring Practices pattern: each tab names and
+         controls its panel, only the selected tab is in the Tab order (the rest
+         are reached with the arrow keys), and each panel points back at its tab. -->
     <div class="tabbar" role="tablist" aria-label="Program roadmaps">
-      <button class="active" data-tab="quran" role="tab" aria-selected="true">Quran &amp; Tajweed</button>
-      <button data-tab="tafsir" role="tab" aria-selected="false">Tafsir</button>
-      <button data-tab="arabic" role="tab" aria-selected="false">Arabic Language</button>
-      <button data-tab="islamic" role="tab" aria-selected="false">Islamic Studies</button>
+      <button class="active" id="tab-quran" role="tab" aria-selected="true" aria-controls="quran" tabindex="0">Quran &amp; Tajweed</button>
+      <button id="tab-tafsir" role="tab" aria-selected="false" aria-controls="tafsir" tabindex="-1">Tafsir</button>
+      <button id="tab-arabic" role="tab" aria-selected="false" aria-controls="arabic" tabindex="-1">Arabic Language</button>
+      <button id="tab-islamic" role="tab" aria-selected="false" aria-controls="islamic" tabindex="-1">Islamic Studies</button>
     </div>
 
     <!-- QURAN & TAJWEED -->
-    <div class="roadmap active" id="quran">
+    <div class="roadmap active" id="quran" role="tabpanel" aria-labelledby="tab-quran" tabindex="0">
       <p class="roadmap-goal">The Ultimate Quran &amp; Tajweed Roadmap — from first letter to a full Khatmah of recitation, and memorization for those who choose it.</p>
 
       <div class="phase">
@@ -318,7 +321,7 @@
     </div>
 
     <!-- TAFSIR -->
-    <div class="roadmap" id="tafsir">
+    <div class="roadmap" id="tafsir" role="tabpanel" aria-labelledby="tab-tafsir" tabindex="0" hidden>
       <p class="roadmap-goal">Full Quran Tafsir Journey — understand the meanings of the surahs recited daily, learn the reasons for revelation (Asbab al-Nuzul), and apply the verses in daily life (Tadabbur). Tailored for kids &amp; adults.</p>
       <div class="phase">
         <div class="steps">
@@ -332,7 +335,7 @@
     </div>
 
     <!-- ARABIC -->
-    <div class="roadmap" id="arabic">
+    <div class="roadmap" id="arabic" role="tabpanel" aria-labelledby="tab-arabic" tabindex="0" hidden>
       <p class="roadmap-goal">The Ultimate Arabic Language Roadmap — from not knowing the letters to speaking fluently and understanding texts.</p>
       <div class="phase">
         <div class="phase-title">Phase 1 — Foundational Arabic <span class="dur">3 months total</span></div>
@@ -358,7 +361,7 @@
     </div>
 
     <!-- ISLAMIC STUDIES -->
-    <div class="roadmap" id="islamic">
+    <div class="roadmap" id="islamic" role="tabpanel" aria-labelledby="tab-islamic" tabindex="0" hidden>
       <p class="roadmap-goal">The Foundational Islamic Studies Roadmap — build the Muslim's awareness and equip them with the essential knowledge of their faith in an easy, practical style.</p>
       <div class="phase">
         <div class="steps">
@@ -382,21 +385,40 @@
       <p>Pick how many students are joining and how often you'd like to be billed — your biggest discount applies automatically.</p>
     </div>
 
-    <div class="student-tabs" role="tablist" aria-label="Number of students">
-      <button class="active" data-students="1" role="tab" aria-selected="true">1 Student 👤</button>
-      <button data-students="2" role="tab" aria-selected="false">2 Students (10% off) 👥</button>
-      <button data-students="3" role="tab" aria-selected="false">3 Students (15% off) 👥👤</button>
-      <button data-students="4" role="tab" aria-selected="false">4 Students (20% off) 👥👥</button>
-    </div>
+    <!-- These are mutually exclusive pricing choices, not tabs, so they are
+         native radio groups: the browser supplies the group name, the checked
+         state, the "n of 4" position and arrow-key navigation without any ARIA.
+         The emoji are decoration next to text that already says the same thing,
+         so they are hidden from the accessible name. -->
+    <fieldset class="choice-group student-choice">
+      <legend class="sr-only">Number of students</legend>
+      <div class="choice-options">
+        <input class="choice-input sr-only" type="radio" name="students" id="students-1" value="1" checked>
+        <label class="choice-pill" for="students-1">1 Student <span aria-hidden="true">👤</span></label>
+        <input class="choice-input sr-only" type="radio" name="students" id="students-2" value="2">
+        <label class="choice-pill" for="students-2">2 Students (10% off) <span aria-hidden="true">👥</span></label>
+        <input class="choice-input sr-only" type="radio" name="students" id="students-3" value="3">
+        <label class="choice-pill" for="students-3">3 Students (15% off) <span aria-hidden="true">👥👤</span></label>
+        <input class="choice-input sr-only" type="radio" name="students" id="students-4" value="4">
+        <label class="choice-pill" for="students-4">4 Students (20% off) <span aria-hidden="true">👥👥</span></label>
+      </div>
+    </fieldset>
 
-    <div class="duration-tabs" role="tablist" aria-label="Billing period">
-      <button class="active" data-duration="monthly" role="tab" aria-selected="true">Monthly</button>
-      <button data-duration="quarterly" role="tab" aria-selected="false">Quarterly (Save 5%)</button>
-      <button data-duration="semiannual" role="tab" aria-selected="false">Semi-Annual (Save 10%)</button>
-      <button data-duration="annual" role="tab" aria-selected="false">Annual (Save 15%)</button>
-    </div>
+    <fieldset class="choice-group duration-choice">
+      <legend class="sr-only">Billing period</legend>
+      <div class="choice-options">
+        <input class="choice-input sr-only" type="radio" name="duration" id="duration-monthly" value="monthly" checked>
+        <label class="choice-pill" for="duration-monthly">Monthly</label>
+        <input class="choice-input sr-only" type="radio" name="duration" id="duration-quarterly" value="quarterly">
+        <label class="choice-pill" for="duration-quarterly">Quarterly (Save 5%)</label>
+        <input class="choice-input sr-only" type="radio" name="duration" id="duration-semiannual" value="semiannual">
+        <label class="choice-pill" for="duration-semiannual">Semi-Annual (Save 10%)</label>
+        <input class="choice-input sr-only" type="radio" name="duration" id="duration-annual" value="annual">
+        <label class="choice-pill" for="duration-annual">Annual (Save 15%)</label>
+      </div>
+    </fieldset>
 
-    <div class="pricing-banner">✨ Your biggest discount is applied automatically — family size or billing plan, whichever saves you more.</div>
+    <div class="pricing-banner"><span aria-hidden="true">✨</span> Your biggest discount is applied automatically — family size or billing plan, whichever saves you more.</div>
 
     <div class="price-grid" id="priceGrid"><!-- injected by JS --></div>
 

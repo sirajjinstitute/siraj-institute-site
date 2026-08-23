@@ -1,7 +1,9 @@
 /* Siraj Institute — page behaviour.
-   Moved verbatim out of index.html (Wave 1B). Loaded with `defer`, so it
-   still runs against a fully-parsed DOM exactly as the end-of-body inline
-   block did. No logic was changed. */
+   Moved out of index.html in Wave 1B. Loaded with `defer`, so it still runs
+   against a fully-parsed DOM exactly as the end-of-body inline block did.
+   Wave 1B moved it verbatim; the accessibility wave since rewrote the program
+   tabs and the pricing selectors (see the comments on each). Pricing amounts,
+   discounts and calculations are untouched. */
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -63,18 +65,51 @@ for (let i = 0; i < moteCount; i++) {
   motesEl.appendChild(m);
 }
 
-/* program tabs */
-const tabButtons = document.querySelectorAll('.tabbar button');
-const roadmaps = document.querySelectorAll('.roadmap');
-tabButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    tabButtons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-    btn.classList.add('active');
-    btn.setAttribute('aria-selected', 'true');
-    roadmaps.forEach(r => r.classList.remove('active'));
-    document.getElementById(btn.dataset.tab).classList.add('active');
+/* Program tabs -- WAI-ARIA Authoring Practices tabs pattern (Wave 1 a11y).
+   Automatic activation: the roadmaps are already in the DOM and cost nothing
+   to reveal, so moving focus selects. Selection state lives in one place
+   (selectTab) and drives aria-selected, the roving tabindex, the .active
+   classes the stylesheet reads, and the panels' hidden attribute together,
+   so the visual state and the accessibility tree can never disagree. */
+const tabList = document.querySelector('.tabbar[role="tablist"]');
+if (tabList) {
+  const tabs = Array.from(tabList.querySelectorAll('[role="tab"]'));
+
+  const selectTab = (tab, moveFocus) => {
+    tabs.forEach(t => {
+      const selected = t === tab;
+      t.classList.toggle('active', selected);
+      t.setAttribute('aria-selected', String(selected));
+      t.tabIndex = selected ? 0 : -1;
+      const panel = document.getElementById(t.getAttribute('aria-controls'));
+      if (panel) {
+        panel.classList.toggle('active', selected);
+        panel.hidden = !selected;
+      }
+    });
+    if (moveFocus) tab.focus();
+  };
+
+  /* Delegated, so mouse and touch keep behaving exactly as before. A click
+     already focuses the button, so selectTab must not focus it again. */
+  tabList.addEventListener('click', e => {
+    const tab = e.target.closest('[role="tab"]');
+    if (tab) selectTab(tab, false);
   });
-});
+
+  tabList.addEventListener('keydown', e => {
+    const current = tabs.indexOf(document.activeElement);
+    if (current === -1) return;
+    let next;
+    if (e.key === 'ArrowLeft')       next = (current - 1 + tabs.length) % tabs.length;
+    else if (e.key === 'ArrowRight') next = (current + 1) % tabs.length;
+    else if (e.key === 'Home')       next = 0;
+    else if (e.key === 'End')        next = tabs.length - 1;
+    else return;
+    e.preventDefault();           // stop Home/End from scrolling the page
+    selectTab(tabs[next], true);
+  });
+}
 
 /* pricing */
 const plans = {
@@ -142,22 +177,21 @@ function renderPricing(students, durationKey) {
 
 renderPricing(currentStudents, currentDuration);
 
-document.querySelectorAll('.student-tabs button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.student-tabs button').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-    btn.classList.add('active');
-    btn.setAttribute('aria-selected', 'true');
-    currentStudents = btn.dataset.students;
-    renderPricing(currentStudents, currentDuration);
+/* The two pricing selectors are native radio groups (Wave 1 a11y), so the
+   browser owns exclusivity, the checked state and arrow-key navigation, and
+   the stylesheet owns the active pill via :checked. All that is left here is
+   reading the chosen value. The values are the same strings the data-*
+   attributes carried, and they index plans/durations exactly as before, so
+   no price, discount or calculation changes. */
+const onChoice = (selector, apply) => {
+  document.querySelectorAll(selector).forEach(input => {
+    input.addEventListener('change', () => {
+      if (!input.checked) return;
+      apply(input.value);
+      renderPricing(currentStudents, currentDuration);
+    });
   });
-});
+};
 
-document.querySelectorAll('.duration-tabs button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.duration-tabs button').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-    btn.classList.add('active');
-    btn.setAttribute('aria-selected', 'true');
-    currentDuration = btn.dataset.duration;
-    renderPricing(currentStudents, currentDuration);
-  });
-});
+onChoice('.student-choice .choice-input', value => { currentStudents = value; });
+onChoice('.duration-choice .choice-input', value => { currentDuration = value; });
