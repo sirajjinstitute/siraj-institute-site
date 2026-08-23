@@ -87,8 +87,10 @@
 <link rel="stylesheet" href="/assets/styles.58be22cb.css">
 <script src="/assets/app.d098548d.js" defer></script>
 <!-- Google Analytics 4. Deferred, and it injects gtag.js from an idle
-     callback, so neither this file nor the ~143 KiB tag blocks first paint. -->
-<script src="/assets/analytics.040b4847.js" defer></script>
+     callback taken after the load event, so neither this file nor the
+     ~143 KiB tag blocks first paint or shares bandwidth with the hero
+     logo, which is the LCP element. -->
+<script src="/assets/analytics.ffdbf683.js" defer></script>
 </head>
 <body>
 
