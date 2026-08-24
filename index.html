@@ -84,8 +84,15 @@
      of the stylesheet), so there is no render-blocking round trip to
      fonts.googleapis.com and no second cross-origin connection for the font
      files. The families, weights and unicode-ranges are unchanged. -->
-<link rel="stylesheet" href="/assets/styles.58be22cb.css">
-<script src="/assets/app.d098548d.js" defer></script>
+<link rel="stylesheet" href="/assets/styles.d4f4bfab.css">
+<!-- Amiri's Arabic subsets. Loaded inert (media="print") so the 108 KB
+     Arabic face does not compete with the hero logo, the LCP element. app.js
+     switches it on at the visitor's first move, or on approach to #about,
+     which holds the only Arabic on the page and sits well below the fold. <noscript> keeps the
+     faces for a visitor without JavaScript. -->
+<link rel="stylesheet" href="/assets/fonts-arabic.42c889e9.css" media="print" data-late-css>
+<noscript><link rel="stylesheet" href="/assets/fonts-arabic.42c889e9.css"></noscript>
+<script src="/assets/app.664b98fb.js" defer></script>
 <!-- Google Analytics 4. Deferred, and it injects gtag.js from an idle
      callback taken after the load event, so neither this file nor the
      ~143 KiB tag blocks first paint or shares bandwidth with the hero

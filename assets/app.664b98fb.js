@@ -1,3 +1,66 @@
+/* Amiri's Arabic subsets load from a separate stylesheet that index.html
+   links with media="print", so the browser fetches no Arabic font until this
+   switches it on. That keeps the 108 KB amiri-400-arabic face off the wire
+   while the hero logo -- the LCP element -- is still being fetched and
+   painted.
+
+   The trigger is the visitor moving toward the Arabic, never a timer. The
+   load event is not a safe boundary: it fires around 2.0 s here while
+   Production LCP is 4.5 s, so loading on load could still land inside the LCP
+   window. A visitor who never scrolls never fetches the face at all.
+
+   Two triggers, whichever comes first, because they cover different gestures:
+
+     * the first sign of the visitor moving: touchstart/pointerdown/wheel/
+       keydown, which land at the start of the gesture, before the page has
+       moved at all, plus scroll for anything programmatic. This gives the
+       download the whole distance to the Arabic as runway. #about sits
+       1,544-2,617 px below the fold across 320-1280 px.
+     * an IntersectionObserver on #about with a 1,000 px root margin, as a
+       backstop for arriving already scrolled or jumping straight to #about.
+       1,000 px is below the smallest of those gaps, so it cannot fire on
+       arrival at any width.
+
+   Browsers without IntersectionObserver switch the stylesheet on immediately,
+   preferring correct Arabic over the saving. index.html also carries a
+   <noscript> copy of the link for a visitor without JavaScript. */
+(function () {
+  var links = document.querySelectorAll('link[data-late-css]');
+  if (!links.length) return;
+
+  var target = document.getElementById('about');
+  var observer = null;
+  var applied = false;
+
+  var MOVE_EVENTS = ['touchstart', 'pointerdown', 'wheel', 'keydown', 'scroll'];
+
+  function applyArabicFaces() {
+    if (applied) return;
+    applied = true;
+    for (var i = 0; i < MOVE_EVENTS.length; i++) {
+      window.removeEventListener(MOVE_EVENTS[i], applyArabicFaces);
+    }
+    if (observer) observer.disconnect();
+    for (var j = 0; j < links.length; j++) links[j].media = 'all';
+  }
+
+  if (!target || typeof IntersectionObserver !== 'function') {
+    applyArabicFaces();
+    return;
+  }
+
+  observer = new IntersectionObserver(function (entries) {
+    for (var i = 0; i < entries.length; i++) {
+      if (entries[i].isIntersecting) { applyArabicFaces(); return; }
+    }
+  }, { rootMargin: '1000px 0px' });
+  observer.observe(target);
+
+  for (var e = 0; e < MOVE_EVENTS.length; e++) {
+    window.addEventListener(MOVE_EVENTS[e], applyArabicFaces, { passive: true });
+  }
+})();
+
 /* Siraj Institute — page behaviour.
    Moved out of index.html in Wave 1B. Loaded with `defer`, so it still runs
    against a fully-parsed DOM exactly as the end-of-body inline block did.
