@@ -1,7 +1,8 @@
-/* Amiri's Arabic subsets load from a separate stylesheet that index.html
-   links with media="print", so the browser fetches no Arabic font until this
-   switches it on. That keeps the 108 KB amiri-400-arabic face off the wire
-   while the hero logo -- the LCP element -- is still being fetched and
+/* The Amiri faces only below-the-fold content needs load from a separate
+   stylesheet that index.html links with media="print", so the browser fetches
+   none of them until this switches it on. That keeps 128 KB -- the Arabic
+   subsets plus Amiri 400 Latin, which nothing above the fold asks for -- off
+   the wire while the hero logo, the LCP element, is still being fetched and
    painted.
 
    The trigger is the visitor moving toward the Arabic, never a timer. The
