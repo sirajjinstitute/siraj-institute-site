@@ -77,6 +77,56 @@ const waMessage = "Assalamu alaikum, I'm interested in booking a free trial less
 const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
 document.querySelectorAll('.wa-link').forEach(el => el.setAttribute('href', waLink));
 
+/* GA4 funnel events. The existing deferred analytics bootstrap defines
+   window.gtag before a visitor can interact; this helper deliberately no-ops
+   if analytics is unavailable so tracking can never break page behaviour. */
+const trackEvent = (name, parameters = {}) => {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', name, parameters);
+  }
+};
+
+const analyticsLocation = el => {
+  if (el.id === 'waFloat' || el.closest('#waFloat')) return 'floating_whatsapp';
+  if (el.closest('.site-nav')) return 'navigation';
+  if (el.closest('.hero')) return 'hero';
+  if (el.closest('footer')) return 'footer';
+  const section = el.closest('section[id]');
+  return section ? section.id : 'page';
+};
+
+document.addEventListener('click', event => {
+  const link = event.target.closest && event.target.closest('a');
+  if (!link) return;
+
+  const ctaLocation = analyticsLocation(link);
+  const linkText = (link.textContent || '').trim().replace(/\s+/g, ' ')
+    || link.getAttribute('aria-label')
+    || '';
+
+  if (link.classList.contains('wa-link')) {
+    const parameters = { cta_location: ctaLocation, link_text: linkText.slice(0, 100) };
+    trackEvent('book_trial_click', parameters);
+    trackEvent('whatsapp_click', parameters);
+  }
+
+  if (link.matches('a[href^="https://siraj-lms.vercel.app/login"]')) {
+    trackEvent('login_click', { cta_location: ctaLocation });
+  }
+});
+
+const pricingSection = document.getElementById('pricing');
+if (pricingSection && typeof IntersectionObserver === 'function') {
+  const pricingObserver = new IntersectionObserver(entries => {
+    if (entries.some(entry => entry.isIntersecting)) {
+      trackEvent('view_pricing');
+      pricingObserver.disconnect();
+    }
+  }, { threshold: 0.25 });
+  pricingObserver.observe(pricingSection);
+}
+
+
 /* show floating WhatsApp button after a short scroll */
 const waFloat = document.getElementById('waFloat');
 const revealWa = () => {
@@ -91,6 +141,10 @@ const videoFacade = document.querySelector('.video-facade');
 if (videoFacade) {
   videoFacade.addEventListener('click', () => {
     const videoId = videoFacade.dataset.videoId;
+    trackEvent('video_play', {
+      video_id: videoId,
+      video_title: 'Siraj Institute — Why families choose us',
+    });
     const iframe = document.createElement('iframe');
     iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
     iframe.title = 'Siraj Institute — Why families choose us';
@@ -139,7 +193,8 @@ const tabList = document.querySelector('.tabbar[role="tablist"]');
 if (tabList) {
   const tabs = Array.from(tabList.querySelectorAll('[role="tab"]'));
 
-  const selectTab = (tab, moveFocus) => {
+  const selectTab = (tab, moveFocus, interaction) => {
+    const changed = tab.getAttribute('aria-selected') !== 'true';
     tabs.forEach(t => {
       const selected = t === tab;
       t.classList.toggle('active', selected);
@@ -152,13 +207,19 @@ if (tabList) {
       }
     });
     if (moveFocus) tab.focus();
+    if (changed && interaction) {
+      trackEvent('select_program', {
+        program_name: tab.textContent.trim(),
+        interaction,
+      });
+    }
   };
 
   /* Delegated, so mouse and touch keep behaving exactly as before. A click
      already focuses the button, so selectTab must not focus it again. */
   tabList.addEventListener('click', e => {
     const tab = e.target.closest('[role="tab"]');
-    if (tab) selectTab(tab, false);
+    if (tab) selectTab(tab, false, 'click');
   });
 
   tabList.addEventListener('keydown', e => {
@@ -171,7 +232,7 @@ if (tabList) {
     else if (e.key === 'End')        next = tabs.length - 1;
     else return;
     e.preventDefault();           // stop Home/End from scrolling the page
-    selectTab(tabs[next], true);
+    selectTab(tabs[next], true, 'keyboard');
   });
 }
 
