@@ -62,5 +62,12 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/apply",
+      "destination": "https://siraj-lms.vercel.app/apply",
+      "permanent": false
+    }
   ]
 }
