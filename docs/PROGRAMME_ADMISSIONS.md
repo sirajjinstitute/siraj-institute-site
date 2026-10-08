@@ -9,3 +9,5 @@ Canonical ready-to-share link: `https://www.sirajinst.com/apply`. Vercel issues 
 Release dependency: LMS PR #280 must pass verification, be deployed, and have `trial_journey_version()=1` installed before this redirect goes to Production. Do not publish a primary application CTA that ends in a missing or disabled form.
 
 Assets retain content-addressed immutable filenames. Checks: `.github/scripts/verify_asset_hashes.py` and `.github/scripts/scan_secrets.py`. Mobile/browser inspection is required before release; source checks alone are not visual evidence.
+
+WhatsApp button clicks send an anonymous fixed signal to the LMS endpoint. Active admin/coordinator receive a check-conversations alert; no WhatsApp messages/contact data are read. Recording is nonblocking, omits credentials, and preserves direct WhatsApp links on failure. The server validates official origins and limits notification bursts; a click is never an application or proof of a sent message. Publish tracking only after the LMS endpoint and scoped notification migration are verified.
