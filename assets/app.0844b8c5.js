@@ -108,6 +108,16 @@ document.addEventListener('click', event => {
     const parameters = { cta_location: ctaLocation, link_text: linkText.slice(0, 100) };
     trackEvent('book_trial_click', parameters);
     trackEvent('whatsapp_click', parameters);
+    // Anonymous operational signal. Contact opens even if recording fails.
+    if (event.isTrusted) {
+      try {
+        void fetch('https://siraj-lms.vercel.app/api/website-contact', {
+          method: 'POST', mode: 'no-cors', credentials: 'omit', keepalive: true,
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+          body: 'website-whatsapp'
+        }).catch(() => {});
+      } catch { /* Never block the WhatsApp link. */ }
+    }
   }
 
   if (link.matches('a[href^="https://siraj-lms.vercel.app/login"]')) {
