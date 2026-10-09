@@ -62,7 +62,7 @@
   }
 })();
 
-/* Siraj Institute — page behaviour.
+/* Suqya Institute — page behaviour.
    Moved out of index.html in Wave 1B. Loaded with `defer`, so it still runs
    against a fully-parsed DOM exactly as the end-of-body inline block did.
    Wave 1B moved it verbatim; the accessibility wave since rewrote the program
@@ -73,7 +73,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 /* WhatsApp trial-booking links */
 const waNumber = '201004751455';
-const waMessage = "Assalamu alaikum, I'm interested in booking a free trial lesson with Siraj Institute.";
+const waMessage = "Assalamu alaikum, I'm interested in booking a free trial lesson with Suqya Institute.";
 const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
 document.querySelectorAll('.wa-link').forEach(el => el.setAttribute('href', waLink));
 
@@ -153,11 +153,11 @@ if (videoFacade) {
     const videoId = videoFacade.dataset.videoId;
     trackEvent('video_play', {
       video_id: videoId,
-      video_title: 'Siraj Institute — Why families choose us',
+      video_title: 'Suqya Institute — Why families choose us',
     });
     const iframe = document.createElement('iframe');
     iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
-    iframe.title = 'Siraj Institute — Why families choose us';
+    iframe.title = 'Suqya Institute — Why families choose us';
     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
     iframe.allowFullscreen = true;
     iframe.referrerPolicy = 'strict-origin-when-cross-origin';

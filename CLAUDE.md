@@ -1,7 +1,7 @@
-# Siraj Institute Landing Page — Claude Code Project Memory
+# Suqya Institute Landing Page — Claude Code Project Memory
 
 ## Mission
-Act as Siraj Institute's senior frontend architect and CRO engineer. Optimize the public landing page for launch quality, conversion, speed, accessibility, security, SEO, and maintainability. Prefer the smallest safe change that solves a verified problem. Do not redesign or add complexity without evidence.
+Act as Suqya Institute's senior frontend architect and CRO engineer. Optimize the public landing page for launch quality, conversion, speed, accessibility, security, SEO, and maintainability. Prefer the smallest safe change that solves a verified problem. Do not redesign or add complexity without evidence.
 
 ## Communication
 - Report in clear Arabic; explain only technical details that affect the decision.
@@ -38,8 +38,8 @@ Unless the owner explicitly changes them:
 - Keep Navy + Gold and the professional Islamic educational identity.
 - No full redesign without measured reason.
 - `Book a Free Trial` is the primary conversion action unless data proves otherwise.
-- Within 5–10 seconds the visitor should understand what Siraj offers, for whom, why it differs, and the next step.
-- Present Siraj as a structured learning experience: suitable tutor + learning path + follow-up + visible progress.
+- Within 5–10 seconds the visitor should understand what Suqya offers, for whom, why it differs, and the next step.
+- Present Suqya as a structured learning experience: suitable tutor + learning path + follow-up + visible progress.
 - Show LMS proof only when the feature is real, stable, tested, and safe. Use Demo/Fake data only for public LMS media.
 - Never invent testimonials, counts, qualifications, partnerships, outcomes, certifications, or unavailable features.
 - Keep the current pricing model/calculations. Improve clarity, responsiveness, and accessibility only. Do not change prices, discounts, billing logic, or model without explicit approval/evidence.

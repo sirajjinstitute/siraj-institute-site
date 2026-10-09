@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Content-hash guard for the Siraj Institute landing-page repository.
+"""Content-hash guard for the Suqya Institute landing-page repository.
 
 Everything under assets/ is served with `Cache-Control: immutable` for a year
 (see vercel.json), which is only safe while a file's URL changes whenever its

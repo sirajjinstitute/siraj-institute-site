@@ -14,9 +14,7 @@ name: Asset integrity
 # nothing references, which are the two ways a rename goes half-done.
 
 on:
-  push:
-    branches: ['**']
-  pull_request:
+  # Manual only: these checks run in the Vercel build (vercel.json buildCommand).
   workflow_dispatch:
 
 permissions:

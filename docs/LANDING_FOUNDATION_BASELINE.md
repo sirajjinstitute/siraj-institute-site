@@ -1,4 +1,4 @@
-# Siraj Institute Landing Page — Technical Baseline
+# Suqya Institute Landing Page — Technical Baseline
 
 **Waves recorded:** 1A — Foundation, Security, Technical SEO & Search Identity
 · 1B — Performance Architecture & Technical Cleanup
@@ -6,7 +6,7 @@
 **Wave 1A base commit:** `8161890e7d88fecb8f87adc1838f20376a735d7d`
 **Wave 1A merge commit (now in Production):** `5f40bf315d48ca7bfc286b570aa9fce4b9164a27`
 **Wave 1B base commit (`origin/main`):** `5f40bf315d48ca7bfc286b570aa9fce4b9164a27`
-**Wave 1B branch:** `claude/siraj-landing-wave-1b-performance-u7noq3`
+**Wave 1B branch:** `claude/suqya-landing-wave-1b-performance-u7noq3`
 
 This document records the measured state of the repository at the Wave 1A
 baseline. It is intentionally factual: measurements are labelled with how they
@@ -132,7 +132,7 @@ and Facebook / YouTube / Instagram profile links.
 
 ### Secrets audit — result
 
-**No Siraj-owned privileged secret exposure found in the audited client repository.**
+**No Suqya-owned privileged secret exposure found in the audited client repository.**
 
 Scope and method:
 
@@ -344,7 +344,7 @@ That deployment is **not authorised in Wave 1A** and was not performed.
 
 ## 5. Google Search site name
 
-The stated goal is for Google to display **Siraj Institute** rather than the raw
+The stated goal is for Google to display **Suqya Institute** rather than the raw
 domain above the result title.
 
 ### Owner-specified search identity
@@ -353,12 +353,12 @@ The owner/CTO has specified the preference order directly:
 
 | Role | Value |
 | --- | --- |
-| Primary site name (`name`) | **Siraj Institute** |
-| Alternate 1 (`alternateName[0]`) | **Siraj-Institute** |
-| Alternate 2 (`alternateName[1]`) | **Siraj Institute Online** |
+| Primary site name (`name`) | **Suqya Institute** |
+| Alternate 1 (`alternateName[0]`) | **Suqya-Institute** |
+| Alternate 2 (`alternateName[1]`) | **Suqya Institute Online** |
 | Alternate 3 (`alternateName[2]`) | **sirajinst.com** — final domain fallback only |
 
-`Siraj-Institute` exists to give Google a second candidate should the preferred
+`Suqya-Institute` exists to give Google a second candidate should the preferred
 name collide with another global site of a similar name. `sirajinst.com` is a
 last-resort fallback, **not** a preferred display name.
 
@@ -366,14 +366,14 @@ last-resort fallback, **not** a preferred display name.
 
 | Signal | Value | Assessment |
 | --- | --- | --- |
-| WebSite `name` | `Siraj Institute` | Correct |
-| WebSite `alternateName` | `["Siraj Institute Online", "sirajinst.com"]` | Did not express the owner's preference order; missing `Siraj-Institute`, and the domain was not marked as a last resort |
-| `og:site_name` | `Siraj Institute` | Correct |
-| `<title>` | `Siraj Institute — Learn Quran & Arabic Online, 1-on-1` | Correct; brand leads |
-| `application-name` | `Siraj Institute` | Correct |
-| `apple-mobile-web-app-title` | `Siraj Institute` | Correct |
-| manifest `name` / `short_name` | `Siraj Institute` | Correct |
-| Visible brand (nav, hero, footer) | `Siraj Institute` | Correct |
+| WebSite `name` | `Suqya Institute` | Correct |
+| WebSite `alternateName` | `["Suqya Institute Online", "sirajinst.com"]` | Did not express the owner's preference order; missing `Suqya-Institute`, and the domain was not marked as a last resort |
+| `og:site_name` | `Suqya Institute` | Correct |
+| `<title>` | `Suqya Institute — Learn Quran & Arabic Online, 1-on-1` | Correct; brand leads |
+| `application-name` | `Suqya Institute` | Correct |
+| `apple-mobile-web-app-title` | `Suqya Institute` | Correct |
+| manifest `name` / `short_name` | `Suqya Institute` | Correct |
+| Visible brand (nav, hero, footer) | `Suqya Institute` | Correct |
 | Favicon | `favicon.ico` includes a **48×48** entry | Meets Google's favicon requirement |
 
 ### After (this PR)
@@ -382,16 +382,16 @@ last-resort fallback, **not** a preferred display name.
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "Siraj Institute",
+  "name": "Suqya Institute",
   "alternateName": [
-    "Siraj-Institute",
-    "Siraj Institute Online",
+    "Suqya-Institute",
+    "Suqya Institute Online",
     "sirajinst.com"
   ],
   "url": "https://www.sirajinst.com/",
   "publisher": {
     "@type": "EducationalOrganization",
-    "name": "Siraj Institute",
+    "name": "Suqya Institute",
     "logo": "https://www.sirajinst.com/logo.png"
   }
 }
@@ -410,7 +410,7 @@ two are different concepts and were treated separately.
 
 An earlier revision of this document and of PR #2 stated that Google supports
 **only one** `alternateName`, and reasoned from that premise that adopting
-`Siraj-Institute` would mean **giving up** `Siraj Institute Online`.
+`Suqya-Institute` would mean **giving up** `Suqya Institute Online`.
 
 **Both statements were wrong and have been removed.** Current Google Search
 Central guidance supports **multiple** `alternateName` values for `WebSite`
@@ -425,8 +425,8 @@ CTO authority; the blocked lookup is recorded, not treated as a blocker.
 
 ### Visible brand — unchanged
 
-The visible brand remains **Siraj Institute** everywhere: logo text, navbar,
-hero, footer, and the Organization entity. `Siraj-Institute` is a
+The visible brand remains **Suqya Institute** everywhere: logo text, navbar,
+hero, footer, and the Organization entity. `Suqya-Institute` is a
 *search-identity signal only* and was deliberately **not** propagated to any
 user-visible branding.
 
@@ -434,13 +434,13 @@ user-visible branding.
 
 | Signal | Value | Agrees? |
 | --- | --- | --- |
-| `WebSite.name` | `Siraj Institute` | ✅ |
+| `WebSite.name` | `Suqya Institute` | ✅ |
 | `WebSite.alternateName` | ordered 3-value array | ✅ owner order |
-| `EducationalOrganization.name` | `Siraj Institute` | ✅ |
-| `WebSite.publisher.name` | `Siraj Institute` | ✅ |
-| `og:site_name` | `Siraj Institute` | ✅ |
-| `<title>` | leads with `Siraj Institute` | ✅ |
-| `<h1>` / visible nav / hero / footer | `Siraj Institute` | ✅ |
+| `EducationalOrganization.name` | `Suqya Institute` | ✅ |
+| `WebSite.publisher.name` | `Suqya Institute` | ✅ |
+| `og:site_name` | `Suqya Institute` | ✅ |
+| `<title>` | leads with `Suqya Institute` | ✅ |
+| `<h1>` / visible nav / hero / footer | `Suqya Institute` | ✅ |
 | Favicon | `favicon.ico` with 48×48 entry | ✅ |
 | Canonical | `https://www.sirajinst.com/` | ✅ matches `WebSite.url` |
 
@@ -612,7 +612,7 @@ The only `index.html` difference is the two intended changes: the JSON-LD
 | 8 mobile assertions | **0 changed** |
 | Widths 320 / 375 / 430 / 768 / 1024 / 1440 | no horizontal overflow at any width, both trees |
 | JavaScript page errors | **0** in both trees |
-| JSON-LD as parsed by the browser | `name` = `Siraj Institute`; `alternateName` = `['Siraj-Institute', 'Siraj Institute Online', 'sirajinst.com']`; `url` = `https://sirajinst.com/` |
+| JSON-LD as parsed by the browser | `name` = `Suqya Institute`; `alternateName` = `['Suqya-Institute', 'Suqya Institute Online', 'sirajinst.com']`; `url` = `https://sirajinst.com/` |
 | Rendered `mailto:` | `mailto:sirajjinstitute@gmail.com` (corrected) |
 | Login / WhatsApp / video / pricing / tabs / FAQ | unchanged |
 | Secret scanner after the workflow pin | real repo clean (16 files, 0 findings); 9/9 synthetic caught; values not printed |
@@ -649,10 +649,10 @@ channel delta, confirming it is the random motes rather than the change.
 ### Preview deployment
 
 Vercel built a preview automatically from the Wave 1A pull request (project
-`sirajinstitute`), status **Ready**:
+`suqyainstitute`), status **Ready**:
 
 ```
-https://sirajinstitute-git-claude-4acd32-sirajjinstitute-5235s-projects.vercel.app
+https://suqyainstitute-git-claude-4acd32-sirajjinstitute-5235s-projects.vercel.app
 ```
 
 No production deployment was created.
@@ -663,7 +663,7 @@ headers on the wire: the preview hostname is denied by the same egress policy
 as production.
 
 ```
-sirajinstitute-git-claude-4acd32-…vercel.app:443
+suqyainstitute-git-claude-4acd32-…vercel.app:443
   -> gateway answered 403 to CONNECT (policy denial)
 ```
 
@@ -679,7 +679,7 @@ None of these could be performed from this session. Run them against the
 
 ```sh
 # Headers actually delivered
- curl -sSI https://sirajinstitute-git-claude-4acd32-sirajjinstitute-5235s-projects.vercel.app/ | grep -iE \
+ curl -sSI https://suqyainstitute-git-claude-4acd32-sirajjinstitute-5235s-projects.vercel.app/ | grep -iE \
   'content-security-policy|x-content-type|referrer-policy|permissions-policy|strict-transport'
 
 # Is Vercel already sending HSTS? If absent, add it to vercel.json.
@@ -744,7 +744,7 @@ fix before broader SEO work · **P2** important improvement · **P3** optional.
 | ID | Sev | Finding | Evidence | Status |
 | --- | --- | --- | --- | --- |
 | F-01 | P1 | Repository canonical signals named the apex, which 308-redirects to `www` — so `rel=canonical` pointed at a URL Production does not serve. Final canonical is `https://www.sirajinst.com/` | §4, §15.1 | **CLOSED.** Wave 1A is live in Production at `5f40bf3`; apex → 308 → www, and canonical/OG/robots/sitemap all serve www. Owner-verified — see §15.1 |
-| F-02 | P1 | `WebSite.alternateName` did not express the owner's search-identity preference order (missing `Siraj-Institute`; domain not ranked last) | `index.html:59` before | **Fixed** — ordered 3-value array per §5 |
+| F-02 | P1 | `WebSite.alternateName` did not express the owner's search-identity preference order (missing `Suqya-Institute`; domain not ranked last) | `index.html:59` before | **Fixed** — ordered 3-value array per §5 |
 | F-03 | P1 | No CSP, no `X-Content-Type-Options`, no `Referrer-Policy`, no `Permissions-Policy` configured by the repo (no `vercel.json` existed) | repo had no config file | **Fixed** (safe subset; strict CSP deferred) |
 | F-04 | P1 | No secret scanning or CI of any kind | no `.github/` directory | **Fixed** |
 | F-05 | P1 | 42.7 KiB logo inlined 4× = 80.2% of the document; one occurrence a no-op preload | §7, §15.3 | **CLOSED in Wave 1B.** All three remaining data URIs replaced by right-sized local WebP variants; `index.html` now contains **zero** `data:image` payloads |
@@ -823,7 +823,7 @@ Run after the final canonical correction. Canonical public URL:
 | `sitemap.xml` `<loc>` | `https://www.sirajinst.com/` | canonical/public identity |
 
 **Zero active non-www canonical URLs remain.** Verified by
-`grep "https://sirajinst\.com" index.html robots.txt sitemap.xml` returning nothing.
+`grep "https://suqyainst\.com" index.html robots.txt sitemap.xml` returning nothing.
 
 ### Remaining non-www `sirajinst.com` occurrences — all explained
 
@@ -852,7 +852,7 @@ classified as out-of-scope external services and **not modified**.
 
 **Base commit:** `5f40bf315d48ca7bfc286b570aa9fce4b9164a27` (verified at session start:
 `git ls-remote origin refs/heads/main` returned exactly this SHA).
-**Branch:** `claude/siraj-landing-wave-1b-performance-u7noq3`
+**Branch:** `claude/suqya-landing-wave-1b-performance-u7noq3`
 **Date:** 2026-08-21
 
 Evidence classes are unchanged from §1: **REPO**, **LAB**, **UNVERIFIED**, plus
@@ -1243,7 +1243,7 @@ wave is accountable to:
 
 > PageSpeed Insights, `https://www.sirajinst.com/`, mobile, captured after the
 > Wave 1B Production deployment —
-> `https://pagespeed.web.dev/analysis/https-www-sirajinst-com/t7srfc1gbz?form_factor=mobile`
+> `https://pagespeed.web.dev/analysis/https-www-suqyainst-com/t7srfc1gbz?form_factor=mobile`
 
 | Metric | Production (real) |
 |---|---|

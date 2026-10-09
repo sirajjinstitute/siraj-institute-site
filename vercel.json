@@ -1,5 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "python3 .github/scripts/verify_asset_hashes.py . && python3 .github/scripts/scan_secrets.py .",
+  "outputDirectory": ".",
   "headers": [
     {
       "source": "/(.*)",

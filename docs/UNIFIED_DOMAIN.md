@@ -1,4 +1,4 @@
-# One public hostname for Siraj
+# One public hostname for Suqya
 
 Owner Decision (2026-10-09): the landing page and learning platform use the
 same hostname, with `/login`, `/apply` and account paths, without an `app`

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Secret-regression guard for the Siraj Institute landing-page repository.
+"""Secret-regression guard for the Suqya Institute landing-page repository.
 
 This is a deliberately small, dependency-free scanner. It looks for
 provider-specific credential formats that have a recognisable shape and
