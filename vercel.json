@@ -13,16 +13,8 @@
           "value": "strict-origin-when-cross-origin"
         },
         {
-          "key": "Permissions-Policy",
-          "value": "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), midi=(), serial=(), bluetooth=(), browsing-topics=()"
-        },
-        {
           "key": "Content-Security-Policy",
           "value": "base-uri 'none'; object-src 'none'; frame-ancestors 'self'"
-        },
-        {
-          "key": "Content-Security-Policy-Report-Only",
-          "value": "default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'self'; form-action 'none'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; font-src 'self'; img-src 'self' https://www.googletagmanager.com https://*.google-analytics.com; connect-src 'self' https://siraj-lms.vercel.app https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com"
         }
       ]
     },
@@ -61,13 +53,151 @@
           "value": "public, max-age=86400, stale-while-revalidate=2592000"
         }
       ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Permissions-Policy",
+          "value": "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), midi=(), serial=(), bluetooth=(), browsing-topics=()"
+        },
+        {
+          "key": "Content-Security-Policy-Report-Only",
+          "value": "default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'self'; form-action 'none'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; font-src 'self'; img-src 'self' https://www.googletagmanager.com https://*.google-analytics.com; connect-src 'self' https://siraj-lms.vercel.app https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com"
+        }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Permissions-Policy",
+          "value": "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), midi=(), serial=(), bluetooth=(), browsing-topics=()"
+        },
+        {
+          "key": "Content-Security-Policy-Report-Only",
+          "value": "default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'self'; form-action 'none'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; font-src 'self'; img-src 'self' https://www.googletagmanager.com https://*.google-analytics.com; connect-src 'self' https://siraj-lms.vercel.app https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com"
+        }
+      ]
+    },
+    {
+      "source": "/:section(login|apply|trial|admin|coordinator|supervisor|teacher|student|guardian|api)/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store, max-age=0"
+        }
+      ]
     }
   ],
-  "redirects": [
+  "rewrites": [
+    {
+      "source": "/login",
+      "destination": "https://siraj-lms.vercel.app/login"
+    },
+    {
+      "source": "/login/:path*",
+      "destination": "https://siraj-lms.vercel.app/login/:path*"
+    },
     {
       "source": "/apply",
-      "destination": "https://siraj-lms.vercel.app/apply",
-      "permanent": false
+      "destination": "https://siraj-lms.vercel.app/apply"
+    },
+    {
+      "source": "/apply/:path*",
+      "destination": "https://siraj-lms.vercel.app/apply/:path*"
+    },
+    {
+      "source": "/trial",
+      "destination": "https://siraj-lms.vercel.app/trial"
+    },
+    {
+      "source": "/trial/:path*",
+      "destination": "https://siraj-lms.vercel.app/trial/:path*"
+    },
+    {
+      "source": "/admin",
+      "destination": "https://siraj-lms.vercel.app/admin"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "https://siraj-lms.vercel.app/admin/:path*"
+    },
+    {
+      "source": "/coordinator",
+      "destination": "https://siraj-lms.vercel.app/coordinator"
+    },
+    {
+      "source": "/coordinator/:path*",
+      "destination": "https://siraj-lms.vercel.app/coordinator/:path*"
+    },
+    {
+      "source": "/supervisor",
+      "destination": "https://siraj-lms.vercel.app/supervisor"
+    },
+    {
+      "source": "/supervisor/:path*",
+      "destination": "https://siraj-lms.vercel.app/supervisor/:path*"
+    },
+    {
+      "source": "/teacher",
+      "destination": "https://siraj-lms.vercel.app/teacher"
+    },
+    {
+      "source": "/teacher/:path*",
+      "destination": "https://siraj-lms.vercel.app/teacher/:path*"
+    },
+    {
+      "source": "/student",
+      "destination": "https://siraj-lms.vercel.app/student"
+    },
+    {
+      "source": "/student/:path*",
+      "destination": "https://siraj-lms.vercel.app/student/:path*"
+    },
+    {
+      "source": "/guardian",
+      "destination": "https://siraj-lms.vercel.app/guardian"
+    },
+    {
+      "source": "/guardian/:path*",
+      "destination": "https://siraj-lms.vercel.app/guardian/:path*"
+    },
+    {
+      "source": "/api",
+      "destination": "https://siraj-lms.vercel.app/api"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "https://siraj-lms.vercel.app/api/:path*"
+    },
+    {
+      "source": "/_next",
+      "destination": "https://siraj-lms.vercel.app/_next"
+    },
+    {
+      "source": "/_next/:path*",
+      "destination": "https://siraj-lms.vercel.app/_next/:path*"
+    },
+    {
+      "source": "/brand",
+      "destination": "https://siraj-lms.vercel.app/brand"
+    },
+    {
+      "source": "/brand/:path*",
+      "destination": "https://siraj-lms.vercel.app/brand/:path*"
+    },
+    {
+      "source": "/curriculum",
+      "destination": "https://siraj-lms.vercel.app/curriculum"
+    },
+    {
+      "source": "/curriculum/:path*",
+      "destination": "https://siraj-lms.vercel.app/curriculum/:path*"
     }
   ]
 }

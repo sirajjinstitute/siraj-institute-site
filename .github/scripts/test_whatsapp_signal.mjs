@@ -16,7 +16,7 @@ test('trusted WhatsApp activation emits fixed nonblocking signal without credent
   const calls = [];
   fixture((url, options) => { calls.push({url,options}); return Promise.resolve(); })(true);
   assert.equal(calls.length,1);
-  assert.equal(calls[0].url,'https://siraj-lms.vercel.app/api/website-contact');
+  assert.equal(calls[0].url,'/api/website-contact');
   assert.equal(calls[0].options.method,'POST');
   assert.equal(calls[0].options.body,'website-whatsapp');
   assert.equal(calls[0].options.keepalive,true);

@@ -111,7 +111,7 @@ document.addEventListener('click', event => {
     // Anonymous operational signal. Contact opens even if recording fails.
     if (event.isTrusted) {
       try {
-        void fetch('https://siraj-lms.vercel.app/api/website-contact', {
+        void fetch('/api/website-contact', {
           method: 'POST', mode: 'no-cors', credentials: 'omit', keepalive: true,
           headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
           body: 'website-whatsapp'
@@ -120,7 +120,7 @@ document.addEventListener('click', event => {
     }
   }
 
-  if (link.matches('a[href^="https://siraj-lms.vercel.app/login"]')) {
+  if (link.matches('a[href="/login"]')) {
     trackEvent('login_click', { cta_location: ctaLocation });
   }
 });
