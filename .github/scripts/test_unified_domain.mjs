@@ -8,8 +8,11 @@ const upstream = 'https://siraj-lms.vercel.app';
 
 test('all six account destinations and public intake stay on the visible host', () => {
   for (const prefix of ['login', 'apply', 'trial', 'admin', 'teacher', 'student', 'guardian', 'supervisor', 'coordinator']) {
+    const bare = config.rewrites.find(r => r.source === `/${prefix}`);
+    assert.equal(bare?.destination, `${upstream}/${prefix}`);
     const rule = config.rewrites.find(r => r.source === `/${prefix}/:path*`);
     assert.equal(rule?.destination, `${upstream}/${prefix}/:path*`);
+    assert.ok(config.rewrites.indexOf(bare) < config.rewrites.indexOf(rule));
   }
   assert.equal(config.redirects, undefined);
   assert.equal((html.match(/href="\/login"/g) ?? []).length, 2);
