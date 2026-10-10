@@ -563,3 +563,5 @@
 
 /* Blend the owner-supplied black logo canvas into the navy surfaces. */
 .brand img,.hero-logo,.footer-brand img{mix-blend-mode:screen;}
+
+.hero-inner{mix-blend-mode:screen;}
