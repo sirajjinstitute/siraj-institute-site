@@ -5,11 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- The hero logo is the LCP element. Preloading it here, ahead of the
-     stylesheet, lets the fetch start at the very beginning of the parse
-     instead of waiting behind CSS. The candidate list and the absence of a
-     sizes attribute mirror the <img> in the hero exactly, so the browser
-     picks the same file for the DPR it is on and downloads it only once. -->
-<link rel="preload" as="image" fetchpriority="high" type="image/webp"
+     stylesheet, lets the fetch start at the beginning of the parse.
+     The same owner-supplied PNG is used by all three visible logo images. -->
+<link rel="preload" as="image" fetchpriority="high" type="image/png"
       href="/assets/suqya-logo.3ca95eb8.png">
 
 <title>Suqya Institute — Learn Quran &amp; Arabic Online, 1-on-1</title>
@@ -22,8 +20,8 @@
 <meta property="og:description" content="Learn Quran and Arabic online with qualified native teachers through personalized one-on-one lessons.">
 <meta property="og:url" content="https://www.sirajinst.com/">
 <meta property="og:image" content="https://www.sirajinst.com/assets/suqya-logo.3ca95eb8.png">
-<meta property="og:image:width" content="512">
-<meta property="og:image:height" content="512">
+<meta property="og:image:width" content="1233">
+<meta property="og:image:height" content="1536">
 <meta property="og:image:alt" content="Suqya Institute logo">
 <meta property="og:locale" content="en_US">
 
