@@ -565,3 +565,5 @@
 .brand img,.hero-logo,.footer-brand img{mix-blend-mode:screen;}
 
 .hero-inner{mix-blend-mode:screen;}
+
+.hero-logo{filter:none;}
