@@ -106,7 +106,7 @@
         }
       ],
       "destination": "https://suqyainstitute.com/:path*",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/:path*",
@@ -117,7 +117,7 @@
         }
       ],
       "destination": "https://suqyainstitute.com/:path*",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/:path*",
