@@ -98,6 +98,28 @@
   ],
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "sirajinst.com"
+        }
+      ],
+      "destination": "https://suqyainstitute.com/",
+      "statusCode": 301
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.sirajinst.com"
+        }
+      ],
+      "destination": "https://suqyainstitute.com/",
+      "statusCode": 301
+    },
+    {
       "source": "/:path*",
       "has": [
         {
