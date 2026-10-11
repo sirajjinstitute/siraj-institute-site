@@ -96,6 +96,20 @@
       ]
     }
   ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "sirajinst.com" }],
+      "destination": "https://www.suqyainstitute.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.sirajinst.com" }],
+      "destination": "https://www.suqyainstitute.com/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/login",
