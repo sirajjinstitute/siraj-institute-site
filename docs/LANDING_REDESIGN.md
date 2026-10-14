@@ -88,6 +88,12 @@ to drop the programme duration map. Changes:
   their maths are unchanged; the script fills each card by its
   `data-hours`, so the card order no longer matters to it.
 
+- Ijazah (owner, 2026-10-14): the institute grants Ijazah itself, so the
+  page no longer carries the "preparation, never a guaranteed certificate"
+  note; the card says the learner earns their Ijazah from Suqya once they
+  reach its standard. The programmes figure now reads "start with one, add
+  more anytime", so six programmes never read as a required sequence.
+
 ## Roadmap durations: the arithmetic (no longer shown)
 
 Assumptions, as they were stated on the page: three 30-minute classes a week (the
