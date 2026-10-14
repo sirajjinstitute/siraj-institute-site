@@ -51,7 +51,7 @@ const trackEvent = (name, parameters = {}) => {
 
 const analyticsLocation = el => {
   if (el.id === 'waFloat' || el.closest('#waFloat')) return 'floating_whatsapp';
-  if (el.closest('.bar')) return 'navigation';
+  if (el.closest('.nav')) return 'navigation';
   if (el.closest('.hero')) return 'hero';
   if (el.closest('footer')) return 'footer';
   const section = el.closest('section[id]');
@@ -111,6 +111,7 @@ const navLinks = document.getElementById('navLinks');
 const setMenu = open => {
   navLinks.classList.toggle('open', open);
   menuBtn.setAttribute('aria-expanded', String(open));
+  document.getElementById('nav').classList.toggle('scrolled', open || window.scrollY > 40);
 };
 menuBtn.addEventListener('click', () => setMenu(!navLinks.classList.contains('open')));
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
@@ -118,17 +119,40 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && navLinks.classList.contains('open')) { setMenu(false); menuBtn.focus(); }
 });
 
-/* Floating WhatsApp button, shown after a short scroll. */
+/* The bar turns solid once the page leaves the hero; the floating
+   WhatsApp button appears after a short scroll. */
+const nav = document.getElementById('nav');
+nav.classList.add('live');
 const waFloat = document.getElementById('waFloat');
-const revealWa = () => waFloat.classList.toggle('show', window.scrollY > 320);
-revealWa();
-window.addEventListener('scroll', revealWa, { passive: true });
+const onScroll = () => {
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 40 || navLinks.classList.contains('open'));
+  waFloat.classList.toggle('show', y > 320);
+};
+onScroll();
+window.addEventListener('scroll', onScroll, { passive: true });
 
 /* Everything below waits for the first paint, so none of it can hold back
    the hero text (the LCP element). The static HTML is already complete:
    pricing shows its default figures and the demo its first screens. */
 function initPage() {
   document.documentElement.classList.add('js');
+
+  /* Gold motes rising through the hero, like light on water. Decorative,
+     so none under reduced motion. */
+  const motes = document.getElementById('motes');
+  if (motes && !reduceMotion) {
+    const count = window.innerWidth < 700 ? 12 : 22;
+    for (let i = 0; i < count; i++) {
+      const m = document.createElement('span');
+      const size = 3 + Math.random() * 7;
+      m.className = 'mote';
+      m.style.cssText = `left:${Math.random() * 100}%;width:${size}px;height:${size}px;`
+        + `animation-duration:${9 + Math.random() * 10}s;animation-delay:${-Math.random() * 14}s;`
+        + `--dx:${Math.round(Math.random() * 80 - 40)}px`;
+      motes.appendChild(m);
+    }
+  }
 
   /* ------------------------------------------------------------------ */
   /* Entrances: each section's parts rise in turn as the section enters. */
@@ -199,6 +223,11 @@ function initPage() {
     onEnter(wave, el => el.classList.add('is-in'));
   }
 
+  /* Which programme card led to the trial form. */
+  document.querySelectorAll('.prog-link').forEach(a => a.addEventListener('click', () => {
+    trackEvent('select_program', { program_name: a.closest('.prog-card').querySelector('h3').textContent.trim(), interaction: 'click' });
+  }));
+
   /* Water and growth: animations run only while their drawing is on screen,
      so nothing loops out of sight. The first check runs now, so a drawing
      already in view keeps playing without a pause. */
@@ -212,8 +241,8 @@ function initPage() {
   });
 
   /* ------------------------------------------------------------------ */
-  /* Tabs: the WAI-ARIA tabs pattern, shared by the programme list and   */
-  /* both portal navigations. Automatic activation; arrow keys move in    */
+  /* Tabs: the WAI-ARIA tabs pattern, shared by both portal             */
+  /* navigations. Automatic activation; arrow keys move in    */
   /* the list's orientation, Home/End jump to the ends.                   */
   /* ------------------------------------------------------------------ */
   const tabHandlers = {};
@@ -236,8 +265,7 @@ function initPage() {
       if (moveFocus) tab.focus();
       if (changed && interaction) {
         if (tabHandlers[name]) tabHandlers[name](tab);
-        if (name === 'programme') trackEvent('select_program', { program_name: tab.querySelector('.pn').textContent.trim(), interaction });
-        else trackEvent('demo_view', { demo_role: name, demo_screen: tab.textContent.trim(), interaction });
+        trackEvent('demo_view', { demo_role: name, demo_screen: tab.textContent.trim(), interaction });
       }
     };
     list.addEventListener('click', e => {

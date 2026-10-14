@@ -16,10 +16,11 @@ the live LMS, the existing logo, and the current pricing presentation at
   figure times the months. `.github/scripts/test_pricing.mjs` runs the page's
   own pricing block. This changes only the public page; LMS package prices
   are separate data and were not touched.
-- **Identity kept:** navy + gold, the owner's logo (the original JPEG, plus
-  two cropped WebP copies of the same artwork for small sizes), the slogan
-  "Nourishes the soul with the Qur'an", Amiri for display and Work Sans for
-  text (both already self-hosted).
+- **Identity kept:** navy + gold, the owner's logo, the slogan "Nourishes
+  the soul with the Qur'an", Amiri for display and Work Sans for text (both
+  already self-hosted). Since round 3 the page shows the logo without its
+  background (see below); the original JPEG stays in the JSON-LD, and the
+  root `logo.png`/favicons are unchanged.
 - **Primary action** stays "Book a free trial" → `/apply`. WhatsApp contact
   and its anonymous signal are unchanged.
 
@@ -40,9 +41,44 @@ the live LMS, the existing logo, and the current pricing presentation at
 - **Wide screens:** the hero board and bar stop at the content width plus
   margins, so text edges line up from laptops to 2560 px screens.
 
-## Roadmap durations: the arithmetic
+## Round 3 (owner, 2026-10-14)
 
-Assumptions, now stated on the page: three 30-minute classes a week (the
+The owner found the round 2 design too plain, liked the live site's hero
+better, asked for photographs and a background-free logo, and asked whether
+to drop the programme duration map. Changes:
+
+- **Duration map removed.** Programmes are now six image cards (Tajweed,
+  Memorization, Ijazah, Understanding & Reflection, Islamic Studies,
+  Arabic) with the LMS catalogue description and skills, and no durations.
+  How long a learner needs depends on level and lessons per week, which the
+  free trial assesses; a fixed map promised more than the page can know.
+  The arithmetic below is kept for the record in case durations return.
+- **Photographs** supplied by the owner (AI-generated illustrations): the
+  hero (a boy in a one-to-one online lesson) and one image per programme,
+  cropped and exported as AVIF + WebP at 480/800 px (hero 640/1024/1590,
+  phone crop 480/800; closing band 1600). Watermarks and a stray sparkle
+  were removed. Book pages in the images are illustrative and not readable
+  Quran text; the owner should still review them before launch.
+- **Logo without background:** alpha taken from the original artwork's dark
+  background (soft threshold, colours un-premultiplied), exported as WebP
+  128/256 px. The SVG alpha-key filter is gone.
+- **Layout:** a full-height photographic hero (navy shade, rising gold
+  motes, glowing logo, gold headline words; on phones the photo sits above
+  the copy so the child and teacher stay visible); About with the Arabic
+  motto and Mission / Vision / Approach cards using the approved wording;
+  "Why families choose Suqya" feature cards and a band of truthful figures
+  (6,236 ayahs tracked, 1:1, 6 programmes, $0 first lesson); step cards for
+  the trial; pricing cards with a "Most popular" tag (same data hooks and
+  maths); FAQ as native `<details>`; a photographic closing band; a new
+  footer. Exactly two `/login` links remain.
+- **Behaviour:** the bar is solid without script; the page script marks it
+  live, so it is clear over the hero and solid once the page scrolls (wide
+  screens show the bar's logo only after scrolling, as the hero carries the
+  large one). `select_program` now fires from the programme card links.
+
+## Roadmap durations: the arithmetic (no longer shown)
+
+Assumptions, as they were stated on the page: three 30-minute classes a week (the
 most popular plan), about 48 teaching weeks a year, the 604-page Madinah
 Mushaf, 240 quarters of a hizb.
 
@@ -72,13 +108,17 @@ text is reproduced. If an LMS label or flow changes, update the demo.
 
 ## Performance and accessibility notes
 
-- LCP is text; nothing is preloaded (lab: font preloads delayed first paint).
-  The page script initialises after the first paint. Hero entrances are
-  transform-only, so they never hold back the LCP paint.
+- Since round 3 the LCP element is the hero photograph. It is preloaded in
+  AVIF for the breakpoint that will use it (phone crop or wide image), with
+  `fetchpriority="high"`; every other photo is lazy. Fonts are not
+  preloaded (lab: font preloads delayed first paint). The page script
+  initialises after the first paint; hero entrances are transform/opacity
+  only.
 - Lab comparison (Playwright, 412 px, 4× CPU, 1.6 Mbps/150 ms, brotli):
-  old page LCP ≈ 0.83 s, CLS 0.011, 206 KB; new page LCP ≈ 0.83 s, CLS ≈ 0,
-  117 KB. Real-device and field data are UNVERIFIED.
-- Tabs follow the WAI-ARIA tabs pattern; pricing choices and the role switch
+  old page LCP ≈ 0.83 s, CLS 0.011, 206 KB; round 2 LCP ≈ 0.83 s, 117 KB;
+  round 3 LCP ≈ 0.94–1.04 s, CLS 0, 172 KB on first load. Real-device and
+  field data are UNVERIFIED.
+- The portal tabs follow the WAI-ARIA tabs pattern; pricing choices and the role switch
   are native radios; the demo dialog traps focus and closes on Escape;
   reduced motion and no-script both leave every section visible.
 

@@ -4,10 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- The LCP element is text (the hero headline, or the standfirst on a
-     phone), so nothing is preloaded: in a throttled lab run font preloads
-     competed with the stylesheet and pushed first paint later. Both faces
-     use font-display: swap. -->
+<!-- The hero photograph is the LCP element: preload the size this screen
+     will pick, in AVIF, ahead of the stylesheet. -->
+<link rel="preload" as="image" type="image/avif" fetchpriority="high" media="(max-width: 700px)"
+      imagesrcset="/assets/hero-m-480.2fedef35.avif 480w, /assets/hero-m-800.efd1d75d.avif 800w" imagesizes="100vw">
+<link rel="preload" as="image" type="image/avif" fetchpriority="high" media="(min-width: 701px)"
+      imagesrcset="/assets/hero-640.5000eb05.avif 640w, /assets/hero-1024.be4d3ff1.avif 1024w, /assets/hero-1590.82241adb.avif 1590w" imagesizes="100vw">
 
 <title>Suqya Institute — Learn Quran &amp; Arabic Online, 1-on-1</title>
 <meta name="description" content="Live one-to-one Quran and Arabic lessons online with native tutors, including Al-Azhar graduates. Parents follow every lesson in the Suqya portal. Book a free trial.">
@@ -73,29 +75,20 @@
 }
 </script>
 
-<link rel="stylesheet" href="/assets/styles.7ceb6fe3.css">
+<link rel="stylesheet" href="/assets/styles.2f8b5836.css">
 <!-- Amiri's Arabic subsets (about 108 KB) stay inert until the visitor
      starts to move or nears the first Arabic word; app.js switches the
      media to "all". <noscript> keeps them for a visitor without script. -->
 <link rel="stylesheet" href="/assets/fonts-deferred.9949c3ed.css" media="print" data-late-css>
 <noscript><link rel="stylesheet" href="/assets/fonts-deferred.9949c3ed.css"></noscript>
-<script src="/assets/app.ad9cabea.js" defer></script>
+<script src="/assets/app.f259b595.js" defer></script>
 <!-- Google Analytics 4: injected from an idle callback after the load
      event, so it never competes with the first screen. -->
 <script src="/assets/analytics.f8fe9d4c.js" defer></script>
 </head>
 <body>
-<!-- The owner's logo is a JPEG on a black canvas. This filter keys the black
-     to transparency so the unchanged artwork sits on any background. -->
 <svg aria-hidden="true" focusable="false" width="0" height="0" class="defs" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <filter id="suqya-alpha-key" color-interpolation-filters="sRGB">
-      <feColorMatrix in="SourceGraphic" type="matrix" values="
-        1 0 0 0 0
-        0 1 0 0 0
-        0 0 1 0 0
-        4 4 4 0 0"/>
-    </filter>
     <pattern id="lattice" width="56" height="56" patternUnits="userSpaceOnUse">
       <g fill="none" stroke="#d4aa51" stroke-width="1">
         <rect x="16" y="16" width="24" height="24"/>
@@ -116,29 +109,43 @@
     <symbol id="i-share" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M5 13v6.5h14V13"/></g></symbol>
     <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="m4 7 8 6 8-6"/></g></symbol>
     <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5M16 5.2a3.5 3.5 0 0 1 0 6.6M18.5 13.9c1.9 1 3 3.3 3 6.1"/></g></symbol>
+
+    <symbol id="i-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></g></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></g></symbol>
+    <symbol id="i-path" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3.5 3.5 0 0 0 0-7H9a3.5 3.5 0 0 1 0-7h6.5"/></g></symbol>
+    <symbol id="i-tutor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 4.5-9 4.5-9-4.5L12 3Z"/><path d="M6.5 9.5V15c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3V9.5M21 7.5V13"/></g></symbol>
+    <symbol id="i-one" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><circle cx="16.5" cy="8" r="3"/><path d="M2.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5M13 14.3c1-.2 2.2-.3 3.5-.3 3 0 5 2 5 5"/></g></symbol>
+    <symbol id="i-headphones" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4.5" height="6.5" rx="2"/><rect x="16.5" y="14" width="4.5" height="6.5" rx="2"/></g></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3h11A1.5 1.5 0 0 1 19 4.5V21l-7-4.5L5 21V4.5Z"/><path d="m9.5 9.5 2 2 3.5-3.5"/></g></symbol>
+    <symbol id="i-scroll" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5.5"/><path d="m8.5 13.5-1.5 7.5 5-2.5 5 2.5-1.5-7.5M10 9l1.5 1.5L14.5 7.5"/></g></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3Z"/></g></symbol>
+    <symbol id="i-dome" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21v-8h14v8M6.5 13c0-3.5 2.5-6 5.5-7.5 3 1.5 5.5 4 5.5 7.5M12 2.5v3M10 21v-4a2 2 0 0 1 4 0v4"/></g></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8.2-7.5 9.5-4.3-1.3-7.5-5-7.5-9.5V6L12 3Z"/><path d="m9 12 2 2 4-4"/></g></symbol>
+    <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5a9.4 9.4 0 0 0-8.1 14.2L2.5 21.5l4.9-1.3A9.4 9.4 0 1 0 12 2.5Zm0 17.1a7.7 7.7 0 0 1-3.9-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A7.7 7.7 0 1 1 12 19.6Zm4.2-5.7c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.3 6.3 0 0 1-3.1-2.7c-.2-.4.2-.4.7-1.2.1-.2 0-.3 0-.4l-.7-1.7c-.2-.5-.4-.4-.5-.4h-.4a.8.8 0 0 0-.6.3 2.5 2.5 0 0 0-.8 1.9 4.4 4.4 0 0 0 .9 2.3 10 10 0 0 0 3.8 3.4c1.4.6 2 .7 2.7.6.4-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1l-.4-.3Z"/></symbol>
   </defs>
 </svg>
 
 <a class="skip" href="#main">Skip to content</a>
 
 <!-- ============ NAV ============ -->
-<header class="bar" id="bar">
-  <div class="bar-in">
-    <a href="#top" class="bar-brand">
-      <img class="logo-img" src="/assets/suqya-mark-160.9f109d8b.webp" alt="" width="44" height="44" decoding="async">
-      <span class="bar-name"><strong>Suqya Institute</strong><span>Nourishes the soul with the Qur&rsquo;an</span></span>
+<header class="nav" id="nav">
+  <div class="nav-in">
+    <a href="#top" class="brand">
+      <img src="/assets/logo-128.de85d0d7.webp" alt="" width="128" height="135" decoding="async">
+      <span class="brand-txt"><strong>Suqya Institute</strong><span>Nourishes the soul with the Qur&rsquo;an</span></span>
     </a>
-    <nav class="bar-links" id="navLinks" aria-label="Main">
-      <a href="#portal">The portal</a>
+    <nav class="links" id="navLinks" aria-label="Main">
+      <a href="#about">About</a>
       <a href="#programmes">Programmes</a>
-      <a href="#teachers">Teachers</a>
+      <a href="#portal">The portal</a>
       <a href="#pricing">Pricing</a>
-      <a href="#faq">Questions</a>
-      <a href="/login" class="bar-login">Log in</a>
+      <a href="#faq">FAQ</a>
+      <a href="/login">Log in</a>
     </nav>
-    <a href="/apply" class="bar-cta">Book a free trial</a>
-    <button class="bar-menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="navLinks">
-      <span class="bar-menu-lines" aria-hidden="true"><span></span><span></span></span>
+    <a href="/apply" class="btn btn-gold btn-sm nav-cta">Book a free trial</a>
+    <button class="menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="navLinks">
+      <span class="menu-lines" aria-hidden="true"><span></span><span></span></span>
       <span class="sr-only">Menu</span>
     </button>
   </div>
@@ -146,155 +153,106 @@
 
 <main id="main">
 
-<!-- ============ HERO: a two-by-two board ============ -->
+<!-- ============ HERO ============ -->
 <section class="hero" id="top" aria-labelledby="hero-title">
-  <div class="board">
-    <div class="tile t-message">
-      <svg class="grow-art anim" viewBox="0 0 260 300" aria-hidden="true" focusable="false"><ellipse class="mound" cx="130" cy="306" rx="130" ry="26"/><ellipse class="pool" cx="128" cy="288" rx="70" ry="7"/><path class="drop" style="--fall:262px;--dd:0s" d="M84 4c-5 9-9 14-9 19a9 9 0 0 0 18 0c0-5-4-10-9-19z"/><ellipse class="ripple" style="--dd:0s" cx="84" cy="290" rx="18" ry="3.6"/><path class="drop" style="--fall:232px;--dd:1.1s" d="M186 34c-5 9-9 14-9 19a9 9 0 0 0 18 0c0-5-4-10-9-19z"/><ellipse class="ripple" style="--dd:1.1s" cx="186" cy="290" rx="18" ry="3.6"/><path class="drop" style="--fall:196px;--dd:2.1s" d="M104 70c-5 9-9 14-9 19a9 9 0 0 0 18 0c0-5-4-10-9-19z"/><ellipse class="ripple" style="--dd:2.1s" cx="104" cy="290" rx="18" ry="3.6"/><g class="grow"><g class="sway" style="transform-origin:130px 284px"><path class="stem" style="--d:600ms;stroke-width:6" d="M130 284C123 207 137 130 130 64"/><g transform="translate(130 253) rotate(-22) scale(1.35)"><g class="leaf" style="--ld:738ms"><path d="M0 0C6-10 22-16 34-14C30-4 16 6 0 0Z"/><path class="rib" d="M3-1Q17-6 31-12"/></g></g><g transform="translate(130 225) scale(-1 1) rotate(-22) scale(1.35)"><g class="leaf leaf-b" style="--ld:867ms"><path d="M0 0C6-10 22-16 34-14C30-4 16 6 0 0Z"/><path class="rib" d="M3-1Q17-6 31-12"/></g></g><g transform="translate(130 196) rotate(-22) scale(1.28)"><g class="leaf" style="--ld:996ms"><path d="M0 0C6-10 22-16 34-14C30-4 16 6 0 0Z"/><path class="rib" d="M3-1Q17-6 31-12"/></g></g><g transform="translate(130 167) scale(-1 1) rotate(-22) scale(1.22)"><g class="leaf leaf-b" style="--ld:1124ms"><path d="M0 0C6-10 22-16 34-14C30-4 16 6 0 0Z"/><path class="rib" d="M3-1Q17-6 31-12"/></g></g><g transform="translate(130 139) rotate(-22) scale(1.11)"><g class="leaf" style="--ld:1253ms"><path d="M0 0C6-10 22-16 34-14C30-4 16 6 0 0Z"/><path class="rib" d="M3-1Q17-6 31-12"/></g></g><g transform="translate(130 112) scale(-1 1) rotate(-22) scale(0.97)"><g class="leaf leaf-b" style="--ld:1372ms"><path d="M0 0C6-10 22-16 34-14C30-4 16 6 0 0Z"/><path class="rib" d="M3-1Q17-6 31-12"/></g></g><g transform="translate(130 64) rotate(-62) scale(1.49)"><g class="leaf leaf-gold" style="--ld:1620ms"><path d="M0 0C6-10 22-16 34-14C30-4 16 6 0 0Z"/><path class="rib" d="M3-1Q17-6 31-12"/></g></g></g></g></svg>
-      <h1 id="hero-title" class="rise">Quran &amp; Arabic,<br> one&nbsp;to&nbsp;one</h1>
-      <p class="standfirst rise">Live private lessons on Zoom with native tutors, including Al&#8209;Azhar graduates and female tutors for girls. Parents follow every lesson, ayah and recording in the Suqya portal.</p>
-      <div class="actions rise">
-        <a href="/apply" class="btn btn-gold">Book a free trial</a>
-        <a href="#portal" class="link">Try the portal</a>
+  <picture class="hero-bg">
+    <source media="(max-width: 700px)" type="image/avif" srcset="/assets/hero-m-480.2fedef35.avif 480w, /assets/hero-m-800.efd1d75d.avif 800w" sizes="100vw">
+    <source media="(max-width: 700px)" type="image/webp" srcset="/assets/hero-m-480.34de5cbe.webp 480w, /assets/hero-m-800.463678ed.webp 800w" sizes="100vw">
+    <source type="image/avif" srcset="/assets/hero-640.5000eb05.avif 640w, /assets/hero-1024.be4d3ff1.avif 1024w, /assets/hero-1590.82241adb.avif 1590w" sizes="100vw">
+    <source type="image/webp" srcset="/assets/hero-640.835c9ff6.webp 640w, /assets/hero-1024.49ad8516.webp 1024w, /assets/hero-1590.6ea69a39.webp 1590w" sizes="100vw">
+    <img src="/assets/hero-1024.49ad8516.webp" alt="A boy smiles at his teacher during a one-to-one online Quran lesson" width="1590" height="941" fetchpriority="high" decoding="async">
+  </picture>
+  <div class="hero-shade" aria-hidden="true"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="motes" id="motes" aria-hidden="true"></div>
+  <div class="hero-in">
+    <div class="hero-copy">
+      <img class="hero-logo" src="/assets/logo-256.a197a34b.webp" alt="Suqya Institute" width="256" height="270" decoding="async">
+      <p class="eyebrow in">Online Quran &amp; Arabic Institute</p>
+      <h1 id="hero-title" class="in">Learn <span class="gold-text">Quran &amp; Arabic</span> online, one&nbsp;to&nbsp;one</h1>
+      <p class="hero-lead in">Live private lessons with native tutors, including Al&#8209;Azhar graduates and female tutors for girls. Parents follow every lesson, ayah and recording in the Suqya portal.</p>
+      <div class="hero-actions in">
+        <a href="/apply" class="btn btn-gold btn-lg">Book a free trial</a>
+        <a href="#portal" class="btn btn-ghost btn-lg">Try the portal</a>
       </div>
-    </div>
-
-    <figure class="tile t-portal" aria-labelledby="mini-cap">
-      <div class="shutter">
-        <div class="mini" data-ui>
-          <div class="mini-hero">
-            <svg class="lattice" aria-hidden="true" focusable="false"><rect width="100%" height="100%" fill="url(#lattice)"/></svg>
-            <div class="mini-id">
-              <span class="monogram" aria-hidden="true">Y</span>
-              <div>
-                <p class="mini-name">Yusuf Ahmed</p>
-                <span class="pill pill-ok">Active</span>
-              </div>
-            </div>
-            <dl class="mini-stats">
-              <div>
-                <dt>Lesson balance</dt>
-                <dd class="mini-big">9.5 h</dd>
-                <dd>About 19 lessons of 30 min</dd>
-              </div>
-              <div>
-                <dt>Next lesson</dt>
-                <dd class="mini-big">Today</dd>
-                <dd>5:30 PM, your time</dd>
-              </div>
-            </dl>
-          </div>
-          <div class="mini-tabs" aria-hidden="true"><span class="on">Overview</span><span>Quran &amp; books</span><span>Achievements</span><span>Listen</span></div>
-          <div class="mini-panel">
-            <p class="mini-h">The last 30 days</p>
-            <div class="rings">
-              <figure class="ring" style="--v:100">
-                <svg viewBox="0 0 80 80" aria-hidden="true" focusable="false"><circle cx="40" cy="40" r="34" class="ring-track"/><circle cx="40" cy="40" r="34" class="ring-bar"/></svg>
-                <span class="ring-num">100%</span>
-                <figcaption><strong>Attendance</strong><span>12 of 12 lessons attended</span></figcaption>
-              </figure>
-              <figure class="ring" style="--v:92">
-                <svg viewBox="0 0 80 80" aria-hidden="true" focusable="false"><circle cx="40" cy="40" r="34" class="ring-track"/><circle cx="40" cy="40" r="34" class="ring-bar"/></svg>
-                <span class="ring-num">92%</span>
-                <figcaption><strong>Homework done</strong><span>11 of 12 tasks</span></figcaption>
-              </figure>
-            </div>
-          </div>
-          <div class="mini-panel mini-story">
-            <p class="mini-h">Story of the week</p>
-            <blockquote>Yusuf recited the first ten ayahs of Surah Al-Mulk from memory today, calmly and without a single prompt.</blockquote>
-          </div>
-        </div>
-      </div>
-      <figcaption id="mini-cap" class="tile-cap">What a parent sees in the Suqya portal. Sample data.</figcaption>
-    </figure>
-
-    <p class="tile t-dark">Suqya means giving water. We teach the same way: a little, steadily, every week.</p>
-    <p class="tile t-gold">Your first lesson is free. You pay only if you choose a&nbsp;plan.</p>
-  </div>
-</section>
-
-<!-- ============ ABOUT: the name, as a drop-cap statement ============ -->
-<section class="about" id="about" aria-labelledby="about-title">
-  <div class="wrap about-grid">
-    <h2 id="about-title" class="sr-only">About Suqya Institute</h2>
-    <ul class="about-facts reveal">
-      <li><strong>The name</strong><span><span class="ar" lang="ar" dir="rtl">سُقيا</span>, giving water</span></li>
-      <li><strong>Our motto</strong><span><span class="ar" lang="ar" dir="rtl">القرآن سقيا الروح</span></span></li>
-      <li><strong>Lessons</strong><span>Live, private, on Zoom</span></li>
-      <li><strong>Learners</strong><span>Children and adults, worldwide</span></li>
-    </ul>
-    <div class="about-text reveal">
-      <p class="statement"><img class="dropcap logo-img" src="/assets/suqya-mark-320.b47c7f0b.webp" alt="" width="160" height="160" loading="lazy" decoding="async">Suqya Institute nourishes the soul with the Qur&rsquo;an. It does for the heart what water does for the earth, so we teach it the way rain falls: steadily, patiently, one learner at a&nbsp;time.</p>
-      <p class="statement soft">Our hope for every learner: a lifelong bond with the Book of Allah, guided by the Sunnah of His Prophet&nbsp;<span class="ar" lang="ar">&#xFDFA;</span>, and lived in&nbsp;character.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============ THE SYSTEM: a mosaic of unlike tiles ============ -->
-<section class="see" id="system" aria-labelledby="see-title">
-  <div class="wrap mosaic">
-    <div class="m m-head reveal">
-      <h2 id="see-title">Learning you can&nbsp;see</h2>
-      <p>The commonest worry with online lessons is not knowing whether anything is being learned. Suqya was built to answer it, lesson by lesson, ayah by&nbsp;ayah.</p>
-    </div>
-    <div class="m m-figure reveal">
-      <p class="fig"><span data-count="6236">6,236</span></p>
-      <p>ayahs in the Qur&rsquo;an. Each one your child memorizes, revises or has corrected is logged by the teacher in their Quran&nbsp;journey.</p>
-    </div>
-    <div class="m m-list reveal">
-      <h3>In every plan</h3>
-      <ul>
-        <li>A fixed weekly timetable</li>
-        <li>Attendance for every lesson</li>
-        <li>Graded audio homework</li>
-        <li>A monthly learning report</li>
+      <ul class="hero-trust in">
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>First lesson free</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Private lessons on Zoom</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Female tutors for girls</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>A portal for parents</li>
       </ul>
     </div>
-    <figure class="m m-index reveal" aria-labelledby="index-cap">
-      <div class="index" data-ui>
-        <p class="index-h">Surah index</p>
-        <ul class="index-list">
-          <li><span class="med" aria-hidden="true"><svg viewBox="0 0 44 44"><use href="#i-star"/></svg><b>1</b></span><span class="sname">Al-Fatihah</span><span class="sbar" style="--p:1"></span><span class="scount">Memorized</span></li>
-          <li><span class="med" aria-hidden="true"><svg viewBox="0 0 44 44"><use href="#i-star"/></svg><b>67</b></span><span class="sname">Al-Mulk</span><span class="sbar" style="--p:.333"></span><span class="scount">10/30 ayahs</span></li>
-          <li><span class="med" aria-hidden="true"><svg viewBox="0 0 44 44"><use href="#i-star"/></svg><b>95</b></span><span class="sname">At-Tin</span><span class="sbar" style="--p:1"></span><span class="scount">Memorized</span></li>
-          <li><span class="med" aria-hidden="true"><svg viewBox="0 0 44 44"><use href="#i-star"/></svg><b>96</b></span><span class="sname">Al-&lsquo;Alaq</span><span class="sbar" style="--p:1"></span><span class="scount">Memorized</span></li>
-          <li><span class="med" aria-hidden="true"><svg viewBox="0 0 44 44"><use href="#i-star"/></svg><b>93</b></span><span class="sname">Ad-Duha</span><span class="sbar" style="--p:.545"></span><span class="scount">6/11 ayahs</span></li>
-          <li><span class="med" aria-hidden="true"><svg viewBox="0 0 44 44"><use href="#i-star"/></svg><b>112</b></span><span class="sname">Al-Ikhlas</span><span class="sbar" style="--p:1"></span><span class="scount">Memorized</span></li>
-          <li><span class="med" aria-hidden="true"><svg viewBox="0 0 44 44"><use href="#i-star"/></svg><b>113</b></span><span class="sname">Al-Falaq</span><span class="sbar" style="--p:1"></span><span class="scount">Memorized</span></li>
-          <li><span class="med" aria-hidden="true"><svg viewBox="0 0 44 44"><use href="#i-star"/></svg><b>114</b></span><span class="sname">An-Nas</span><span class="sbar" style="--p:1"></span><span class="scount">Memorized</span></li>
-        </ul>
-      </div>
-      <figcaption id="index-cap" class="tile-cap">From a student&rsquo;s Quran journey. Sample data.</figcaption>
-    </figure>
-    <div class="m m-audio reveal">
-      <p class="m-sent">Homework is recited, not typed, and the teacher grades every recording.</p>
-      <p>Your child hears the teacher&rsquo;s example first, then records straight from the browser.</p>
-      <svg class="wave" viewBox="0 0 320 56" aria-hidden="true" focusable="false"></svg>
+  </div>
+  <a href="#about" class="scroll-cue" aria-label="Scroll to the next section"><span></span></a>
+</section>
+
+<!-- ============ ABOUT: who we are, mission, vision, approach ============ -->
+<section class="sec about" id="about" aria-labelledby="about-title">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">About Suqya</p>
+      <h2 id="about-title">The Qur&rsquo;an nourishes the soul</h2>
+      <p class="ar-motto" lang="ar" dir="rtl">القرآن سقيا الروح</p>
+      <p class="lead">Suqya means giving water. The Qur&rsquo;an does for the heart what water does for the earth, so we teach it the way rain falls: steadily, patiently, one learner at a&nbsp;time.</p>
     </div>
-    <div class="m m-badges reveal">
-      <p class="m-sent">Badges are earned, never&nbsp;bought.</p>
-      <p>First Recording, On Time, Steady Learner, Excellent Month and more.</p>
+    <div class="mvv">
+      <article class="mvv-card reveal">
+        <span class="mvv-ico" aria-hidden="true"><svg><use href="#i-target"/></svg></span>
+        <h3>Our mission</h3>
+        <p>To make Qur&rsquo;an and Arabic learning reachable for families worldwide, through private lessons, qualified teachers and ongoing support, so every learner progresses with confidence and grows to love learning.</p>
+      </article>
+      <article class="mvv-card featured reveal">
+        <span class="mvv-ico" aria-hidden="true"><svg><use href="#i-eye"/></svg></span>
+        <h3>Our vision</h3>
+        <p>Children and adults with a lifelong connection to the Qur&rsquo;an: reciting it with care, reflecting on its meanings and living by its guidance, guided by the Sunnah of His Prophet&nbsp;<span class="ar" lang="ar">&#xFDFA;</span>, with sincerity to Allah.</p>
+      </article>
+      <article class="mvv-card reveal">
+        <span class="mvv-ico" aria-hidden="true"><svg><use href="#i-path"/></svg></span>
+        <h3>Our approach</h3>
+        <p>A suitable tutor, a clear learning path, steady follow-up and progress the family can see, ayah by ayah, in the Suqya portal.</p>
+      </article>
     </div>
-    <div class="m m-story reveal">
-      <p class="m-sent">A story of the week, from the teacher.</p>
-      <p>A short note to the family about a moment worth celebrating.</p>
+  </div>
+</section>
+
+<!-- ============ WHY SUQYA ============ -->
+<section class="sec why" id="why" aria-labelledby="why-title">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Why families choose Suqya</p>
+      <h2 id="why-title">Learning you can see</h2>
+      <p class="lead">The commonest worry with online lessons is not knowing whether anything is being learned. Suqya was built to answer it, lesson by lesson.</p>
+    </div>
+    <div class="features">
+      <article class="feature reveal"><span class="feature-ico" aria-hidden="true"><svg><use href="#i-tutor"/></svg></span><h3>Expert native tutors</h3><p>Native Arabic speakers, including Al&#8209;Azhar University graduates and certified Quran teachers, trained to teach learners who are new to Arabic.</p></article>
+      <article class="feature reveal"><span class="feature-ico" aria-hidden="true"><svg><use href="#i-one"/></svg></span><h3>Truly one to one</h3><p>Every lesson is private and live, with patient, engaging methods that suit children with short attention spans, including ADHD.</p></article>
+      <article class="feature reveal"><span class="feature-ico" aria-hidden="true"><svg><use href="#i-calendar"/></svg></span><h3>A fixed weekly timetable</h3><p>Your lessons sit at set times in your own time zone, with an assigned teacher and attendance recorded for every lesson.</p></article>
+      <article class="feature reveal"><span class="feature-ico" aria-hidden="true"><svg><use href="#i-book"/></svg></span><h3>An ayah-by-ayah Quran journey</h3><p>The teacher logs every ayah your child memorizes, revises or has corrected, so the surah index fills as they learn.</p></article>
+      <article class="feature reveal"><span class="feature-ico" aria-hidden="true"><svg><use href="#i-mic"/></svg></span><h3>Recited, graded homework</h3><p>Your child hears the teacher&rsquo;s example, records straight from the browser and gets a grade and a note back.</p></article>
+      <article class="feature reveal"><span class="feature-ico" aria-hidden="true"><svg><use href="#i-shield"/></svg></span><h3>Parents always in the picture</h3><p>Balance, next lesson, attendance, recordings, a weekly story and a monthly report. Messages stay inside the portal, where the institute can see them.</p></article>
+    </div>
+    <div class="stats reveal">
+      <div class="stat"><b data-count="6236">6,236</b><span>ayahs in the Qur&rsquo;an, each one tracked</span></div>
+      <div class="stat"><b>1:1</b><span>every lesson private and live</span></div>
+      <div class="stat"><b>6</b><span>programmes, from first letter to Ijazah</span></div>
+      <div class="stat"><b>$0</b><span>for your first lesson</span></div>
     </div>
   </div>
 </section>
 
 <!-- ============ THE PORTAL: the live thing ============ -->
-<section class="portal" id="portal" aria-labelledby="portal-title">
+<section class="portal dark" id="portal" aria-labelledby="portal-title">
   <div class="water-edge anim" aria-hidden="true"><svg class="w-back" viewBox="0 0 2880 56" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 24C198 10 522 10 720 24C918 38 1242 38 1440 24C1638 10 1962 10 2160 24C2358 38 2682 38 2880 24V56H0Z"/></svg><svg class="w-front" viewBox="0 0 2880 56" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 32C99 22 261 22 360 32C459 42 621 42 720 32C819 22 981 22 1080 32C1179 42 1341 42 1440 32C1539 22 1701 22 1800 32C1899 42 2061 42 2160 32C2259 22 2421 22 2520 32C2619 42 2781 42 2880 32V56H0Z"/></svg></div>
   <div class="wrap">
-    <div class="head portal-head reveal">
-      <ul class="side">
-        <li><strong>Students</strong> see today&rsquo;s lesson, their weekly timetable, homework with grades, their Quran journey and badges.</li>
-        <li><strong>Parents</strong> see the balance, the next lesson, attendance, recordings, the story of the week and a monthly report.</li>
-      </ul>
-      <h2 id="portal-title">Try the Suqya portal</h2>
-      <p>This is the platform our students and parents use, rebuilt here with sample data. Switch roles and tap around: nothing you do is saved or&nbsp;sent.</p>
+    <div class="sec-head reveal">
+      <p class="eyebrow">The Suqya portal</p>
+      <h2 id="portal-title">Try the portal yourself</h2>
+      <p class="lead">This is the platform our students and parents use, rebuilt here with sample data. Switch roles and tap around: nothing you do is saved or&nbsp;sent.</p>
     </div>
+    <ul class="who-sees reveal">
+      <li><strong>Students see</strong>today&rsquo;s lesson, their weekly timetable, homework with grades, their Quran journey and badges.</li>
+      <li><strong>Parents see</strong>the balance, the next lesson, attendance, recordings, the story of the week and a monthly report.</li>
+    </ul>
 
     <fieldset class="seg reveal" id="roleSwitch">
       <legend class="sr-only">View the portal as</legend>
@@ -309,7 +267,7 @@
       <!-- ================= STUDENT PORTAL ================= -->
       <div class="app-student" id="appStudent">
         <aside class="rail">
-          <p class="rail-brand"><img class="logo-img" src="/assets/suqya-mark-160.9f109d8b.webp" alt="" width="28" height="28" loading="lazy" decoding="async"><span>Suqya Institute</span></p>
+          <p class="rail-brand"><img src="/assets/logo-128.de85d0d7.webp" alt="" width="28" height="30" loading="lazy" decoding="async"><span>Suqya Institute</span></p>
           <div class="rail-nav" role="tablist" aria-label="Student portal" aria-orientation="vertical" data-tabs="student">
             <button role="tab" id="st-today" aria-controls="s-today" aria-selected="true" tabindex="0"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Today</button>
             <button role="tab" id="st-lessons" aria-controls="s-lessons" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-calendar"/></svg>My Lessons</button>
@@ -475,7 +433,7 @@
       <!-- ================= PARENT PORTAL ================= -->
       <div class="app-parent" id="appParent" hidden>
         <div class="gtop">
-          <p class="gbrand"><img class="logo-img" src="/assets/suqya-mark-160.9f109d8b.webp" alt="" width="28" height="28" loading="lazy" decoding="async"><span>Suqya Institute</span></p>
+          <p class="gbrand"><img src="/assets/logo-128.de85d0d7.webp" alt="" width="28" height="30" loading="lazy" decoding="async"><span>Suqya Institute</span></p>
           <p class="glinks"><span><svg aria-hidden="true"><use href="#i-users"/></svg>My children</span><span><svg aria-hidden="true"><use href="#i-mail"/></svg>Messages</span></p>
         </div>
         <div class="gmain">
@@ -604,120 +562,90 @@
   </div>
 </section>
 
-<!-- ============ TEACHERS ============ -->
-<section class="teachers" id="teachers" aria-labelledby="teachers-title">
-  <div class="wrap teachers-grid">
-    <div class="teachers-head reveal">
-      <h2 id="teachers-title">Who teaches your&nbsp;child</h2>
-    </div>
-    <div class="teach-lead reveal">
-      <p class="statement">Native Arabic speakers, including Al&#8209;Azhar graduates and certified Quran&nbsp;teachers.</p>
-      <p class="teach-sub">Female teachers teach girls, sisters and young children.</p>
-    </div>
-    <ul class="care reveal">
-      <li><strong>Trained for non-native speakers.</strong> Tutors are specially trained to teach learners who are new to Arabic.</li>
-      <li><strong>Patient with short attention spans.</strong> Tutors adapt each lesson to the child, with engaging methods that keep children with ADHD focused.</li>
-      <li><strong>One timetable, one teacher.</strong> Your child&rsquo;s lessons sit at fixed weekly times with an assigned teacher.</li>
-      <li><strong>Messages stay in the portal.</strong> Teachers and students talk inside Suqya, where the institute can see the conversation.</li>
-      <li><strong>Your own time zone.</strong> The portal shows every lesson in your local time.</li>
-    </ul>
-  </div>
-</section>
 
 <!-- ============ PROGRAMMES ============ -->
-<section class="programmes" id="programmes" aria-labelledby="prog-title">
+<section class="sec programmes" id="programmes" aria-labelledby="prog-title">
   <div class="wrap">
-    <div class="head prog-head reveal">
-      <h2 id="prog-title">Six programmes, one&nbsp;path</h2>
-      <p>Choose what you want to learn; you can pick more than one. The trial lesson shows where to begin.</p>
+    <div class="sec-head reveal">
+      <p class="eyebrow">Programmes</p>
+      <h2 id="prog-title">Six programmes, one path</h2>
+      <p class="lead">Choose what you want to learn; you can choose more than one. Your free trial lesson shows where to begin and how many lessons a week suit the&nbsp;learner.</p>
     </div>
-    <div class="prog">
-      <div class="prog-list reveal" role="tablist" aria-label="Programmes" aria-orientation="vertical" data-tabs="programme">
-        <button role="tab" id="pg-tajweed" aria-controls="pp-tajweed" aria-selected="true" tabindex="0"><span class="pn">Tajweed &amp; Recitation</span><span class="pd">Recite correctly, with clear pronunciation</span></button>
-        <button role="tab" id="pg-hifz" aria-controls="pp-hifz" aria-selected="false" tabindex="-1"><span class="pn">Memorization &amp; Revision</span><span class="pd">New passages, and the old ones kept strong</span></button>
-        <button role="tab" id="pg-ijazah" aria-controls="pp-ijazah" aria-selected="false" tabindex="-1"><span class="pn">Ijazah Preparation</span><span class="pd">An advanced recitation pathway</span></button>
-        <button role="tab" id="pg-tafsir" aria-controls="pp-tafsir" aria-selected="false" tabindex="-1"><span class="pn">Quran Understanding &amp; Reflection</span><span class="pd">Meanings and guidance for daily life</span></button>
-        <button role="tab" id="pg-islamic" aria-controls="pp-islamic" aria-selected="false" tabindex="-1"><span class="pn">Islamic Studies</span><span class="pd">Faith, worship and manners</span></button>
-        <button role="tab" id="pg-arabic" aria-controls="pp-arabic" aria-selected="false" tabindex="-1"><span class="pn">Arabic Language</span><span class="pd">Listen, speak, read and write</span></button>
-      </div>
-
-      <div class="prog-panels reveal">
-        <!-- TAJWEED -->
-        <div class="pp" id="pp-tajweed" role="tabpanel" aria-labelledby="pg-tajweed" tabindex="0">
-          <p class="pp-goal">Learn to recite the Quran correctly, with clear pronunciation and Tajweed rules: from the first letter to a full recitation of the Qur&rsquo;an.</p>
-          <ol class="road">
-            <li><span class="rd">4&ndash;5 weeks</span><div><h3>Arabic alphabet</h3><p>Each letter from its correct articulation point, its shapes at the start, middle and end of a word, and the short and long vowels.</p></div></li>
-            <li><span class="rd">2 weeks</span><div><h3>Reading full words</h3><p>Joining letters into words smoothly, with sukoon and tanween.</p></div></li>
-            <li><span class="rd">2&ndash;3 weeks</span><div><h3>Reading full sentences</h3><p>From single words to compound sentences, ready to open the Mushaf.</p></div></li>
-            <li><span class="rd">1.5 months</span><div><h3>Reading the Mushaf with Tajweed</h3><p>Reading directly from the Mushaf alongside a practical Tajweed course on the essential rules.</p></div></li>
-            <li><span class="rd">2&ndash;2.5 months</span><div><h3>Juz Amma and basic Tajweed</h3><p>Reading the whole of Juz Amma while mastering madd, ghunnah, qalqalah and the rules of raa. About six months after the first letter, the student can read anywhere in the Qur&rsquo;an.</p></div></li>
-            <li><span class="rd">About 1.5&ndash;2 years</span><div><h3>A full recitation khatmah</h3><p>The Qur&rsquo;an is 240 quarters of a hizb. Starting at one quarter per class and growing with fluency, three classes a week complete it in about a year and a half, allowing for revision and breaks.</p></div></li>
-          </ol>
+    <div class="prog-grid">
+      <article class="prog-card reveal">
+        <picture><source type="image/avif" srcset="/assets/p-tajweed-480.400f1aa1.avif 480w, /assets/p-tajweed-800.36e2b07f.avif 800w" sizes="(min-width: 1024px) 380px, (min-width: 641px) 46vw, 92vw"><source type="image/webp" srcset="/assets/p-tajweed-480.d74e97dc.webp 480w, /assets/p-tajweed-800.8e0e7b49.webp 800w" sizes="(min-width: 1024px) 380px, (min-width: 641px) 46vw, 92vw"><img src="/assets/p-tajweed-800.8e0e7b49.webp" alt="" width="1600" height="900" loading="lazy" decoding="async"></picture>
+        <span class="prog-badge" aria-hidden="true"><svg><use href="#i-headphones"/></svg></span>
+        <div class="prog-body">
+          <h3>Tajweed &amp; Recitation</h3>
+          <p>Learn to recite the Quran correctly, with clear pronunciation and Tajweed rules.</p>
+          <ul class="prog-chips" aria-label="Skills"><li>Letter pronunciation</li><li>Tajweed application</li><li>Reading fluency</li></ul>
+          <a href="/apply" class="prog-link">Start with a free trial <span class="sr-only">in Tajweed &amp; Recitation</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
-        <!-- MEMORIZATION -->
-        <div class="pp" id="pp-hifz" role="tabpanel" aria-labelledby="pg-hifz" tabindex="0" hidden>
-          <p class="pp-goal">Memorize new passages and strengthen previous memorization through regular revision. Every ayah is logged in the student&rsquo;s Quran journey.</p>
-          <ol class="road">
-            <li><span class="rd">First</span><div><h3>A starting point</h3><p>The trial lesson and early classes record what the student already knows, so revision starts from the truth.</p></div></li>
-            <li><span class="rd">About 2.5&ndash;3 years</span><div><h3>Intensive track</h3><p>Five classes a week with about one new page per class, plus revision, for a full memorization of the 604 pages.</p></div></li>
-            <li><span class="rd">About 4&ndash;8 years</span><div><h3>Regular track</h3><p>Three classes a week with half a page to a page per class, plus revision. Suited to children and busy schedules; the pace sets the length.</p></div></li>
-          </ol>
+      </article>
+      <article class="prog-card reveal">
+        <picture><source type="image/avif" srcset="/assets/p-hifz-480.ded8322c.avif 480w, /assets/p-hifz-800.e6a2093d.avif 800w" sizes="(min-width: 1024px) 380px, (min-width: 641px) 46vw, 92vw"><source type="image/webp" srcset="/assets/p-hifz-480.6f7bc538.webp 480w, /assets/p-hifz-800.a2342f49.webp 800w" sizes="(min-width: 1024px) 380px, (min-width: 641px) 46vw, 92vw"><img src="/assets/p-hifz-800.a2342f49.webp" alt="" width="1600" height="900" loading="lazy" decoding="async"></picture>
+        <span class="prog-badge" aria-hidden="true"><svg><use href="#i-bookmark"/></svg></span>
+        <div class="prog-body">
+          <h3>Memorization &amp; Revision</h3>
+          <p>Memorize new passages and strengthen previous memorization through regular revision.</p>
+          <ul class="prog-chips" aria-label="Skills"><li>Recall accuracy</li><li>Revision retention</li><li>Recitation accuracy</li></ul>
+          <a href="/apply" class="prog-link">Start with a free trial <span class="sr-only">in Memorization &amp; Revision</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
-        <!-- IJAZAH -->
-        <div class="pp" id="pp-ijazah" role="tabpanel" aria-labelledby="pg-ijazah" tabindex="0" hidden>
-          <p class="pp-goal">An advanced recitation pathway toward Ijazah, subject to assessment and qualification.</p>
-          <ol class="road">
-            <li><span class="rd">First</span><div><h3>Assessment</h3><p>Entry depends on an assessment of the student&rsquo;s recitation and memorization.</p></div></li>
-            <li><span class="rd">Then</span><div><h3>Preparation</h3><p>Focused recitation with a qualified teacher, at the pace the assessment recommends.</p></div></li>
-          </ol>
-          <p class="pp-note">Ijazah is preparation subject to assessment and qualification, never a guaranteed certificate.</p>
+      </article>
+      <article class="prog-card reveal">
+        <picture><source type="image/avif" srcset="/assets/p-ijazah-480.bcf444c1.avif 480w, /assets/p-ijazah-800.e9cbe608.avif 800w" sizes="(min-width: 1024px) 380px, (min-width: 641px) 46vw, 92vw"><source type="image/webp" srcset="/assets/p-ijazah-480.48fbcaf3.webp 480w, /assets/p-ijazah-800.fc6e231e.webp 800w" sizes="(min-width: 1024px) 380px, (min-width: 641px) 46vw, 92vw"><img src="/assets/p-ijazah-800.fc6e231e.webp" alt="" width="1600" height="900" loading="lazy" decoding="async"></picture>
+        <span class="prog-badge" aria-hidden="true"><svg><use href="#i-scroll"/></svg></span>
+        <div class="prog-body">
+          <h3>Ijazah Preparation</h3>
+          <p>An advanced recitation pathway toward Ijazah, subject to assessment and qualification.</p>
+          <ul class="prog-chips" aria-label="Skills"><li>Recitation accuracy</li><li>Advanced Tajweed</li><li>Consistency across passages</li></ul>
+          <a href="/apply" class="prog-link">Start with a free trial <span class="sr-only">in Ijazah Preparation</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
-        <!-- TAFSIR -->
-        <div class="pp" id="pp-tafsir" role="tabpanel" aria-labelledby="pg-tafsir" tabindex="0" hidden>
-          <p class="pp-goal">Explore Quranic meanings and reflect on their guidance for everyday life. One course, two approaches: stories and simple visuals for children, deeper context and application for adults.</p>
-          <ol class="road">
-            <li><span class="rd">3&ndash;4 months</span><div><h3>The foundation and Juz Amma</h3><p>Surah Al-Fatihah and the whole of Juz Amma: word meanings and surah stories for children, the purposes of each surah for adults.</p></div></li>
-            <li><span class="rd">4.5&ndash;5.5 months</span><div><h3>Juz Tabarak and the Meccan gems</h3><p>Juz Tabarak with Al-Kahf, Ya-Sin, Yusuf, Luqman and Al-Hujurat: faith, character and the stories of the prophets.</p></div></li>
-            <li><span class="rd">12&ndash;15 months</span><div><h3>The long surahs</h3><p>Al-Baqarah to At-Tawbah: the major stories for children; legislation, family and the Seerah for adults.</p></div></li>
-            <li><span class="rd">18&ndash;22 months</span><div><h3>Completion</h3><p>The remaining surahs from Yunus to At-Tahrim, completing the tafsir of the whole Qur&rsquo;an, with Suqya&rsquo;s Certificate of Completing the Simplified Tafsir.</p></div></li>
-          </ol>
+      </article>
+      <article class="prog-card reveal">
+        <picture><source type="image/avif" srcset="/assets/p-tafsir-480.eb69e092.avif 480w, /assets/p-tafsir-800.602c59b7.avif 800w" sizes="(min-width: 1024px) 380px, (min-width: 641px) 46vw, 92vw"><source type="image/webp" srcset="/assets/p-tafsir-480.a96f1e2d.webp 480w, /assets/p-tafsir-800.341e7d9f.webp 800w" sizes="(min-width: 1024px) 380px, (min-width: 641px) 46vw, 92vw"><img src="/assets/p-tafsir-800.341e7d9f.webp" alt="" width="1600" height="900" loading="lazy" decoding="async"></picture>
+        <span class="prog-badge" aria-hidden="true"><svg><use href="#i-bulb"/></svg></span>
+        <div class="prog-body">
+          <h3>Quran Understanding &amp; Reflection</h3>
+          <p>Explore Quranic meanings and reflect on their guidance for everyday life.</p>
+          <ul class="prog-chips" aria-label="Skills"><li>Understanding meanings</li><li>Explaining in own words</li><li>Reflection and application</li></ul>
+          <a href="/apply" class="prog-link">Start with a free trial <span class="sr-only">in Quran Understanding &amp; Reflection</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
-        <!-- ISLAMIC STUDIES -->
-        <div class="pp" id="pp-islamic" role="tabpanel" aria-labelledby="pg-islamic" tabindex="0" hidden>
-          <p class="pp-goal">Learn the foundations of faith, worship, manners, and Islamic knowledge, in an easy, practical style.</p>
-          <ol class="road">
-            <li><span class="rd">1.5 months</span><div><h3>Essential aqidah</h3><p>Knowing Allah, the five pillars of Islam, the six pillars of faith and tawheed, through stories.</p></div></li>
-            <li><span class="rd">2 months</span><div><h3>Practical fiqh and worship</h3><p>Purification, wudu and prayer with its pillars and conditions, practised in class.</p></div></li>
-            <li><span class="rd">2 months</span><div><h3>The Seerah and the prophets</h3><p>The life of the Prophet <span class="ar" lang="ar">&#xFDFA;</span> and the stories of the prophets, with their lessons.</p></div></li>
-            <li><span class="rd">1.5 months</span><div><h3>Manners and daily adhkar</h3><p>Kindness to parents, honesty and trust, and the adhkar of sleeping, eating, entering and leaving.</p></div></li>
-          </ol>
+      </article>
+      <article class="prog-card reveal">
+        <picture><source type="image/avif" srcset="/assets/p-islamic-480.eaf12daa.avif 480w, /assets/p-islamic-800.d5042f42.avif 800w" sizes="(min-width: 1024px) 380px, (min-width: 641px) 46vw, 92vw"><source type="image/webp" srcset="/assets/p-islamic-480.74a1dbd6.webp 480w, /assets/p-islamic-800.1f9c2af0.webp 800w" sizes="(min-width: 1024px) 380px, (min-width: 641px) 46vw, 92vw"><img src="/assets/p-islamic-800.1f9c2af0.webp" alt="" width="1600" height="900" loading="lazy" decoding="async"></picture>
+        <span class="prog-badge" aria-hidden="true"><svg><use href="#i-dome"/></svg></span>
+        <div class="prog-body">
+          <h3>Islamic Studies</h3>
+          <p>Learn the foundations of faith, worship, manners, and Islamic knowledge.</p>
+          <ul class="prog-chips" aria-label="Skills"><li>Foundational knowledge</li><li>Explaining concepts</li><li>Practical application</li></ul>
+          <a href="/apply" class="prog-link">Start with a free trial <span class="sr-only">in Islamic Studies</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
-        <!-- ARABIC -->
-        <div class="pp" id="pp-arabic" role="tabpanel" aria-labelledby="pg-arabic" tabindex="0" hidden>
-          <p class="pp-goal">Build Arabic listening, speaking, reading, and writing skills step by step, from the first letter to confident speech.</p>
-          <ol class="road">
-            <li><span class="rd">4 weeks</span><div><h3>Alphabet and sounds</h3><p>Accurate pronunciation, including the heavier letters, and every written form of each letter.</p></div></li>
-            <li><span class="rd">4 weeks</span><div><h3>First words and greetings</h3><p>Numbers, colours, family and days; greeting and introducing yourself.</p></div></li>
-            <li><span class="rd">4 weeks</span><div><h3>Simple sentences</h3><p>Reading and building short sentences, with the basic pronouns.</p></div></li>
-            <li><span class="rd">2 months</span><div><h3>Everyday conversation</h3><p>Real situations: the market, the airport, school, food, hobbies and weather.</p></div></li>
-            <li><span class="rd">2.5 months</span><div><h3>Grammar and expression</h3><p>Nominal and verbal sentences, past and present, and short paragraphs without mistakes.</p></div></li>
-            <li><span class="rd">4&ndash;6 months</span><div><h3>Building fluency</h3><p>Graded stories and short books, longer conversations on familiar topics and simple programmes in Arabic. Fluency keeps growing after this roadmap.</p></div></li>
-          </ol>
+      </article>
+      <article class="prog-card reveal">
+        <picture><source type="image/avif" srcset="/assets/p-arabic-480.b8fd3cc5.avif 480w, /assets/p-arabic-800.5cbeb6ef.avif 800w" sizes="(min-width: 1024px) 380px, (min-width: 641px) 46vw, 92vw"><source type="image/webp" srcset="/assets/p-arabic-480.da41ed81.webp 480w, /assets/p-arabic-800.4d4f4068.webp 800w" sizes="(min-width: 1024px) 380px, (min-width: 641px) 46vw, 92vw"><img src="/assets/p-arabic-800.4d4f4068.webp" alt="" width="1600" height="900" loading="lazy" decoding="async"></picture>
+        <span class="prog-badge" aria-hidden="true"><span class="ar" lang="ar">ض</span></span>
+        <div class="prog-body">
+          <h3>Arabic Language</h3>
+          <p>Build Arabic listening, speaking, reading, and writing skills step by step.</p>
+          <ul class="prog-chips" aria-label="Skills"><li>Listening</li><li>Speaking</li><li>Reading</li><li>Writing</li></ul>
+          <a href="/apply" class="prog-link">Start with a free trial <span class="sr-only">in Arabic Language</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
-        <p class="pp-pace">Times assume three classes a week, the most popular plan, and regular attendance. Two classes a week take about half as long again; five are faster.</p>
-      </div>
+      </article>
     </div>
+    <p class="prog-note">Ijazah is preparation subject to assessment and qualification, never a guaranteed certificate.</p>
   </div>
 </section>
 
 <!-- ============ HOW IT WORKS ============ -->
-<section class="how" id="how" aria-labelledby="how-title">
+<section class="sec how" id="how" aria-labelledby="how-title">
   <div class="wrap">
-    <div class="head how-head reveal">
-      <h2 id="how-title">How the free trial&nbsp;works</h2>
-      <p>Four steps from your first message to a timetable that fits your week. Like a seed, learning grows with steady&nbsp;watering.</p>
+    <div class="sec-head reveal">
+      <p class="eyebrow">Getting started</p>
+      <h2 id="how-title">How the free trial works</h2>
+      <p class="lead">Four steps from your first message to a timetable that fits your week. Like a seed, learning grows with steady&nbsp;watering.</p>
     </div>
-    <ol class="steps reveal anim">
+    <ol class="steps anim">
       <li><svg class="stage" viewBox="45 0 210 220" aria-hidden="true" focusable="false"><ellipse class="mound" cx="150" cy="214" rx="118" ry="22"/><g class="grow"><g transform="rotate(-18 150 190)"><ellipse class="seed" style="--d:0ms" cx="150" cy="190" rx="13" ry="8"/></g></g><path class="drop" style="--fall:150px;--dd:0.4s" d="M150 20c-5 9-9 14-9 19a9 9 0 0 0 18 0c0-5-4-10-9-19z"/><ellipse class="ripple" style="--dd:0.4s" cx="150" cy="194" rx="18" ry="3.6"/></svg><div><h3>Apply</h3><p>Two minutes: who is learning, which programmes, the days and times that suit you, and your time zone.</p></div></li>
       <li><svg class="stage" viewBox="45 0 210 220" aria-hidden="true" focusable="false"><ellipse class="mound" cx="150" cy="214" rx="118" ry="22"/><g transform="rotate(-18 140 195)"><ellipse class="seed-static" cx="140" cy="195" rx="11" ry="7"/></g><g class="grow"><g class="sway" style="transform-origin:150px 196px"><path class="stem" style="--d:380ms;stroke-width:3.5" d="M150 196C143 178 157 161 150 146"/><g transform="translate(150 157) scale(-1 1) rotate(-22) scale(0.81)"><g class="leaf leaf-b" style="--ld:1152ms"><path d="M0 0C6-10 22-16 34-14C30-4 16 6 0 0Z"/><path class="rib" d="M3-1Q17-6 31-12"/></g></g><g transform="translate(150 157) rotate(-22) scale(0.81)"><g class="leaf" style="--ld:1152ms"><path d="M0 0C6-10 22-16 34-14C30-4 16 6 0 0Z"/><path class="rib" d="M3-1Q17-6 31-12"/></g></g></g></g><path class="drop" style="--fall:140px;--dd:1.2s" d="M204 34c-5 9-9 14-9 19a9 9 0 0 0 18 0c0-5-4-10-9-19z"/><ellipse class="ripple" style="--dd:1.2s" cx="204" cy="198" rx="18" ry="3.6"/></svg><div><h3>Free trial lesson</h3><p>A private lesson on Zoom. The teacher meets the learner and assesses their level. No payment, no commitment.</p></div></li>
       <li><svg class="stage" viewBox="45 0 210 220" aria-hidden="true" focusable="false"><ellipse class="mound" cx="150" cy="214" rx="118" ry="22"/><g class="grow"><g class="sway" style="transform-origin:150px 196px"><path class="stem" style="--d:760ms;stroke-width:4" d="M150 196C143 157 157 118 150 84"/><g transform="translate(150 165) rotate(-22) scale(1.08)"><g class="leaf" style="--ld:1037ms"><path d="M0 0C6-10 22-16 34-14C30-4 16 6 0 0Z"/><path class="rib" d="M3-1Q17-6 31-12"/></g></g><g transform="translate(150 144) scale(-1 1) rotate(-22) scale(1.08)"><g class="leaf leaf-b" style="--ld:1215ms"><path d="M0 0C6-10 22-16 34-14C30-4 16 6 0 0Z"/><path class="rib" d="M3-1Q17-6 31-12"/></g></g><g transform="translate(150 124) rotate(-22) scale(1.01)"><g class="leaf" style="--ld:1393ms"><path d="M0 0C6-10 22-16 34-14C30-4 16 6 0 0Z"/><path class="rib" d="M3-1Q17-6 31-12"/></g></g><g transform="translate(150 106) scale(-1 1) rotate(-22) scale(0.94)"><g class="leaf leaf-b" style="--ld:1552ms"><path d="M0 0C6-10 22-16 34-14C30-4 16 6 0 0Z"/><path class="rib" d="M3-1Q17-6 31-12"/></g></g><g transform="translate(150 84) rotate(-62) scale(1.01)"><g class="leaf leaf-gold" style="--ld:1780ms"><path d="M0 0C6-10 22-16 34-14C30-4 16 6 0 0Z"/><path class="rib" d="M3-1Q17-6 31-12"/></g></g></g></g><path class="drop" style="--fall:144px;--dd:0.7s" d="M92 30c-5 9-9 14-9 19a9 9 0 0 0 18 0c0-5-4-10-9-19z"/><ellipse class="ripple" style="--dd:0.7s" cx="92" cy="198" rx="18" ry="3.6"/></svg><div><h3>Your plan</h3><p>We share the teacher&rsquo;s reviewed summary and how many lessons a week they recommend.</p></div></li>
@@ -727,12 +655,13 @@
 </section>
 
 <!-- ============ PRICING ============ -->
-<section class="pricing" id="pricing" aria-labelledby="pricing-title">
+<section class="pricing dark" id="pricing" aria-labelledby="pricing-title">
   <div class="water-edge anim" aria-hidden="true"><svg class="w-back" viewBox="0 0 2880 56" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 24C198 10 522 10 720 24C918 38 1242 38 1440 24C1638 10 1962 10 2160 24C2358 38 2682 38 2880 24V56H0Z"/></svg><svg class="w-front" viewBox="0 0 2880 56" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 32C99 22 261 22 360 32C459 42 621 42 720 32C819 22 981 22 1080 32C1179 42 1341 42 1440 32C1539 22 1701 22 1800 32C1899 42 2061 42 2160 32C2259 22 2421 22 2520 32C2619 42 2781 42 2880 32V56H0Z"/></svg></div>
   <div class="wrap">
-    <div class="head pricing-head reveal">
-      <h2 id="pricing-title">Plans and fees</h2>
-      <p class="statement">$14.99 per teaching hour. Choose how many learners are joining and how you&rsquo;d like to be billed; your biggest discount applies&nbsp;automatically.</p>
+    <div class="sec-head reveal">
+      <p class="eyebrow">Plans &amp; fees</p>
+      <h2 id="pricing-title">Simple, transparent pricing</h2>
+      <p class="lead"><strong>$14.99 per teaching hour.</strong> Choose how many learners are joining and how you&rsquo;d like to be billed; your biggest discount applies automatically.</p>
     </div>
 
     <div class="choices reveal">
@@ -766,16 +695,7 @@
 
     <p class="pricing-live" id="pricingLive" aria-live="polite">Prices for 1 learner, billed monthly.</p>
 
-    <div class="plans reveal" id="priceGrid">
-      <div class="plan-labels" aria-hidden="true">
-        <span class="pl pl-name"></span>
-        <span class="pl pl-price">Per month</span>
-        <span class="pl">Teaching hours</span>
-        <span class="pl">Price per hour</span>
-        <span class="pl">Billing</span>
-        <span class="pl">Best for</span>
-        <span class="pl pl-act"></span>
-      </div>
+    <div class="plans" id="priceGrid">
       <article class="plan" aria-labelledby="plan-0">
         <h3 class="plan-name" id="plan-0">2 classes a week</h3>
         <p class="plan-price"><span data-price>$59.96</span><span class="plan-per" data-per>/month</span></p>
@@ -785,18 +705,19 @@
           <div><dt>Billing</dt><dd data-billed>Billed monthly</dd></div>
           <div><dt>Best for</dt><dd>Light review</dd></div>
         </dl>
-        <a href="/apply" class="btn btn-plan">Book a free trial</a>
+        <a href="/apply" class="btn btn-gold">Book a free trial</a>
       </article>
       <article class="plan plan-rec" aria-labelledby="plan-1">
+        <span class="plan-tag">Most popular</span>
         <h3 class="plan-name" id="plan-1">3 classes a week</h3>
         <p class="plan-price"><span data-price>$89.94</span><span class="plan-per" data-per>/month</span></p>
         <dl class="plan-rows">
           <div><dt>Teaching hours</dt><dd>6 hours a month</dd></div>
           <div><dt>Price per hour</dt><dd data-rate>$14.99</dd></div>
           <div><dt>Billing</dt><dd data-billed>Billed monthly</dd></div>
-          <div><dt>Best for</dt><dd>Most popular: steady progress</dd></div>
+          <div><dt>Best for</dt><dd>Steady progress</dd></div>
         </dl>
-        <a href="/apply" class="btn btn-plan">Book a free trial</a>
+        <a href="/apply" class="btn btn-gold">Book a free trial</a>
       </article>
       <article class="plan" aria-labelledby="plan-2">
         <h3 class="plan-name" id="plan-2">4 classes a week</h3>
@@ -807,7 +728,7 @@
           <div><dt>Billing</dt><dd data-billed>Billed monthly</dd></div>
           <div><dt>Best for</dt><dd>Fast, intensive progress</dd></div>
         </dl>
-        <a href="/apply" class="btn btn-plan">Book a free trial</a>
+        <a href="/apply" class="btn btn-gold">Book a free trial</a>
       </article>
       <article class="plan" aria-labelledby="plan-3">
         <h3 class="plan-name" id="plan-3">5 classes a week</h3>
@@ -818,7 +739,7 @@
           <div><dt>Billing</dt><dd data-billed>Billed monthly</dd></div>
           <div><dt>Best for</dt><dd>A highly intensive Quran track</dd></div>
         </dl>
-        <a href="/apply" class="btn btn-plan">Book a free trial</a>
+        <a href="/apply" class="btn btn-gold">Book a free trial</a>
       </article>
     </div>
 
@@ -835,25 +756,35 @@
   </div>
 </section>
 
-<!-- ============ FAQ: a band per question ============ -->
-<section class="faq" id="faq" aria-labelledby="faq-title">
-  <div class="faq-band faq-title-band"><div class="wrap"><h2 id="faq-title">Questions, answered</h2></div></div>
-  <div class="faq-band"><div class="wrap faq-row"><h3>How do the lessons take place?</h3><p>Live on Zoom, and strictly one to one, so the teacher&rsquo;s full attention is on you or your child. The portal shows each lesson in your time and opens the teacher&rsquo;s room when it&rsquo;s time to join.</p></div></div>
-  <div class="faq-band"><div class="wrap faq-row"><h3>Is the trial lesson really free?</h3><p>Yes. There is no payment and no commitment. The trial lets the teacher assess the learner&rsquo;s level and lets you experience the teaching before deciding anything.</p></div></div>
-  <div class="faq-band"><div class="wrap faq-row"><h3>How do I follow my child&rsquo;s progress?</h3><p>Parents get their own login to the Suqya portal: the next lesson, the remaining balance, attendance and homework over the last 30 days, the Quran journey ayah by ayah, your child&rsquo;s recordings, the teacher&rsquo;s story of the week and a monthly learning report.</p></div></div>
-  <div class="faq-band"><div class="wrap faq-row"><h3>With a family discount, do we study in a group?</h3><p>No. Family and friends discounts only lower the price. Every learner keeps a private timetable, their own plan and a dedicated teacher; every lesson stays one to one.</p></div></div>
-  <div class="faq-band"><div class="wrap faq-row"><h3>What if we miss a lesson?</h3><p>Life happens. Tell us at least 24 hours before and the lesson&rsquo;s time stays in your balance. The Family Guide, shared when you enrol, explains makeups and emergencies in full.</p></div></div>
-  <div class="faq-band"><div class="wrap faq-row"><h3>Can my daughter learn with a female teacher?</h3><p>Yes. Qualified female teachers teach girls, sisters and young children. Just let us know when we arrange the trial.</p></div></div>
-  <div class="faq-band"><div class="wrap faq-row"><h3>Who are the tutors?</h3><p>Native Arabic speakers, including Al-Azhar University graduates and certified Quran teachers, trained to teach non-native speakers and to keep lessons patient and engaging for children, including children with ADHD.</p></div></div>
+<!-- ============ FAQ ============ -->
+<section class="sec faq" id="faq" aria-labelledby="faq-title">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">FAQ</p>
+      <h2 id="faq-title">Questions, answered</h2>
+    </div>
+    <div class="faq-list reveal">
+      <details open><summary>How do the lessons take place?</summary><p>Live on Zoom, and strictly one to one, so the teacher&rsquo;s full attention is on you or your child. The portal shows each lesson in your time and opens the teacher&rsquo;s room when it&rsquo;s time to join.</p></details>
+      <details><summary>Is the trial lesson really free?</summary><p>Yes. There is no payment and no commitment. The trial lets the teacher assess the learner&rsquo;s level and lets you experience the teaching before deciding anything.</p></details>
+      <details><summary>How do I follow my child&rsquo;s progress?</summary><p>Parents get their own login to the Suqya portal: the next lesson, the remaining balance, attendance and homework over the last 30 days, the Quran journey ayah by ayah, your child&rsquo;s recordings, the teacher&rsquo;s story of the week and a monthly learning report.</p></details>
+      <details><summary>With a family discount, do we study in a group?</summary><p>No. Family and friends discounts only lower the price. Every learner keeps a private timetable, their own plan and a dedicated teacher; every lesson stays one to one.</p></details>
+      <details><summary>What if we miss a lesson?</summary><p>Life happens. Tell us at least 24 hours before and the lesson&rsquo;s time stays in your balance. The Family Guide, shared when you enrol, explains makeups and emergencies in full.</p></details>
+      <details><summary>Can my daughter learn with a female teacher?</summary><p>Yes. Qualified female teachers teach girls, sisters and young children. Just let us know when we arrange the trial.</p></details>
+      <details><summary>Who are the tutors?</summary><p>Native Arabic speakers, including Al-Azhar University graduates and certified Quran teachers, trained to teach non-native speakers and to keep lessons patient and engaging for children, including children with ADHD.</p></details>
+    </div>
+  </div>
 </section>
 
 <!-- ============ CLOSE ============ -->
-<section class="close" aria-labelledby="close-title">
-  <div class="wrap close-in">
-    <h2 id="close-title" class="reveal">Start with one free&nbsp;lesson</h2>
-    <div class="close-foot reveal">
-      <p>Tell us who is learning and when you&rsquo;re free. We&rsquo;ll match a teacher and book the trial.</p>
+<section class="cta" aria-labelledby="close-title">
+  <picture><source type="image/avif" srcset="/assets/p-tafsir-800.602c59b7.avif 800w, /assets/p-tafsir-1600.c74c60e5.avif 1600w" sizes="100vw"><source type="image/webp" srcset="/assets/p-tafsir-800.341e7d9f.webp 800w, /assets/p-tafsir-1600.1a9a5e3d.webp 1600w" sizes="100vw"><img src="/assets/p-tafsir-1600.1a9a5e3d.webp" alt="" width="1600" height="900" loading="lazy" decoding="async"></picture>
+  <div class="wrap reveal">
+    <img class="cta-logo" src="/assets/logo-256.a197a34b.webp" alt="" width="256" height="270" loading="lazy" decoding="async">
+    <h2 id="close-title">Start with one free lesson</h2>
+    <p class="lead">Tell us who is learning and when you&rsquo;re free. We&rsquo;ll match a teacher and book the trial.</p>
+    <div class="cta-actions">
       <a href="/apply" class="btn btn-gold btn-lg">Book a free trial</a>
+      <a href="https://wa.me/201004751455?text=Assalamu%20alaikum%2C%20I'm%20interested%20in%20booking%20a%20free%20trial%20lesson%20with%20Suqya%20Institute." class="btn btn-ghost btn-lg wa-link" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-wa"/></svg>Ask on WhatsApp</a>
     </div>
   </div>
 </section>
@@ -862,34 +793,32 @@
 
 <!-- ============ FOOTER ============ -->
 <footer id="contact" class="foot">
-  <div class="wrap foot-in">
-    <div class="foot-cols">
-      <div>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <div class="brand-row"><img src="/assets/logo-128.de85d0d7.webp" alt="" width="128" height="135" loading="lazy" decoding="async"><div><strong>Suqya Institute</strong><p class="slogan">Nourishes the soul with the Qur&rsquo;an</p></div></div>
+        <p>One-to-one Quran, Arabic and Islamic Studies lessons online, for children and adults worldwide.</p>
+      </div>
+      <div class="foot-col">
         <h3>Contact</h3>
         <a href="https://wa.me/201004751455?text=Assalamu%20alaikum%2C%20I'm%20interested%20in%20booking%20a%20free%20trial%20lesson%20with%20Suqya%20Institute." class="wa-link" target="_blank" rel="noopener noreferrer">WhatsApp +20 100 475 1455</a>
         <a href="mailto:sirajjinstitute@gmail.com">sirajjinstitute@gmail.com</a>
       </div>
-      <div>
+      <div class="foot-col">
         <h3>Follow</h3>
         <a href="https://www.facebook.com/share/14gMNzaa5es/" target="_blank" rel="noopener noreferrer">Facebook</a>
         <a href="https://youtube.com/@syqyainstitute?si=r06jJb27uGqgf3u0" target="_blank" rel="noopener noreferrer">YouTube</a>
         <a href="https://www.instagram.com/suqyainst?igsh=czVvOWY4YXRmMGVj" target="_blank" rel="noopener noreferrer">Instagram</a>
       </div>
-      <div>
-        <h3>Explore</h3>
-        <a href="#portal">The portal</a>
-        <a href="#programmes">Programmes</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#faq">Questions</a>
-      </div>
-      <div>
+      <div class="foot-col">
         <h3>Families</h3>
         <a href="/apply">Book a free trial</a>
         <a href="/login">Log in to the portal</a>
+        <a href="#programmes">Programmes</a>
+        <a href="#pricing">Pricing</a>
       </div>
     </div>
-    <p class="wordmark" aria-hidden="true">Suqya</p>
-    <p class="legal"><span>&copy; <span id="year">2026</span> Suqya Institute.</span> <span>Nourishes the soul with the Qur&rsquo;an.</span></p>
+    <p class="legal"><span>&copy; <span id="year">2026</span> Suqya Institute. All rights reserved.</span><span>Built with care, for every family growing closer to the Qur&rsquo;an.</span></p>
   </div>
 </footer>
 
