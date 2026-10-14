@@ -333,11 +333,10 @@ function initPage() {
   let currentDuration = 'monthly';
 
   function renderPricing() {
-    const plans = priceGrid.querySelectorAll('.plan');
     let summary;
-    packageInfo.forEach((pkg, i) => {
+    packageInfo.forEach(pkg => {
       const q = quote(currentStudents, currentDuration, pkg);
-      const plan = plans[i];
+      const plan = priceGrid.querySelector(`.plan[data-hours="${pkg.monthlyHours}"]`);
       const pctLabel = Math.round(q.pct * 100);
       plan.querySelector('[data-price]').textContent = money(q.monthly);
       plan.querySelector('[data-per]').textContent = currentStudents > 1 ? '/month per learner' : '/month';

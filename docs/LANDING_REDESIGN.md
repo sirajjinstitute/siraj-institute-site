@@ -68,13 +68,25 @@ to drop the programme duration map. Changes:
   motto and Mission / Vision / Approach cards using the approved wording;
   "Why families choose Suqya" feature cards and a band of truthful figures
   (6,236 ayahs tracked, 1:1, 6 programmes, $0 first lesson); step cards for
-  the trial; pricing cards with a "Most popular" tag (same data hooks and
-  maths); FAQ as native `<details>`; a photographic closing band; a new
+  the trial; pricing cards (same data hooks and maths; see the follow-up
+  below for their order); FAQ as native `<details>`; a photographic closing band; a new
   footer. Exactly two `/login` links remain.
 - **Behaviour:** the bar is solid without script; the page script marks it
   live, so it is clear over the hero and solid once the page scrolls (wide
   screens show the bar's logo only after scrolling, as the hero carries the
   large one). `select_program` now fires from the programme card links.
+
+### Round 3 follow-up (owner, 2026-10-14)
+
+- The vision card has no icon; its text is centred in the navy card.
+- **Plans run largest first** (5, 4, 3, 2 classes a week) to encourage the
+  biggest package. The 5-a-week card is the featured one: tag "Fastest
+  progress", raised on wide screens, gold button, and the note "The most
+  lessons a week, at the same hourly rate as every plan" (true: every
+  discount applies equally to all plans). The "Most popular" label on the
+  3-a-week plan is removed so the page points one way. Prices, discounts and
+  their maths are unchanged; the script fills each card by its
+  `data-hours`, so the card order no longer matters to it.
 
 ## Roadmap durations: the arithmetic (no longer shown)
 
