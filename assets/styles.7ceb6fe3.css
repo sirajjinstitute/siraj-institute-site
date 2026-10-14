@@ -89,7 +89,7 @@ p{text-wrap:pretty}
 
 /* ---------- navigation: a row of tiles ---------- */
 .bar{position:sticky;top:0;z-index:50;background:var(--paper);padding:8px var(--g) 0}
-.bar-in{display:flex;gap:var(--g);height:60px;position:relative}
+.bar-in{display:flex;gap:var(--g);height:60px;position:relative;max-width:calc(var(--max) + 88px);margin-inline:auto}
 .bar-brand{display:flex;align-items:center;gap:10px;padding:0 18px 0 8px;border-radius:var(--r);background:var(--navy);color:#fff;text-decoration:none;flex:none}
 .bar-brand img{width:44px;height:44px}
 .bar-name{display:flex;flex-direction:column;line-height:1.1}
@@ -132,9 +132,13 @@ p{text-wrap:pretty}
 
 /* ---------- hero: the board ---------- */
 .hero{padding:var(--g) var(--g) 0}
-.board{display:grid;gap:var(--g);grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:minmax(0,1fr) minmax(190px,auto);min-height:calc(100svh - 76px)}
+.board{display:grid;gap:var(--g);grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:minmax(0,1fr) minmax(190px,auto);min-height:min(calc(100svh - 76px),980px);max-width:calc(var(--max) + 88px);margin-inline:auto}
 .tile{border-radius:var(--r);padding:clamp(20px,2.4vw,36px);position:relative;overflow:hidden;margin:0}
-.t-message{grid-column:1/8;grid-row:1;background:var(--paper-2);display:flex;flex-direction:column;justify-content:flex-end;gap:26px}
+.t-message{grid-column:1/8;grid-row:1;background:var(--paper-2);display:grid;grid-template-columns:minmax(0,1fr) clamp(140px,15vw,230px);grid-template-rows:1fr auto auto auto;column-gap:clamp(16px,2vw,32px);row-gap:26px}
+.t-message h1{grid-column:1/-1;grid-row:2;align-self:end}
+.t-message .standfirst{grid-column:1;grid-row:3}
+.t-message .actions{grid-column:1;grid-row:4}
+.grow-art{grid-column:2;grid-row:3/5;align-self:end;width:100%;height:auto;margin-bottom:calc(-1 * clamp(20px,2.4vw,36px))}
 .t-message h1{font-size:var(--s-hero);max-width:15ch}
 .standfirst{font-size:clamp(18px,1.45vw,21px);line-height:1.5;max-width:44ch}
 .actions{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
@@ -152,7 +156,9 @@ p{text-wrap:pretty}
   .t-portal{grid-column:1/-1;grid-row:auto;padding:28px 16px;order:2}
 }
 @media (max-width:640px){
-  .t-message{gap:20px;padding-top:44px}
+  .t-message{grid-template-columns:minmax(0,1fr);grid-template-rows:auto;row-gap:20px;padding-top:20px}
+  .t-message h1,.t-message .standfirst,.t-message .actions{grid-column:1;grid-row:auto}
+  .grow-art{grid-column:1;grid-row:auto;order:-1;justify-self:end;width:auto;height:96px;margin:0 0 -8px}
   .t-dark,.t-gold{font-size:17px;line-height:1.35;padding:18px;min-height:150px}
   .standfirst{font-size:17px}
   .actions .btn{width:100%}
@@ -176,6 +182,49 @@ p{text-wrap:pretty}
 @keyframes riseT{from{transform:translateY(28px)}}
 @keyframes shutter{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
 @keyframes settle{from{transform:scale(1.12)}}
+
+/* ---------- water and growth (Suqya: giving water) ----------
+   Drawn SVG, animated with transform and opacity only. Loops pause while
+   off screen (.anim without .in-view, once script runs); reduced motion
+   shows the grown plant and still water. */
+.mound{fill:var(--paper-3)}
+.how .mound{fill:var(--paper-2)}
+.seed,.seed-static{fill:#a8822f}
+.seed{transform-box:fill-box;transform-origin:50% 50%}
+.pool{fill:#d3e3ef}
+.stem{fill:none;stroke:#153559;stroke-linecap:round;transform-box:fill-box;transform-origin:50% 100%}
+.leaf{transform-box:fill-box;transform-origin:0% 91%}
+.leaf path:first-child{fill:#1f7a63}
+.leaf-b path:first-child{fill:#2e9176}
+.leaf-gold path:first-child{fill:#d4aa51}
+.leaf .rib{fill:none;stroke:rgba(255,255,255,.5);stroke-width:1.2;stroke-linecap:round}
+.sway{transform-box:view-box}
+.drop{fill:#4a7aa6;opacity:0}
+.ripple{fill:none;stroke:#4a7aa6;stroke-width:1.6;opacity:0;transform-box:fill-box;transform-origin:50% 50%}
+@media (prefers-reduced-motion:no-preference){
+  .grow .stem{animation:stemgrow 1.2s var(--d,0ms) var(--ease) both}
+  .grow .leaf{animation:leafpop .8s var(--ld,0ms) cubic-bezier(.3,1.35,.5,1) both}
+  .grow .seed{animation:leafpop .8s var(--d,0ms) cubic-bezier(.3,1.35,.5,1) both}
+  .grow .sway{animation:sway 6.5s 2s ease-in-out infinite alternate}
+  .drop{animation:drop 3.2s var(--dd,0s) ease-in infinite}
+  .ripple{animation:ripple 3.2s var(--dd,0s) ease-out infinite}
+  .water-edge svg{animation:flow 26s linear infinite}
+  .water-edge .w-front{animation-duration:17s;animation-direction:reverse}
+  .js .anim:not(.in-view) *{animation-play-state:paused!important}
+}
+@keyframes stemgrow{from{transform:scaleY(0)}}
+@keyframes leafpop{from{transform:scale(0)}}
+@keyframes sway{from{transform:rotate(-1.4deg)}to{transform:rotate(1.4deg)}}
+@keyframes drop{0%{transform:translateY(0);opacity:0}10%{opacity:1}66%{transform:translateY(var(--fall,140px));opacity:1}70%,100%{transform:translateY(var(--fall,140px));opacity:0}}
+@keyframes ripple{0%,66%{transform:scale(.2);opacity:0}70%{opacity:.85;transform:scale(.35)}100%{transform:scale(1.7);opacity:0}}
+@keyframes flow{to{transform:translateX(-50%)}}
+
+/* The water line along the top of the navy fields. */
+.portal,.pricing{position:relative}
+.water-edge{position:absolute;left:0;right:0;top:-46px;height:48px;overflow:hidden;pointer-events:none}
+.water-edge svg{position:absolute;left:0;bottom:0;width:200%;max-width:none;height:100%}
+.water-edge .w-back path{fill:var(--navy-3)}
+.water-edge .w-front path{fill:var(--navy)}
 
 /* ---------- the mini parent view in the hero (product UI) ---------- */
 .shutter{max-width:460px;width:100%;margin-inline:auto;border-radius:18px;overflow:hidden}
@@ -539,25 +588,15 @@ p{text-wrap:pretty}
 .teachers-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:48px 24px}
 .teachers-head{grid-column:6/-1}
 .teachers-head h2{font-size:var(--s-h2)}
-.why-video{grid-column:1/8;align-self:start}
-.video-facade{position:relative;display:block;width:100%;aspect-ratio:16/9;padding:0;border:0;border-radius:var(--r);overflow:hidden;background:var(--navy);cursor:pointer}
-.video-facade img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
-.video-play{position:absolute;left:24px;bottom:24px;display:grid;place-items:center;width:76px;height:76px;border-radius:50%;background:var(--gold);color:var(--navy);transition:transform .2s var(--ease)}
-.video-play svg{width:30px;height:30px;margin-left:4px}
-@media (hover:hover) and (pointer:fine){
-  .video-facade:hover img{transform:scale(1.03)}
-  .video-facade:hover .video-play{transform:scale(1.06)}
-}
-.why-video iframe{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:var(--r);background:#000}
-.video-cap{font-size:var(--s-small);color:var(--ink-soft);margin-top:12px}
-.care{grid-column:8/13;display:grid;gap:22px;align-self:start}
+.teach-lead{grid-column:1/6;background:var(--navy);color:#fff;border-radius:var(--r);padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:280px}
+.teach-sub{color:var(--on-navy-gold);font-size:var(--s-body)}
+.care{grid-column:6/13;display:grid;grid-template-columns:1fr 1fr;gap:28px 32px;align-self:center}
 .care li{font-size:var(--s-body);line-height:1.5}
 .care strong{font-weight:650}
 @media (max-width:1079px){
-  .teachers-head,.why-video,.care{grid-column:1/-1}
-  .care{grid-template-columns:1fr 1fr;gap:22px 32px}
+  .teachers-head,.teach-lead,.care{grid-column:1/-1}
 }
-@media (max-width:640px){.care{grid-template-columns:1fr}.video-play{width:60px;height:60px;left:14px;bottom:14px}}
+@media (max-width:640px){.care{grid-template-columns:1fr}}
 
 /* ---------- programmes ---------- */
 .programmes{background:var(--paper-2);padding:var(--section) 0}
@@ -578,6 +617,7 @@ p{text-wrap:pretty}
 .rd{font-weight:600;font-size:16px;color:var(--gold-text);font-variant-numeric:tabular-nums;padding-top:2px}
 .road h3{font:650 20px/1.3 var(--f-text)}
 .road p{font-size:16px;color:var(--ink-soft);margin-top:4px}
+.pp-pace{margin-top:14px;font-size:var(--s-small);color:var(--ink-soft);max-width:70ch}
 .pp-note{margin-top:var(--g);padding:14px 18px;border-radius:var(--r);background:var(--gold-tint);font-size:16px}
 .js .pp.enter{animation:pnl .45s var(--ease) both}
 @media (max-width:1079px){
@@ -594,14 +634,16 @@ p{text-wrap:pretty}
 
 /* ---------- how it works ---------- */
 .how{padding:var(--section) 0}
-.flow{width:100%;height:auto;margin:56px 0 28px;overflow:hidden}
-.flow rect{transition:transform 1.1s var(--ease),opacity .6s ease}
-.js .flow:not(.is-in) rect{opacity:0}
-.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:48px}
+.steps li{display:grid;align-content:start;gap:18px}
+.stage{width:100%;max-width:230px;height:auto}
 .steps h3{font:650 20px/1.25 var(--f-text)}
 .steps p{font-size:16px;color:var(--ink-soft);margin-top:6px;max-width:32ch}
 @media (max-width:860px){.steps{grid-template-columns:1fr 1fr;gap:28px 24px}}
-@media (max-width:520px){.steps{grid-template-columns:1fr}.flow{margin:36px 0 20px}}
+@media (max-width:520px){
+  .steps{grid-template-columns:1fr;gap:20px}
+  .steps li{grid-template-columns:120px minmax(0,1fr);gap:16px;align-items:center}
+}
 
 /* ---------- pricing ---------- */
 .pricing{background:var(--navy);color:#fff;padding:var(--section) 0}
@@ -707,5 +749,5 @@ main{position:relative;z-index:1;background:var(--paper)}
   .js .reveal.is-in{opacity:1;transform:none}
 }
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }

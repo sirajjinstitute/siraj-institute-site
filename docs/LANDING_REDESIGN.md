@@ -23,6 +23,42 @@ the live LMS, the existing logo, and the current pricing presentation at
 - **Primary action** stays "Book a free trial" → `/apply`. WhatsApp contact
   and its anonymous signal are unchanged.
 
+## Round 2 (owner, 2026-10-14)
+
+- **Video removed** at the owner's request, with its eight poster files and the
+  YouTube facade script. `vercel.json` still allows `youtube.com` in the
+  report-only CSP `frame-src`; it is now unused and can be tightened in a
+  separate change.
+- **Water and growth motion** for Suqya ("giving water"): a plant watered by
+  falling drops in the hero, four growth stages (seed, sprout, young plant,
+  grown plant) for the four trial steps, and a slow water line along the top
+  of the two navy sections. Inline SVG drawn in code, animated with
+  transform and opacity only; loops pause off screen; reduced motion shows
+  the grown plants and still water; without script everything still shows.
+  Scroll-driven CSS animations were not used because Firefox does not ship
+  them by default yet.
+- **Wide screens:** the hero board and bar stop at the content width plus
+  margins, so text edges line up from laptops to 2560 px screens.
+
+## Roadmap durations: the arithmetic
+
+Assumptions, now stated on the page: three 30-minute classes a week (the
+most popular plan), about 48 teaching weeks a year, the 604-page Madinah
+Mushaf, 240 quarters of a hizb.
+
+| Item | Before | After | Why |
+| --- | --- | --- | --- |
+| Tajweed phase 1 | 2.5–3 months (steps sum to 8–10 weeks) | steps kept; totals removed | sum was inconsistent |
+| Juz Amma and basic Tajweed | "recitation or memorization" in 2–2.5 months | recitation only | memorizing Juz Amma from scratch takes far longer |
+| Recitation khatmah | 2–2.5 years | about 1.5–2 years | 240 quarters at one or more per class is under 240 classes, about 1.7 years at three a week |
+| Memorization, intensive | 2.5–3 years at 1–2 pages per class | 2.5–3 years at five classes a week, about one page per class | 604 ÷ 240 pages a year = 2.5 years; two new pages in 30 minutes is unrealistic |
+| Memorization, regular | 4–5 years at ½–1 page per class | about 4–8 years at three classes a week | 604 ÷ 72–144 pages a year = 4.2–8.4 years |
+| Tafsir stage 4 | 12–14 months, Yunus to Al-Hadid | 18–22 months, Yunus to At-Tahrim | Juz 28 was missing from every stage; ~314 pages at stage 3's pace |
+| Arabic phase 3 | "advanced fluency" | "building fluency" | ~1 year of three 30-minute lessons is not general fluency |
+
+Islamic Studies (7 months, 84 classes) and the other Arabic and Tafsir
+stages are internally consistent and were kept.
+
 ## The portal demo
 
 The "Try the Suqya portal" section rebuilds the student portal (Today, My

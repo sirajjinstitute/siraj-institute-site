@@ -124,22 +124,6 @@ const revealWa = () => waFloat.classList.toggle('show', window.scrollY > 320);
 revealWa();
 window.addEventListener('scroll', revealWa, { passive: true });
 
-/* Privacy-friendly YouTube facade: no YouTube request until activation. */
-const videoFacade = document.querySelector('.video-facade');
-if (videoFacade) {
-  videoFacade.addEventListener('click', () => {
-    const videoId = videoFacade.dataset.videoId;
-    trackEvent('video_play', { video_id: videoId, video_title: 'Suqya Institute, why families choose us' });
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
-    iframe.title = 'Suqya Institute: why families choose us';
-    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-    iframe.allowFullscreen = true;
-    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-    videoFacade.replaceWith(iframe);
-  }, { once: true });
-}
-
 /* Everything below waits for the first paint, so none of it can hold back
    the hero text (the LCP element). The static HTML is already complete:
    pricing shows its default figures and the demo its first screens. */
@@ -215,39 +199,17 @@ function initPage() {
     onEnter(wave, el => el.classList.add('is-in'));
   }
 
-  /* "Many into one": the trial turns scattered starting points into a weekly
-     timetable. Squares drift into place once the diagram is seen. */
-  const flow = document.getElementById('flow');
-  if (flow) {
-    const ns = 'http://www.w3.org/2000/svg';
-    let seed = 7;
-    const rand = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
-    const sq = (x, y, s, fill, opacity) => {
-      const r = document.createElementNS(ns, 'rect');
-      r.setAttribute('x', x.toFixed(1)); r.setAttribute('y', y.toFixed(1));
-      r.setAttribute('width', s); r.setAttribute('height', s); r.setAttribute('rx', '2');
-      r.setAttribute('fill', fill);
-      if (opacity) r.setAttribute('opacity', opacity);
-      const dx = (rand() - 0.5) * 220, dy = (rand() - 0.5) * 160;
-      r.style.transform = `translate(${dx.toFixed(0)}px, ${dy.toFixed(0)}px)`;
-      r.style.transitionDelay = `${Math.round(rand() * 500)}ms`;
-      flow.appendChild(r);
-    };
-    // Apply: scattered, two pale tones.
-    for (let i = 0; i < 46; i++) sq(10 + rand() * 250, 20 + rand() * 210, 12, i % 3 ? '#c9c1ad' : '#a9b3c1');
-    // Trial: pulled into a tight ribbon, three squares high.
-    for (let c = 0; c < 16; c++) for (let r = 0; r < 3; r++) sq(320 + c * 15, 108 + r * 15, 12, '#153559');
-    // Plan: neat rows.
-    for (let c = 0; c < 8; c++) for (let r = 0; r < 5; r++) sq(620 + c * 30, 55 + r * 34, 14, '#071c36');
-    // First lesson: a week of seven columns; the lessons are filled in gold.
-    const lessons = new Set(['1-1', '3-1', '5-1', '1-2', '3-2', '5-2', '1-3', '3-3', '5-3']);
-    for (let c = 0; c < 7; c++) for (let r = 0; r < 5; r++) {
-      const on = lessons.has(`${c}-${r}`);
-      sq(925 + c * 38, 50 + r * 36, 22, on ? '#d4aa51' : '#e3ddcd');
-    }
-    const settle = () => flow.querySelectorAll('rect').forEach(r => { r.style.transform = 'none'; });
-    onEnter(flow, el => { el.classList.add('is-in'); requestAnimationFrame(() => requestAnimationFrame(settle)); });
-  }
+  /* Water and growth: animations run only while their drawing is on screen,
+     so nothing loops out of sight. The first check runs now, so a drawing
+     already in view keeps playing without a pause. */
+  document.querySelectorAll('.anim').forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('in-view');
+    if (typeof IntersectionObserver !== 'function') { el.classList.add('in-view'); return; }
+    new IntersectionObserver(entries => entries.forEach(entry => {
+      entry.target.classList.toggle('in-view', entry.isIntersecting);
+    }), { rootMargin: '80px 0px' }).observe(el);
+  });
 
   /* ------------------------------------------------------------------ */
   /* Tabs: the WAI-ARIA tabs pattern, shared by the programme list and   */
