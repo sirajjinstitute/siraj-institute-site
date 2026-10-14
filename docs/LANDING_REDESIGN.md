@@ -88,6 +88,13 @@ to drop the programme duration map. Changes:
   their maths are unchanged; the script fills each card by its
   `data-hours`, so the card order no longer matters to it.
 
+- **Recommended plan moved to 3 a week** (owner, 2026-10-14): featuring
+  5 a week read as a sales push. The cards keep their largest-first order,
+  but the featured card is now 3 a week, tagged "Recommended", with the
+  note "A steady, balanced pace that suits most learners". 5 a week keeps
+  its plain "Best for: Memorization and the fastest progress" row. Prices
+  are unchanged.
+
 - Ijazah (owner, 2026-10-14): the institute grants Ijazah itself, so the
   page no longer carries the "preparation, never a guaranteed certificate"
   note; the card says the learner earns their Ijazah from Suqya once they
