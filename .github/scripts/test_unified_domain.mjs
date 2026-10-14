@@ -14,7 +14,12 @@ test('all six account destinations and public intake stay on the visible host', 
     assert.equal(rule?.destination, `${upstream}/${prefix}/:path*`);
     assert.ok(config.rewrites.indexOf(bare) < config.rewrites.indexOf(rule));
   }
-  assert.equal(config.redirects, undefined);
+  // Redirects only canonicalise other hosts onto https://suqyainstitute.com;
+  // none may turn the visible host into a redirect away from the site.
+  for (const r of config.redirects ?? []) {
+    assert.ok(r.has?.some(h => h.type === 'host'), `${r.source} must be host-conditioned`);
+    assert.ok(r.destination.startsWith('https://suqyainstitute.com/'));
+  }
   assert.equal((html.match(/href="\/login"/g) ?? []).length, 2);
   assert.doesNotMatch(html, /https:\/\/siraj-lms\.vercel\.app/);
 });

@@ -40,7 +40,7 @@ EXEMPT_SUFFIXES = {".txt", ".md"}
 
 def reference_sources(root: pathlib.Path) -> list[pathlib.Path]:
     """Files that may contain /assets/ URLs."""
-    sources = [root / "index.html"]
+    sources = [root / "index.html", root / "404.html"]
     sources += sorted(p for p in (root / "assets").rglob("*") if p.suffix in {".css", ".js"})
     return [p for p in sources if p.is_file()]
 

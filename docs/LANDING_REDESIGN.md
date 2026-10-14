@@ -144,4 +144,4 @@ text is reproduced. If an LMS label or flow changes, update the demo.
 
 `python3 .github/scripts/verify_asset_hashes.py .`
 `python3 .github/scripts/scan_secrets.py .`
-`node --test .github/scripts/test_pricing.mjs .github/scripts/test_whatsapp_signal.mjs`
+`node --test .github/scripts/test_*.mjs`

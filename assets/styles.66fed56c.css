@@ -395,6 +395,16 @@ p{text-wrap:pretty}
   *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 
+/* ---------- 404 page ---------- */
+.nf{min-height:100svh;display:grid;place-items:center;background:radial-gradient(800px 400px at 50% 0%,rgba(212,170,81,.14),transparent),var(--navy);color:#fff;text-align:center;padding:48px var(--m)}
+.nf-in{max-width:620px}
+.nf img{width:96px;height:auto;margin:0 auto 22px;filter:drop-shadow(0 0 22px rgba(212,170,81,.45))}
+.nf .eyebrow{color:var(--gold-light)}
+.nf h1{font-size:clamp(34px,6vw,54px);margin-top:14px}
+.nf .lead{color:var(--on-navy-soft);font-size:18px;margin-top:16px}
+.nf-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:32px}
+@media (max-width:560px){.nf-actions .btn{flex:1 1 100%}}
+
 /* ---------- the mini parent view in the hero (product UI) ---------- */
 .shutter{max-width:460px;width:100%;margin-inline:auto;border-radius:18px;overflow:hidden}
 .mini{background:#f4f7f8;color:#0a1525;border-radius:18px;font-size:14px;line-height:1.45;transform-origin:50% 30%}
@@ -716,3 +726,37 @@ p{text-wrap:pretty}
   .due .abtn{width:100%}
 }
 
+
+/* Generated from former inline style attributes (CSP: no inline styles). */
+.is1{--v:100 !important}
+.is2{--v:92 !important}
+.is3{--p:.18 !important}
+.is4{--p:.1 !important}
+.is5{--d:0ms !important}
+.is6{--fall:150px !important;--dd:0.4s !important}
+.is7{--dd:0.4s !important}
+.is8{transform-origin:150px 196px !important}
+.is9{--d:380ms !important;stroke-width:3.5 !important}
+.is10{--ld:1152ms !important}
+.is11{--fall:140px !important;--dd:1.2s !important}
+.is12{--dd:1.2s !important}
+.is13{--d:760ms !important;stroke-width:4 !important}
+.is14{--ld:1037ms !important}
+.is15{--ld:1215ms !important}
+.is16{--ld:1393ms !important}
+.is17{--ld:1552ms !important}
+.is18{--ld:1780ms !important}
+.is19{--fall:144px !important;--dd:0.7s !important}
+.is20{--dd:0.7s !important}
+.is21{--d:1140ms !important;stroke-width:4.5 !important}
+.is22{--ld:1318ms !important}
+.is23{--ld:1456ms !important}
+.is24{--ld:1595ms !important}
+.is25{--ld:1734ms !important}
+.is26{--ld:1862ms !important}
+.is27{--ld:1981ms !important}
+.is28{--ld:2160ms !important}
+.is29{--fall:158px !important;--dd:0.2s !important}
+.is30{--dd:0.2s !important}
+.is31{--fall:136px !important;--dd:1.6s !important}
+.is32{--dd:1.6s !important}
