@@ -101,6 +101,16 @@ to drop the programme duration map. Changes:
   reach its standard. The programmes figure now reads "start with one, add
   more anytime", so six programmes never read as a required sequence.
 
+- **Log in button in the bar** (owner, 2026-10-15): "Log in" leaves the
+  link list and becomes its own quiet outline pill (small gold person icon)
+  just before the gold "Book a free trial", so returning families find it
+  without it competing with the primary action. At 560px and below it is a
+  44px icon-only circle whose visible text stays available to screen
+  readers. The trial button never wraps, and the brand name hides at 490px
+  and below so the bar always fits on one line (checked from 320px to
+  1920px, top of page and scrolled). Exactly two `/login` links remain
+  (bar and footer); the `login_click` event is unchanged.
+
 ## Roadmap durations: the arithmetic (no longer shown)
 
 Assumptions, as they were stated on the page: three 30-minute classes a week (the
