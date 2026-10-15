@@ -66,7 +66,11 @@ test('the installable-app files reach the portal on the visible host', () => {
   ]) {
     assert.equal(config.rewrites.find(r => r.source === source)?.destination, destination);
   }
-  // The marketing site keeps its own manifest for its own pages.
-  assert.match(html, /<link rel="manifest" href="\/site\.webmanifest[?"]/);
-  assert.equal((html.match(/href="\/login#install-app"/g) ?? []).length, 2);
+  // The landing page uses the portal's own manifest (one app identity on
+  // this host), so "Get the app" installs the portal directly from here.
+  assert.match(html, /<link rel="manifest" href="\/manifest\.webmanifest">/);
+  assert.doesNotMatch(html, /site\.webmanifest/);
+  assert.equal((html.match(/href="\/login#install-app"[^>]*data-install-app/g) ?? []).length, 2);
+  assert.match(html, /<script src="\/assets\/install\.[0-9a-f]{8}\.js" defer><\/script>/);
+  assert.match(html, /<dialog id="installAppDialog"/);
 });
