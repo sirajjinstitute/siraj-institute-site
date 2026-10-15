@@ -243,6 +243,18 @@
       "destination": "https://siraj-lms.vercel.app/api/:path*"
     },
     {
+      "source": "/manifest.webmanifest",
+      "destination": "https://siraj-lms.vercel.app/manifest.webmanifest"
+    },
+    {
+      "source": "/sw.js",
+      "destination": "https://siraj-lms.vercel.app/sw.js"
+    },
+    {
+      "source": "/app-icons/:path*",
+      "destination": "https://siraj-lms.vercel.app/app-icons/:path*"
+    },
+    {
       "source": "/_next",
       "destination": "https://siraj-lms.vercel.app/_next"
     },

@@ -54,3 +54,19 @@ test('private portals and API responses opt out of search indexing', () => {
   }
   assert.equal(rule.headers[0].value, 'noindex, nofollow');
 });
+
+test('the installable-app files reach the portal on the visible host', () => {
+  // The portal pages served here link /manifest.webmanifest, register /sw.js
+  // for push notifications and use /app-icons/*; without these the app could
+  // not be installed or receive notifications on suqyainstitute.com.
+  for (const [source, destination] of [
+    ['/manifest.webmanifest', `${upstream}/manifest.webmanifest`],
+    ['/sw.js', `${upstream}/sw.js`],
+    ['/app-icons/:path*', `${upstream}/app-icons/:path*`],
+  ]) {
+    assert.equal(config.rewrites.find(r => r.source === source)?.destination, destination);
+  }
+  // The marketing site keeps its own manifest for its own pages.
+  assert.match(html, /<link rel="manifest" href="\/site\.webmanifest[?"]/);
+  assert.equal((html.match(/href="\/login#install-app"/g) ?? []).length, 2);
+});
