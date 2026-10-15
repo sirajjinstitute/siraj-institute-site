@@ -118,6 +118,10 @@ p{text-wrap:pretty}
 .links a::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:1.5px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
 .links a:hover{color:#fff}
 .links a:hover::after{transform:scaleX(1)}
+.nav-login{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;color:rgba(255,255,255,.92);font:500 15px/1 var(--f-text);text-decoration:none;white-space:nowrap;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.26);transition:color .2s ease,background-color .25s ease,box-shadow .25s ease}
+.nav-login svg{width:18px;height:18px;flex:none;fill:none;stroke:var(--gold);stroke-width:1.8;stroke-linecap:round}
+.nav-login:hover{color:#fff;background:rgba(212,170,81,.1);box-shadow:inset 0 0 0 1px rgba(212,170,81,.7)}
+.nav-cta{margin-left:-12px}
 .menu{display:none;width:46px;height:46px;border:0;border-radius:12px;background:rgba(255,255,255,.08);cursor:pointer;place-items:center}
 .menu-lines{display:grid;gap:6px;width:20px}
 .menu-lines span{display:block;height:2px;background:#fff;border-radius:2px;transition:transform .25s var(--ease)}
@@ -131,8 +135,13 @@ p{text-wrap:pretty}
   .links a::after{display:none}
   .nav-in{gap:12px}
 }
-@media (max-width:560px){.brand-txt span{display:none}.brand-txt strong{font-size:19px}.nav-cta{padding:0 16px;font-size:14px}}
-@media (max-width:400px){.brand-txt{display:none}}
+@media (max-width:1023px){.nav-cta{margin-left:0}}
+@media (max-width:560px){.brand-txt span{display:none}.brand-txt strong{font-size:19px}.nav-cta{padding:0 16px;font-size:14px;white-space:nowrap}.brand-txt strong{white-space:nowrap}
+  .nav-login{width:44px;padding:0;justify-content:center}
+  .nav-login-txt{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+  .nav-login svg{width:20px;height:20px}
+}
+@media (max-width:490px){.brand-txt{display:none}}
 
 /* ---------- hero ---------- */
 .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;background:#06142a;color:#fff;padding:120px 0 110px}
