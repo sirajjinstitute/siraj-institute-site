@@ -780,3 +780,4 @@ p{text-wrap:pretty}
 .is30{--dd:0.2s !important}
 .is31{--fall:136px !important;--dd:1.6s !important}
 .is32{--dd:1.6s !important}
+@media (max-width:900px){.foot-top{grid-template-columns:repeat(2,minmax(0,1fr))}.foot-col a,.foot-col h3{overflow-wrap:anywhere}}
