@@ -6,7 +6,10 @@
  * loaded instead of relying on the config command's implicit page view.
  */
 (function () {
-  var MEASUREMENT_ID = 'G-667Q0LLEH2';
+  /* Primary destination is the suqyainstitute.com property; the original
+     property stays configured so it keeps receiving data. */
+  var MEASUREMENT_ID = 'G-VJNWTGML5Y';
+  var EXTRA_MEASUREMENT_IDS = ['G-667Q0LLEH2'];
   var TAG_ELEMENT_ID = 'ga4-tag';
 
   window.dataLayer = window.dataLayer || [];
@@ -17,6 +20,9 @@
      but send the single page view only after the external tag is ready. */
   gtag('js', new Date());
   gtag('config', MEASUREMENT_ID, { send_page_view: false });
+  EXTRA_MEASUREMENT_IDS.forEach(function (id) {
+    gtag('config', id, { send_page_view: false });
+  });
 
   function sendPageView() {
     gtag('event', 'page_view', {
