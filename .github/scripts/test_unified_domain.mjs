@@ -70,7 +70,7 @@ test('the installable-app files reach the portal on the visible host', () => {
   // this host), so "Get the app" installs the portal directly from here.
   assert.match(html, /<link rel="manifest" href="\/manifest\.webmanifest">/);
   assert.doesNotMatch(html, /site\.webmanifest/);
-  assert.equal((html.match(/href="\/login#install-app"[^>]*data-install-app/g) ?? []).length, 2);
+  assert.equal((html.match(/href="\/login#install-app"[^>]*data-install-app/g) ?? []).length, 3);
   assert.match(html, /<script src="\/assets\/install\.[0-9a-f]{8}\.js" defer><\/script>/);
   assert.match(html, /<dialog id="installAppDialog"/);
   // Without a browser install prompt (in-app browsers, already installed)
