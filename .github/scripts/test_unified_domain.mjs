@@ -76,5 +76,6 @@ test('the installable-app files reach the portal on the visible host', () => {
   // Without a browser install prompt (in-app browsers, already installed)
   // the button shows device steps instead of leaving for the login page.
   assert.match(html, /data-install-steps="ios"/);
+  assert.match(html, /data-install-now/);
   assert.match(html, /data-install-steps="other"[^]*Install app/);
 });
