@@ -73,4 +73,8 @@ test('the installable-app files reach the portal on the visible host', () => {
   assert.equal((html.match(/href="\/login#install-app"[^>]*data-install-app/g) ?? []).length, 2);
   assert.match(html, /<script src="\/assets\/install\.[0-9a-f]{8}\.js" defer><\/script>/);
   assert.match(html, /<dialog id="installAppDialog"/);
+  // Without a browser install prompt (in-app browsers, already installed)
+  // the button shows device steps instead of leaving for the login page.
+  assert.match(html, /data-install-steps="ios"/);
+  assert.match(html, /data-install-steps="other"[^]*Install app/);
 });
