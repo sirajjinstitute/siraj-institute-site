@@ -89,14 +89,14 @@
 }
 </script>
 
-<link rel="stylesheet" href="/assets/styles.dd3babb8.css">
+<link rel="stylesheet" href="/assets/styles.e4458afa.css">
 <!-- Amiri's Arabic subsets (about 108 KB) stay inert until the visitor
      starts to move or nears the first Arabic word; app.js switches the
      media to "all". <noscript> keeps them for a visitor without script. -->
 <link rel="stylesheet" href="/assets/fonts-deferred.9949c3ed.css" media="print" data-late-css>
 <noscript><link rel="stylesheet" href="/assets/fonts-deferred.9949c3ed.css"></noscript>
 <script src="/assets/app.af4068dd.js" defer></script>
-<script src="/assets/install.23fcbea8.js" defer></script>
+<script src="/assets/install.7725d9e8.js" defer></script>
 <!-- Google Analytics 4: injected from an idle callback after the load
      event, so it never competes with the first screen. -->
 <script src="/assets/analytics.f8fe9d4c.js" defer></script>
@@ -842,12 +842,25 @@
 </a>
 
 <dialog id="installAppDialog" class="install-dialog" aria-labelledby="installAppTitle">
-  <h2 id="installAppTitle">Install the Suqya app on iPhone</h2>
-  <ol>
-    <li>Tap the Share button in Safari.</li>
-    <li>Choose &ldquo;Add to Home Screen&rdquo;.</li>
-    <li>Tap &ldquo;Add&rdquo;, then open Suqya from the new icon.</li>
-  </ol>
+  <h2 id="installAppTitle">Install the Suqya app</h2>
+  <div data-install-steps="ios" hidden>
+    <ol>
+      <li>Tap the Share button <span aria-hidden="true">(the square with an arrow &uarr;)</span>. On newer iPhones, tap &hellip; first, then Share.</li>
+      <li>Scroll down and choose &ldquo;Add to Home Screen&rdquo;, then tap &ldquo;Add&rdquo;.</li>
+      <li>Open Suqya from the new icon and tap &ldquo;Turn on&rdquo; for notifications.</li>
+    </ol>
+    <p>Apple does not let websites install apps with one tap; these steps take a few seconds.</p>
+  </div>
+  <div data-install-steps="other">
+    <p class="install-ready" data-install-ready hidden><button type="button" class="btn btn-gold" data-install-now>Install now</button></p>
+    <p data-install-wait>Getting the app ready&hellip; the Install button appears here in a few seconds. Or install it yourself:</p>
+    <ol>
+      <li>Open this page in Chrome (if you are inside WhatsApp, Facebook or Instagram, tap &#8942; and choose &ldquo;Open in Chrome&rdquo;).</li>
+      <li>Tap the Chrome menu &#8942;.</li>
+      <li>Choose &ldquo;Install app&rdquo; or &ldquo;Add to Home screen&rdquo;.</li>
+    </ol>
+    <p>Already installed? Open Suqya from its icon on your home screen.</p>
+  </div>
   <form method="dialog"><button type="submit" class="btn btn-gold btn-sm">Done</button></form>
 </dialog>
 </body>
