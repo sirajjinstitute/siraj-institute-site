@@ -327,6 +327,17 @@ function initPage() {
   }
   /* pricing:end */
 
+  /* TEMP -- the payment processor asked for an EGP equivalent next to every
+     USD price while they finish their own setup; Suqya's prices stay USD.
+     Approximate market rate, set 2026-10-18. Remove USD_TO_EGP, moneyEGP and
+     every [data-price-egp]/[data-usd] element (in index.html too) once the
+     processor no longer needs it. */
+  const USD_TO_EGP = 52.8;
+  const moneyEGP = usd => `≈ EGP ${Math.round(usd * USD_TO_EGP).toLocaleString('en-US')}`;
+  document.querySelectorAll('[data-usd]').forEach(el => {
+    el.textContent = `(${moneyEGP(Number(el.dataset.usd))})`;
+  });
+
   const priceGrid = document.getElementById('priceGrid');
   const pricingLive = document.getElementById('pricingLive');
   let currentStudents = 1;
@@ -339,6 +350,7 @@ function initPage() {
       const plan = priceGrid.querySelector(`.plan[data-hours="${pkg.monthlyHours}"]`);
       const pctLabel = Math.round(q.pct * 100);
       plan.querySelector('[data-price]').textContent = money(q.monthly);
+      plan.querySelector('[data-price-egp]').textContent = `(${moneyEGP(q.monthly)})`;
       plan.querySelector('[data-per]').textContent = currentStudents > 1 ? '/month per learner' : '/month';
       plan.querySelector('[data-rate]').textContent = q.pct > 0 ? `${money(q.perHour)} (${pctLabel}% off ${money(HOURLY_RATE)})` : money(q.perHour);
       plan.querySelector('[data-billed]').textContent = q.months === 1

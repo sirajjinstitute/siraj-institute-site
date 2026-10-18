@@ -106,13 +106,13 @@
 }
 </script>
 
-<link rel="stylesheet" href="/assets/styles.878c5831.css">
+<link rel="stylesheet" href="/assets/styles.c67df99b.css">
 <!-- Amiri's Arabic subsets (about 108 KB) stay inert until the visitor
      starts to move or nears the first Arabic word; app.js switches the
      media to "all". <noscript> keeps them for a visitor without script. -->
 <link rel="stylesheet" href="/assets/fonts-deferred.9949c3ed.css" media="print" data-late-css>
 <noscript><link rel="stylesheet" href="/assets/fonts-deferred.9949c3ed.css"></noscript>
-<script src="/assets/app.af4068dd.js" defer></script>
+<script src="/assets/app.9c448da9.js" defer></script>
 <script src="/assets/install.7725d9e8.js" defer></script>
 <!-- Google Analytics 4: injected from an idle callback after the load
      event, so it never competes with the first screen. -->
@@ -699,7 +699,7 @@
     <div class="sec-head reveal">
       <p class="eyebrow">Plans &amp; fees</p>
       <h2 id="pricing-title">Simple, transparent pricing</h2>
-      <p class="lead"><strong>$14.99 per teaching hour.</strong> Choose how many learners are joining and how you&rsquo;d like to be billed; your biggest discount applies automatically.</p>
+      <p class="lead"><strong>$14.99 per teaching hour</strong> <span class="price-egp" data-usd="14.99">(&asymp; EGP 791)</span>. Choose how many learners are joining and how you&rsquo;d like to be billed; your biggest discount applies automatically.</p>
     </div>
 
     <div class="choices reveal">
@@ -736,7 +736,7 @@
     <div class="plans" id="priceGrid">
       <article class="plan" data-hours="10" aria-labelledby="plan-3">
         <h3 class="plan-name" id="plan-3">5 classes a week</h3>
-        <p class="plan-price"><span data-price>$149.90</span><span class="plan-per" data-per>/month</span></p>
+        <p class="plan-price"><span data-price>$149.90</span><span class="plan-per" data-per>/month</span><span class="plan-egp" data-price-egp>(&asymp; EGP 7,915)</span></p>
         <dl class="plan-rows">
           <div><dt>Teaching hours</dt><dd>10 hours a month</dd></div>
           <div><dt>Price per hour</dt><dd data-rate>$14.99</dd></div>
@@ -747,7 +747,7 @@
       </article>
       <article class="plan" data-hours="8" aria-labelledby="plan-2">
         <h3 class="plan-name" id="plan-2">4 classes a week</h3>
-        <p class="plan-price"><span data-price>$119.92</span><span class="plan-per" data-per>/month</span></p>
+        <p class="plan-price"><span data-price>$119.92</span><span class="plan-per" data-per>/month</span><span class="plan-egp" data-price-egp>(&asymp; EGP 6,332)</span></p>
         <dl class="plan-rows">
           <div><dt>Teaching hours</dt><dd>8 hours a month</dd></div>
           <div><dt>Price per hour</dt><dd data-rate>$14.99</dd></div>
@@ -759,7 +759,7 @@
       <article class="plan plan-rec" data-hours="6" aria-labelledby="plan-1">
         <span class="plan-tag">Recommended</span>
         <h3 class="plan-name" id="plan-1">3 classes a week</h3>
-        <p class="plan-price"><span data-price>$89.94</span><span class="plan-per" data-per>/month</span></p>
+        <p class="plan-price"><span data-price>$89.94</span><span class="plan-per" data-per>/month</span><span class="plan-egp" data-price-egp>(&asymp; EGP 4,749)</span></p>
         <p class="plan-note">A steady, balanced pace that suits most learners.</p>
         <dl class="plan-rows">
           <div><dt>Teaching hours</dt><dd>6 hours a month</dd></div>
@@ -771,7 +771,7 @@
       </article>
       <article class="plan" data-hours="4" aria-labelledby="plan-0">
         <h3 class="plan-name" id="plan-0">2 classes a week</h3>
-        <p class="plan-price"><span data-price>$59.96</span><span class="plan-per" data-per>/month</span></p>
+        <p class="plan-price"><span data-price>$59.96</span><span class="plan-per" data-per>/month</span><span class="plan-egp" data-price-egp>(&asymp; EGP 3,166)</span></p>
         <dl class="plan-rows">
           <div><dt>Teaching hours</dt><dd>4 hours a month</dd></div>
           <div><dt>Price per hour</dt><dd data-rate>$14.99</dd></div>
@@ -782,10 +782,14 @@
       </article>
     </div>
 
+    <!-- TEMP: refund-policy note requested by the payment processor; remove
+         together with the EGP equivalents above once no longer needed. -->
+    <p class="pricing-note">Refund policy: if a circumstance stops a student from continuing, we refund the unused teaching hours in cash. Hours already taught are not refunded.</p>
+
     <div class="info reveal">
       <div>
         <h3>Design your own plan</h3>
-        <p>Want a different number of classes or a different schedule? Build your own plan at the same flat rate of $14.99 per teaching hour.</p>
+        <p>Want a different number of classes or a different schedule? Build your own plan at the same flat rate of $14.99 per teaching hour <span class="price-egp" data-usd="14.99">(&asymp; EGP 791)</span>.</p>
       </div>
       <div>
         <h3>After you enrol</h3>

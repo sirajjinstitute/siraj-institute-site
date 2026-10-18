@@ -328,6 +328,7 @@ p{text-wrap:pretty}
 /* ---------- pricing ---------- */
 .pricing{padding:var(--section) 0}
 .pricing .sec-head .lead strong{color:var(--gold-light);font-weight:600}
+.price-egp{font-size:.85em;font-weight:400;color:var(--on-navy-soft)}
 .choice-group{border:0;padding:0;margin:0;min-width:0}
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1080px;margin:0 auto 14px}
 .choice-group legend{padding:0;margin-bottom:10px;font-size:15px;font-weight:600;color:var(--on-navy-gold)}
@@ -337,6 +338,7 @@ p{text-wrap:pretty}
 .choice-input:checked+.choice-pill{background:var(--gold-grad);color:var(--navy);font-weight:600;box-shadow:none}
 .choice-input:focus-visible+.choice-pill{outline:3px solid var(--gold);outline-offset:3px}
 .pricing-live{text-align:center;font-size:15px;color:var(--on-navy-soft);margin:6px 0 34px;min-height:1.5em}
+.pricing-note{text-align:center;font-size:13.5px;color:var(--on-navy-soft);opacity:.75;max-width:52ch;margin:22px auto 0}
 .plans{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;align-items:stretch}
 .plan{position:relative;display:flex;flex-direction:column;padding:30px 26px 26px;border-radius:22px;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);transition:transform .35s var(--ease),box-shadow .35s ease}
 .plan-rec{background:linear-gradient(180deg,rgba(212,170,81,.2),rgba(212,170,81,.05));box-shadow:inset 0 0 0 2px var(--gold),0 28px 70px rgba(0,0,0,.38),0 0 60px rgba(212,170,81,.14)}
@@ -347,6 +349,7 @@ p{text-wrap:pretty}
 .plan-price [data-price]{font:700 clamp(40px,3.4vw,50px)/1 var(--f-display);color:#fff;font-variant-numeric:tabular-nums}
 .plan-rec .plan-price [data-price]{color:var(--gold-light)}
 .plan-per{font-size:14.5px;color:var(--on-navy-soft)}
+.plan-egp{font-size:13px;color:var(--on-navy-soft);opacity:.75}
 .plan-rows{margin:16px 0 24px;display:grid}
 .plan-rows>div{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08);font-size:15px}
 .plan-rows dt{color:var(--on-navy-soft);white-space:nowrap}
