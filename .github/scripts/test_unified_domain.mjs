@@ -7,7 +7,7 @@ const html = readFileSync('index.html', 'utf8');
 const upstream = 'https://siraj-lms.vercel.app';
 
 test('all six account destinations and public intake stay on the visible host', () => {
-  for (const prefix of ['login', 'apply', 'trial', 'admin', 'teacher', 'student', 'guardian', 'supervisor', 'coordinator']) {
+  for (const prefix of ['login', 'apply', 'jobapp', 'trial', 'admin', 'teacher', 'student', 'guardian', 'supervisor', 'coordinator']) {
     const bare = config.rewrites.find(r => r.source === `/${prefix}`);
     assert.equal(bare?.destination, `${upstream}/${prefix}`);
     const rule = config.rewrites.find(r => r.source === `/${prefix}/:path*`);
@@ -49,7 +49,7 @@ test('marketing microphone/camera restrictions and report-only CSP do not blanke
 test('private portals and API responses opt out of search indexing', () => {
   const rule = config.headers.find(r => r.headers.some(h => h.key === 'X-Robots-Tag'));
   assert.ok(rule);
-  for (const role of ['admin', 'teacher', 'student', 'guardian', 'supervisor', 'coordinator', 'api']) {
+  for (const role of ['jobapp', 'admin', 'teacher', 'student', 'guardian', 'supervisor', 'coordinator', 'api']) {
     assert.ok(rule.source.includes(role));
   }
   assert.equal(rule.headers[0].value, 'noindex, nofollow');

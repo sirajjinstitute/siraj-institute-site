@@ -91,7 +91,7 @@
       ]
     },
     {
-      "source": "/:section(login|apply|trial|admin|coordinator|supervisor|teacher|student|guardian|api)/:path*",
+      "source": "/:section(login|apply|jobapp|trial|admin|coordinator|supervisor|teacher|student|guardian|api)/:path*",
       "headers": [
         {
           "key": "X-Robots-Tag",
@@ -177,6 +177,14 @@
     {
       "source": "/apply/:path*",
       "destination": "https://siraj-lms.vercel.app/apply/:path*"
+    },
+    {
+      "source": "/jobapp",
+      "destination": "https://siraj-lms.vercel.app/jobapp"
+    },
+    {
+      "source": "/jobapp/:path*",
+      "destination": "https://siraj-lms.vercel.app/jobapp/:path*"
     },
     {
       "source": "/trial",

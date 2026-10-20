@@ -18,6 +18,10 @@ change is part of this work.
 - `/` and static assets still serve the landing page and its canonical SEO.
 - `/login` and `/apply` render through the landing hostname; scripts, CSS,
   fonts, optimized images, branding and book figures load correctly.
+- `/jobapp` (teacher application form) renders through the landing hostname and
+  is `noindex`. Merge its rewrite only after the LMS release that serves
+  `/jobapp` is deployed and its migration is applied; before that the page and
+  its API answer 503/404.
 - Every account path still requires the LMS's existing server/database
   authorization; unauthenticated redirects remain on the visible hostname.
 - A same-origin login Server Action runs, and a foreign Origin is rejected.
