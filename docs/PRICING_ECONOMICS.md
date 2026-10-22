@@ -112,7 +112,11 @@ never counted as zero or as perfect.
   are a minority, review the mix twice a year.
 - Supersedes, for this score only, the LMS 2026-10-04 line "no points, ranking or
   combined grade". Audience: active admin and supervisor see every teacher; the
-  teacher sees only their own score and components, never other teachers or a ranking.
+  teacher sees only their own score and components, never other teachers' scores.
+- Teacher of the Year (DECIDED 2026-10-22): the teacher with the highest score over the
+  calendar year, with at least one full year of service and full compliance with the
+  regulations, receives the title and a cash award set by management. Admins see the
+  yearly ranking; teachers never see other teachers' scores.
 
 ## 7. Mistakes not to repeat
 
