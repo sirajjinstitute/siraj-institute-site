@@ -106,6 +106,76 @@
   ],
   "redirects": [
     {
+      "source": "/login",
+      "destination": "https://app.suqyainstitute.com/login",
+      "statusCode": 308
+    },
+    {
+      "source": "/login/:path*",
+      "destination": "https://app.suqyainstitute.com/login/:path*",
+      "statusCode": 308
+    },
+    {
+      "source": "/admin",
+      "destination": "https://app.suqyainstitute.com/admin",
+      "statusCode": 308
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "https://app.suqyainstitute.com/admin/:path*",
+      "statusCode": 308
+    },
+    {
+      "source": "/coordinator",
+      "destination": "https://app.suqyainstitute.com/coordinator",
+      "statusCode": 308
+    },
+    {
+      "source": "/coordinator/:path*",
+      "destination": "https://app.suqyainstitute.com/coordinator/:path*",
+      "statusCode": 308
+    },
+    {
+      "source": "/supervisor",
+      "destination": "https://app.suqyainstitute.com/supervisor",
+      "statusCode": 308
+    },
+    {
+      "source": "/supervisor/:path*",
+      "destination": "https://app.suqyainstitute.com/supervisor/:path*",
+      "statusCode": 308
+    },
+    {
+      "source": "/teacher",
+      "destination": "https://app.suqyainstitute.com/teacher",
+      "statusCode": 308
+    },
+    {
+      "source": "/teacher/:path*",
+      "destination": "https://app.suqyainstitute.com/teacher/:path*",
+      "statusCode": 308
+    },
+    {
+      "source": "/student",
+      "destination": "https://app.suqyainstitute.com/student",
+      "statusCode": 308
+    },
+    {
+      "source": "/student/:path*",
+      "destination": "https://app.suqyainstitute.com/student/:path*",
+      "statusCode": 308
+    },
+    {
+      "source": "/guardian",
+      "destination": "https://app.suqyainstitute.com/guardian",
+      "statusCode": 308
+    },
+    {
+      "source": "/guardian/:path*",
+      "destination": "https://app.suqyainstitute.com/guardian/:path*",
+      "statusCode": 308
+    },
+    {
       "source": "/",
       "has": [
         {
@@ -163,14 +233,6 @@
   ],
   "rewrites": [
     {
-      "source": "/login",
-      "destination": "https://siraj-lms.vercel.app/login"
-    },
-    {
-      "source": "/login/:path*",
-      "destination": "https://siraj-lms.vercel.app/login/:path*"
-    },
-    {
       "source": "/apply",
       "destination": "https://siraj-lms.vercel.app/apply"
     },
@@ -195,68 +257,12 @@
       "destination": "https://siraj-lms.vercel.app/trial/:path*"
     },
     {
-      "source": "/admin",
-      "destination": "https://siraj-lms.vercel.app/admin"
-    },
-    {
-      "source": "/admin/:path*",
-      "destination": "https://siraj-lms.vercel.app/admin/:path*"
-    },
-    {
-      "source": "/coordinator",
-      "destination": "https://siraj-lms.vercel.app/coordinator"
-    },
-    {
-      "source": "/coordinator/:path*",
-      "destination": "https://siraj-lms.vercel.app/coordinator/:path*"
-    },
-    {
-      "source": "/supervisor",
-      "destination": "https://siraj-lms.vercel.app/supervisor"
-    },
-    {
-      "source": "/supervisor/:path*",
-      "destination": "https://siraj-lms.vercel.app/supervisor/:path*"
-    },
-    {
-      "source": "/teacher",
-      "destination": "https://siraj-lms.vercel.app/teacher"
-    },
-    {
-      "source": "/teacher/:path*",
-      "destination": "https://siraj-lms.vercel.app/teacher/:path*"
-    },
-    {
-      "source": "/student",
-      "destination": "https://siraj-lms.vercel.app/student"
-    },
-    {
-      "source": "/student/:path*",
-      "destination": "https://siraj-lms.vercel.app/student/:path*"
-    },
-    {
-      "source": "/guardian",
-      "destination": "https://siraj-lms.vercel.app/guardian"
-    },
-    {
-      "source": "/guardian/:path*",
-      "destination": "https://siraj-lms.vercel.app/guardian/:path*"
-    },
-    {
       "source": "/api",
       "destination": "https://siraj-lms.vercel.app/api"
     },
     {
       "source": "/api/:path*",
       "destination": "https://siraj-lms.vercel.app/api/:path*"
-    },
-    {
-      "source": "/manifest.webmanifest",
-      "destination": "https://siraj-lms.vercel.app/manifest.webmanifest"
-    },
-    {
-      "source": "/sw.js",
-      "destination": "https://siraj-lms.vercel.app/sw.js"
     },
     {
       "source": "/app-icons/:path*",

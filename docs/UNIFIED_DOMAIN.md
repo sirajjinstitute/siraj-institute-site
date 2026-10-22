@@ -58,3 +58,24 @@ domain ownership for this routing approach.
 
 Vercel Preview READY is only configuration/build evidence. Record actual
 HTTP/browser checks and exact deployment identities in the PR before release.
+
+## Update (Owner Decision, 2026-10-21): app on its own hostname
+
+The installed portal app (manifest `scope: "/"`) captured every link on the
+shared hostname, so opening the marketing site launched the app. The app now
+lives on `https://app.suqyainstitute.com` (the LMS Vercel project); the
+marketing host stays in the browser. This supersedes "no subdomain" above for
+account paths only.
+
+- Marketing host keeps rewrites for `/apply`, `/jobapp`, `/trial`, `/api`,
+  `/_next`, `/brand`, `/curriculum`, `/app-icons`.
+- `/login`, `/admin`, `/coordinator`, `/supervisor`, `/teacher`, `/student`,
+  `/guardian` (and subpaths) are 308 redirects to the app host, so old links
+  and bookmarks keep working. The landing "Log in" and "Get the app" links go
+  straight to the app host; "Get the app" lands on its sign-in page, which has
+  the install button.
+- `/manifest.webmanifest` and `/sw.js` are no longer proxied on the marketing
+  host; the landing uses its own `site.webmanifest`.
+- Existing installs of the app from `suqyainstitute.com` must be removed and
+  reinstalled from the app host; users sign in once on the new host.
+- Recovery: revert this PR (restores the rewrites); the app host can stay.

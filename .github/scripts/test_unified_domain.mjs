@@ -6,21 +6,30 @@ const config = JSON.parse(readFileSync('vercel.json', 'utf8'));
 const html = readFileSync('index.html', 'utf8');
 const upstream = 'https://siraj-lms.vercel.app';
 
-test('all six account destinations and public intake stay on the visible host', () => {
-  for (const prefix of ['login', 'apply', 'jobapp', 'trial', 'admin', 'teacher', 'student', 'guardian', 'supervisor', 'coordinator']) {
-    const bare = config.rewrites.find(r => r.source === `/${prefix}`);
-    assert.equal(bare?.destination, `${upstream}/${prefix}`);
-    const rule = config.rewrites.find(r => r.source === `/${prefix}/:path*`);
-    assert.equal(rule?.destination, `${upstream}/${prefix}/:path*`);
-    assert.ok(config.rewrites.indexOf(bare) < config.rewrites.indexOf(rule));
+const appOrigin = 'https://app.suqyainstitute.com';
+const accountPrefixes = ['login', 'admin', 'teacher', 'student', 'guardian', 'supervisor', 'coordinator'];
+
+test('public intake stays on the visible host and account paths move to the app host', () => {
+  for (const prefix of ['apply', 'jobapp', 'trial']) {
+    assert.equal(config.rewrites.find(r => r.source === `/${prefix}`)?.destination, `${upstream}/${prefix}`);
+    assert.equal(config.rewrites.find(r => r.source === `/${prefix}/:path*`)?.destination, `${upstream}/${prefix}/:path*`);
   }
-  // Redirects only canonicalise other hosts onto https://suqyainstitute.com;
-  // none may turn the visible host into a redirect away from the site.
-  for (const r of config.redirects ?? []) {
+  // The installed app is scoped to the app host only, so the marketing host
+  // must never proxy account paths (that is what made the app capture links).
+  for (const prefix of accountPrefixes) {
+    assert.ok(!config.rewrites.some(r => r.source.split('/')[1]?.split(':')[0] === prefix), `${prefix} must not be rewritten`);
+    const bare = config.redirects.find(r => r.source === `/${prefix}`);
+    assert.equal(bare?.destination, `${appOrigin}/${prefix}`);
+    assert.equal(bare?.statusCode, 308);
+    assert.equal(config.redirects.find(r => r.source === `/${prefix}/:path*`)?.destination, `${appOrigin}/${prefix}/:path*`);
+  }
+  for (const r of config.redirects) {
+    if (r.destination.startsWith(appOrigin)) continue;
     assert.ok(r.has?.some(h => h.type === 'host'), `${r.source} must be host-conditioned`);
     assert.ok(r.destination.startsWith('https://suqyainstitute.com/'));
   }
-  assert.equal((html.match(/href="\/login"/g) ?? []).length, 2);
+  assert.equal((html.match(/href="https:\/\/app\.suqyainstitute\.com\/login"/g) ?? []).length, 2);
+  assert.doesNotMatch(html, /href="\/login/);
   assert.doesNotMatch(html, /https:\/\/siraj-lms\.vercel\.app/);
 });
 
@@ -55,27 +64,15 @@ test('private portals and API responses opt out of search indexing', () => {
   assert.equal(rule.headers[0].value, 'noindex, nofollow');
 });
 
-test('the installable-app files reach the portal on the visible host', () => {
-  // The portal pages served here link /manifest.webmanifest, register /sw.js
-  // for push notifications and use /app-icons/*; without these the app could
-  // not be installed or receive notifications on suqyainstitute.com.
-  for (const [source, destination] of [
-    ['/manifest.webmanifest', `${upstream}/manifest.webmanifest`],
-    ['/sw.js', `${upstream}/sw.js`],
-    ['/app-icons/:path*', `${upstream}/app-icons/:path*`],
-  ]) {
-    assert.equal(config.rewrites.find(r => r.source === source)?.destination, destination);
+test('the marketing host is not installable as the portal app', () => {
+  // The portal manifest (scope "/") lives on the app host only; serving it
+  // here made the installed app capture every link to the marketing site.
+  for (const source of ['/manifest.webmanifest', '/sw.js']) {
+    assert.ok(!config.rewrites.some(r => r.source === source), `${source} must not be proxied`);
   }
-  // The landing page uses the portal's own manifest (one app identity on
-  // this host), so "Get the app" installs the portal directly from here.
-  assert.match(html, /<link rel="manifest" href="\/manifest\.webmanifest">/);
-  assert.doesNotMatch(html, /site\.webmanifest/);
-  assert.equal((html.match(/href="\/login#install-app"[^>]*data-install-app/g) ?? []).length, 3);
-  assert.match(html, /<script src="\/assets\/install\.[0-9a-f]{8}\.js" defer><\/script>/);
-  assert.match(html, /<dialog id="installAppDialog"/);
-  // Without a browser install prompt (in-app browsers, already installed)
-  // the button shows device steps instead of leaving for the login page.
-  assert.match(html, /data-install-steps="ios"/);
-  assert.match(html, /data-install-now/);
-  assert.match(html, /data-install-steps="other"[^]*Install app/);
+  assert.equal(config.rewrites.find(r => r.source === '/app-icons/:path*')?.destination, `${upstream}/app-icons/:path*`);
+  assert.match(html, /<link rel="manifest" href="\/site\.webmanifest">/);
+  assert.doesNotMatch(html, /\/manifest\.webmanifest/);
+  assert.doesNotMatch(html, /install\.[0-9a-f]{8}\.js|installAppDialog|data-install-app/);
+  assert.equal((html.match(/href="https:\/\/app\.suqyainstitute\.com\/login#install-app"/g) ?? []).length, 3);
 });
