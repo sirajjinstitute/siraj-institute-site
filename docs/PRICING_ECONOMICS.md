@@ -75,21 +75,41 @@ Guardrails (PROPOSED):
 | 2026-10-15 | Family 4 discount | 20% falls below the safe floor with $6 teachers; option: reduce to 15%. | PROPOSED, owner to decide |
 | 2026-10-16 | Renewal | A discount follows its reason: billing-period discount kept only when renewing for the same or longer period; family discount kept while siblings stay enrolled; temporary promotions end with the subscription. | PROPOSED |
 | 2026-10-21 | Teacher pay by monthly hours (4 → 5 at 130 h → 6 at 180 h) | Rejected as written: retroactive tiers create pay cliffs, thresholds need 30–42 h/week, and volume pay conflicts with the trial rule that recommended hours follow learner need, not teacher preference. | Superseded by the next row |
-| 2026-10-21 | Teacher pay by tenure and quality ($4 start → $5 after one year of commitment and high supervisor ratings → $6 after a second quality year) | Supported, with measurable criteria, an interim 6-month step, grandfathered current teachers and $6 limited to sustained quality. See section 6. | PROPOSED |
+| 2026-10-21 | Teacher pay by tenure and quality ($4 start → $5 after one year of commitment and high supervisor ratings → $6 after a second quality year) | Supported, with measurable criteria, an interim 6-month step, grandfathered current teachers and $6 limited to sustained quality. See section 6. | Superseded by the next row |
+| 2026-10-22 | Teacher pay by composite teacher score (0–100%) | Owner direction: pay follows the composite score (supervisor evaluation + homework assigning + homework review rate and speed + weekly story). Shape in section 6; thresholds and weights still to be confirmed. | PROPOSED |
 
-## 6. Tenure-and-quality pay model (PROPOSED shape)
+## 6. Score-based pay model (PROPOSED shape, 2026-10-22)
 
-- Start $4. Review at 6 months → $4.5; at 12 months → $5; at 24 months → $6.
-- Each step requires measurable criteria over the period, e.g. supervisor rating
-  average above an agreed threshold, no unexcused teacher absences, punctuality
-  above an agreed rate, and student renewal rate (criteria still to be fixed by the owner).
-- Failing a review freezes the rate; it does not cut it.
-- Current teachers keep their existing rate ($4.5–6) and count their past tenure.
-- $6 exceeds the 40% guardrail on discounted plans; acceptable while long-tenure
-  teachers are a minority, review the mix twice a year.
-- LMS impact: if a teacher's hourly rate is a single admin-set value, a review is an
-  admin rate change and needs no code (UNVERIFIED: confirm payroll keeps the old rate
-  for already-taught months).
+Composite teacher score, 0–100%, selectable for the current month, last 3, 6, 12, 24
+months and all history. Proposed weights (owner to confirm):
+
+| Component | Weight | Measure (teacher actions only) |
+|---|---|---|
+| Supervisor evaluation | 35% | average saved score, /35 converted to /100 |
+| Commitment | 15% | absences and lateness from existing metrics |
+| Homework assigning | 15% | share of completed lessons with homework |
+| Homework review | 20% | share of submitted homework reviewed; ≤24 h full credit, 24–48 h half, later zero |
+| Weekly story | 15% | share of (student, week with a completed lesson) with a story |
+
+A component with no data in the period is left out and the weights are renormalised,
+never counted as zero or as perfect.
+
+| Rate | Condition (thresholds to confirm) |
+|---|---|
+| $4 | default, or last-3-month score below 75% |
+| $5 | last-3-month score ≥ 75% and at least 3 months of data |
+| $5.5 | last-3-month score ≥ 85% and at least 6 months of data |
+| $6 | all-history score ≥ 90%, last-3-month ≥ 85% and at least 12 months of data |
+
+- Reviewed quarterly, not monthly. The system suggests the rate; an active admin
+  approves it (no automatic pay change).
+- A drop only after two consecutive quarterly reviews below the threshold.
+- Current teachers keep their existing rate ($4.5–6) unless the new rule gives more.
+- $6 exceeds the 40% guardrail on discounted plans; acceptable while $6 teachers
+  are a minority, review the mix twice a year.
+- Conflicts with LMS Owner Decision 2026-10-04 (metrics admin/supervisor only, "no
+  points, ranking or combined grade"): the owner must explicitly supersede it, and
+  decide whether a teacher sees their own score.
 
 ## 7. Mistakes not to repeat
 
