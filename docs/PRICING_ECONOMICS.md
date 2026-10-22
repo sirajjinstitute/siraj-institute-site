@@ -76,19 +76,19 @@ Guardrails (PROPOSED):
 | 2026-10-16 | Renewal | A discount follows its reason: billing-period discount kept only when renewing for the same or longer period; family discount kept while siblings stay enrolled; temporary promotions end with the subscription. | PROPOSED |
 | 2026-10-21 | Teacher pay by monthly hours (4 → 5 at 130 h → 6 at 180 h) | Rejected as written: retroactive tiers create pay cliffs, thresholds need 30–42 h/week, and volume pay conflicts with the trial rule that recommended hours follow learner need, not teacher preference. | Superseded by the next row |
 | 2026-10-21 | Teacher pay by tenure and quality ($4 start → $5 after one year of commitment and high supervisor ratings → $6 after a second quality year) | Supported, with measurable criteria, an interim 6-month step, grandfathered current teachers and $6 limited to sustained quality. See section 6. | Superseded by the next row |
-| 2026-10-22 | Teacher pay by composite teacher score (0–100%) | Owner direction: pay follows the composite score (supervisor evaluation + homework assigning + homework review rate and speed + weekly story). Shape in section 6; thresholds and weights still to be confirmed. | PROPOSED |
+| 2026-10-22 | Teacher pay by composite teacher score (0–100%) | Pay follows the composite score (supervisor evaluation, commitment, homework assigning, homework review rate and speed, weekly story). Supersedes the LMS 2026-10-04 "no points, ranking or combined grade" line for this score. The teacher sees their own score and its components. Commitment weight raised to 25%. Shape in section 6; rate thresholds still to be confirmed. | DECIDED (weights, audience); thresholds PROPOSED |
 
-## 6. Score-based pay model (PROPOSED shape, 2026-10-22)
+## 6. Score-based pay model (2026-10-22)
 
 Composite teacher score, 0–100%, selectable for the current month, last 3, 6, 12, 24
-months and all history. Proposed weights (owner to confirm):
+months and all history. Weights (DECIDED 2026-10-22, commitment raised as the most important):
 
 | Component | Weight | Measure (teacher actions only) |
 |---|---|---|
-| Supervisor evaluation | 35% | average saved score, /35 converted to /100 |
-| Commitment | 15% | absences and lateness from existing metrics |
+| Supervisor evaluation | 30% | average saved score, /35 converted to /100 |
+| Commitment | 25% | absences and lateness from existing metrics |
 | Homework assigning | 15% | share of completed lessons with homework |
-| Homework review | 20% | share of submitted homework reviewed; ≤24 h full credit, 24–48 h half, later zero |
+| Homework review | 15% | share of submitted homework reviewed; ≤24 h full credit, 24–48 h half, later zero |
 | Weekly story | 15% | share of (student, week with a completed lesson) with a story |
 
 A component with no data in the period is left out and the weights are renormalised,
@@ -107,9 +107,9 @@ never counted as zero or as perfect.
 - Current teachers keep their existing rate ($4.5–6) unless the new rule gives more.
 - $6 exceeds the 40% guardrail on discounted plans; acceptable while $6 teachers
   are a minority, review the mix twice a year.
-- Conflicts with LMS Owner Decision 2026-10-04 (metrics admin/supervisor only, "no
-  points, ranking or combined grade"): the owner must explicitly supersede it, and
-  decide whether a teacher sees their own score.
+- Supersedes, for this score only, the LMS 2026-10-04 line "no points, ranking or
+  combined grade". Audience: active admin and supervisor see every teacher; the
+  teacher sees only their own score and components, never other teachers or a ranking.
 
 ## 7. Mistakes not to repeat
 
