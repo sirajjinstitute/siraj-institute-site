@@ -76,7 +76,7 @@ Guardrails (PROPOSED):
 | 2026-10-16 | Renewal | A discount follows its reason: billing-period discount kept only when renewing for the same or longer period; family discount kept while siblings stay enrolled; temporary promotions end with the subscription. | PROPOSED |
 | 2026-10-21 | Teacher pay by monthly hours (4 → 5 at 130 h → 6 at 180 h) | Rejected as written: retroactive tiers create pay cliffs, thresholds need 30–42 h/week, and volume pay conflicts with the trial rule that recommended hours follow learner need, not teacher preference. | Superseded by the next row |
 | 2026-10-21 | Teacher pay by tenure and quality ($4 start → $5 after one year of commitment and high supervisor ratings → $6 after a second quality year) | Supported, with measurable criteria, an interim 6-month step, grandfathered current teachers and $6 limited to sustained quality. See section 6. | Superseded by the next row |
-| 2026-10-22 | Teacher pay by composite teacher score (0–100%) | Pay follows the composite score (supervisor evaluation, commitment, homework assigning, homework review rate and speed, weekly story). Supersedes the LMS 2026-10-04 "no points, ranking or combined grade" line for this score. The teacher sees their own score and its components. Commitment weight raised to 25%. Shape in section 6; rate thresholds still to be confirmed. | DECIDED (weights, audience); thresholds PROPOSED |
+| 2026-10-22 | Teacher pay by composite teacher score (0–100%) | Pay follows the composite score (supervisor evaluation, commitment, homework assigning, homework review rate and speed, weekly story). Supersedes the LMS 2026-10-04 "no points, ranking or combined grade" line for this score. The teacher sees their own score and its components. Weights 25/25/20/15/15 (supervisor, commitment, homework assigning, review, story), owner update 2026-10-22. Ladder thresholds 75/85/90 with 3/6/12-month minimums confirmed. Shape in section 6. | DECIDED |
 
 ## 6. Score-based pay model (2026-10-22)
 
@@ -85,24 +85,27 @@ months and all history. Weights (DECIDED 2026-10-22, commitment raised as the mo
 
 | Component | Weight | Measure (teacher actions only) |
 |---|---|---|
-| Supervisor evaluation | 30% | average saved score, /35 converted to /100 |
+| Supervisor evaluation | 25% | average saved score, /35 converted to /100 |
 | Commitment | 25% | absences and lateness from existing metrics |
-| Homework assigning | 15% | share of completed lessons with homework |
+| Homework assigning | 20% | share of completed lessons with homework |
 | Homework review | 15% | share of submitted homework reviewed; ≤24 h full credit, 24–48 h half, later zero |
 | Weekly story | 15% | share of (student, week with a completed lesson) with a story |
 
 A component with no data in the period is left out and the weights are renormalised,
 never counted as zero or as perfect.
 
-| Rate | Condition (thresholds to confirm) |
+| Rate | Condition (DECIDED 2026-10-22) |
 |---|---|
 | $4 | default, or last-3-month score below 75% |
 | $5 | last-3-month score ≥ 75% and at least 3 months of data |
 | $5.5 | last-3-month score ≥ 85% and at least 6 months of data |
 | $6 | all-history score ≥ 90%, last-3-month ≥ 85% and at least 12 months of data |
 
-- Reviewed quarterly, not monthly. The system suggests the rate; an active admin
-  approves it (no automatic pay change).
+- Reviewed quarterly, not monthly. On the admin payroll page, selecting a teacher shows
+  a notice when they meet a higher step ("eligible for $X because condition Y"); the
+  owner reviews manually and confirms or declines. No automatic pay change.
+- The teacher's evaluation page explains, in Arabic, how the score and the pay
+  ladder work.
 - A drop only after two consecutive quarterly reviews below the threshold.
 - Current teachers keep their existing rate ($4.5–6) unless the new rule gives more.
 - $6 exceeds the 40% guardrail on discounted plans; acceptable while $6 teachers
