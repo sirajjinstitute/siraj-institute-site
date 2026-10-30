@@ -332,7 +332,6 @@ p{text-wrap:pretty}
 /* ---------- pricing ---------- */
 .pricing{padding:var(--section) 0}
 .pricing .sec-head .lead strong{color:var(--gold-light);font-weight:600}
-.price-egp{font-size:.85em;font-weight:400;color:var(--on-navy-soft)}
 .choice-group{border:0;padding:0;margin:0;min-width:0}
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1080px;margin:0 auto 14px}
 .choice-group legend{padding:0;margin-bottom:10px;font-size:15px;font-weight:600;color:var(--on-navy-gold)}
@@ -353,7 +352,6 @@ p{text-wrap:pretty}
 .plan-price [data-price]{font:700 clamp(40px,3.4vw,50px)/1 var(--f-display);color:#fff;font-variant-numeric:tabular-nums}
 .plan-rec .plan-price [data-price]{color:var(--gold-light)}
 .plan-per{font-size:14.5px;color:var(--on-navy-soft)}
-.plan-egp{font-size:13px;color:var(--on-navy-soft);opacity:.75}
 .plan-rows{margin:16px 0 24px;display:grid}
 .plan-rows>div{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08);font-size:15px}
 .plan-rows dt{color:var(--on-navy-soft);white-space:nowrap}
