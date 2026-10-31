@@ -37,14 +37,18 @@ comparison is the 2×/week plan ($59.96 vs $30–40 ads).
 | Teacher pay (current teachers) | $4.5–6 per hour | DECIDED (owner, 2026-10-15) |
 | Coordinators + supervisors | ~20,000 EGP / month ≈ $400 at ~50 EGP/USD | ASSUMPTION: monthly total, EGP, exchange rate |
 | Marketing | not set | OPEN |
-| Payment gateway, local cards | 1.48% + 2 EGP per transaction | owner-supplied quote, 2026-10-21 |
-| Payment gateway, international cards | 2.85% + 2 EGP per transaction | owner-supplied quote, 2026-10-21 |
-| Payout delay | 3 business days | owner-supplied quote |
+| Payment gateway, local cards (Kashier) | 1.3% + 2 EGP + 14% VAT on the fee ≈ 1.48% + 2.28 EGP | Kashier draft contract, 2026-10-21 |
+| Payment gateway, international cards (Kashier) | 2.5% + 2 EGP + 14% VAT on the fee ≈ 2.85% + 2.28 EGP | Kashier draft contract, 2026-10-21 |
+| Payment gateway, local cards (XPay) | 2.5% + 2.5 EGP; VAT not stated | XPay draft contract, 2026-10-22 |
+| Payment gateway, international cards (XPay) | 2.75% + 2.5 EGP; VAT not stated (≈ 3.14% if 14% VAT is added) | XPay draft contract, 2026-10-22 |
+| Payout delay | Kashier 3 business days; XPay twice a week | draft contracts |
 
-Gateway notes (UNVERIFIED until the contract is read): whether VAT is added on the
-fee, refund/chargeback fees, settlement currency (EGP vs USD) and the FX spread if
-USD prices are charged in EGP. Most families are abroad, so model with the
-international rate. 2 EGP ≈ $0.04, negligible per invoice.
+Gateway notes (contracts read 2026-10-22): the 2026-10-21 quote of 1.48% / 2.85% was
+Kashier's rate including 14% VAT. Neither draft states the charge currency (USD vs EGP),
+the FX rate, a per-transfer payout fee amount (Kashier charges one), or a refund fee;
+XPay does not price wallet collection and keeps its fee on refunded payments.
+Both settle to a mobile wallet in the drafts; wallet limits are UNVERIFIED.
+Most families are abroad, so model with the international rate. 2 EGP ≈ $0.04.
 
 ## 4. Unit economics (international card, 2.85% + $0.04 per invoice)
 
@@ -76,6 +80,7 @@ Guardrails (PROPOSED):
 | 2026-10-16 | Renewal | A discount follows its reason: billing-period discount kept only when renewing for the same or longer period; family discount kept while siblings stay enrolled; temporary promotions end with the subscription. | PROPOSED |
 | 2026-10-21 | Teacher pay by monthly hours (4 → 5 at 130 h → 6 at 180 h) | Rejected as written: retroactive tiers create pay cliffs, thresholds need 30–42 h/week, and volume pay conflicts with the trial rule that recommended hours follow learner need, not teacher preference. | Superseded by the next row |
 | 2026-10-21 | Teacher pay by tenure and quality ($4 start → $5 after one year of commitment and high supervisor ratings → $6 after a second quality year) | Supported, with measurable criteria, an interim 6-month step, grandfathered current teachers and $6 limited to sustained quality. See section 6. | Superseded by the next row |
+| 2026-10-22 | Payment gateway (Kashier vs XPay drafts) | Sign Kashier only, after written answers on USD/FX, payout fee and wallet limits, a bank-account payout in the owner's exact name, and a mutual termination right. Do not sign XPay as drafted (competitor-notice clause 10-9, uncapped lost-profit indemnity, mandatory promotion, wallet fee and VAT unstated). Fee gap on international cards is ~$0.1 per $120 invoice; Kashier is ~40% cheaper on local cards. | PROPOSED |
 | 2026-10-22 | Teacher pay by composite teacher score (0–100%) | Pay follows the composite score (supervisor evaluation, commitment, homework assigning, homework review rate and speed, weekly story). Supersedes the LMS 2026-10-04 "no points, ranking or combined grade" line for this score. The teacher sees their own score and its components. Weights 25/25/20/15/15 (supervisor, commitment, homework assigning, review, story), owner update 2026-10-22. Ladder thresholds 75/85/90 with 3/6/12-month minimums confirmed. Shape in section 6. | DECIDED |
 
 ## 6. Score-based pay model (2026-10-22)
