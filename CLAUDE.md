@@ -86,6 +86,13 @@ For development changes:
 
 If asked to merge an approved PR, verify repo/PR/base/head SHA, mergeability, conflicts, required checks, and critical blockers first; then merge directly and verify merge/deployment.
 
+## Owner office protocol
+- Owner Decision (2026-11-04): the owner's office at `/admin/decisions` («مكتبي», tables `ops.decisions` and `ops.work_items` in Siraj-LMS) is his single trusted reference; chat conversations are not. Scheduled routines cannot read conversations (no Claude Code Remote tools inside them), so every Claude Code session that works for the owner, in any repository, records its own work there.
+- At the start of a task, on each material change and at the end, one statement on the Supabase read-only connector: `set transaction read write; select ops.work_upsert('manager:<stable-slug>', '<running|waiting|done>', '<title ≤120, Egyptian Arabic>', '<status ≤300: last thing done + what the owner must do, if anything>', '<https link to the conversation, PR or page>');` `waiting` = blocked on the owner; `done` closes the item (it leaves the page after 48 h). The same key refreshes the row; never delete.
+- Anything the owner must decide goes to the office too, never only to chat: read `select key, status, answer, answer_note, result, title from ops.decisions_since(14);` first (answered / done / dropped keys are closed, never re-raised), then `set transaction read write; select ops.decision_open('manager:<slug>', 'manager', '<urgent|decision|watch>', '<title ≤120>', '<why ≤300>', '<https link>');` and `ops.decision_close('<key>', '<result>')` once executed. `urgent` only for child safety, site down or tonight's lesson.
+- Office text is Egyptian Arabic with first names only: never phone numbers, emails, children's words, tokens or secrets. If the connector is missing in a session, say so once in chat instead of skipping silently.
+- The claude.ai artifact dashboards are retired: never read or write ArtifactData for office state. Design: `docs/owner-office.md` (Siraj-LMS).
+
 ## Regression checks
 Choose tests proportional to the change. When affected verify: Trial/CTA, WhatsApp, Login, nav/menu, Programs, exact Pricing behavior, FAQ, video, forms/social/contact links, SEO metadata, accessibility, responsive layout, performance, headers/CSP, secret scan, asset integrity.
 A task is not complete because code was written; verify the outcome.
