@@ -22,6 +22,7 @@ PUBLIC = [
     "404.html",
     "privacy.html",
     "terms.html",
+    "refund-policy.html",
     "robots.txt",
     "sitemap.xml",
     "site.webmanifest",

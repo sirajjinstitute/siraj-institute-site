@@ -71,7 +71,7 @@ test('search metadata is complete and consistent', () => {
 });
 
 test('the Privacy Policy and Terms pages are published, routed, linked and locked down', () => {
-  for (const page of ['privacy', 'terms']) {
+  for (const page of ['privacy', 'terms', 'refund-policy']) {
     const file = readFileSync(`${page}.html`, 'utf8');
     assert.ok(build.includes(`"${page}.html"`), `${page}.html is in the publish allowlist`);
     assert.ok(config.rewrites.some(r => r.source === `/${page}` && r.destination === `/${page}.html`), `/${page} is routed`);
@@ -80,15 +80,15 @@ test('the Privacy Policy and Terms pages are published, routed, linked and locke
     // No script at all on the legal pages, so the CSP can forbid every script.
     assert.doesNotMatch(file, /<script\b/);
     assert.doesNotMatch(file, /\sstyle="|\son[a-z]+="|javascript:/i);
-    const csp = headerFor('/:page(privacy|terms)', 'Content-Security-Policy');
+    const csp = headerFor('/:page(privacy|terms|refund-policy)', 'Content-Security-Policy');
     assert.match(csp, /script-src 'none'/);
     assert.match(csp, /default-src 'self'/);
-    assert.equal(headerFor('/:page(privacy|terms)', 'Cross-Origin-Opener-Policy'), 'same-origin');
+    assert.equal(headerFor('/:page(privacy|terms|refund-policy)', 'Cross-Origin-Opener-Policy'), 'same-origin');
   }
 });
 
 test('the legal pages ship with no unfilled owner placeholder', () => {
-  for (const page of ['privacy', 'terms']) {
+  for (const page of ['privacy', 'terms', 'refund-policy']) {
     assert.doesNotMatch(readFileSync(`${page}.html`, 'utf8'), /OWNER TO CONFIRM|class="todo"/, `${page}.html`);
   }
 });

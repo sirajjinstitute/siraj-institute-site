@@ -104,7 +104,7 @@
       ]
     },
     {
-      "source": "/:page(privacy|terms)",
+      "source": "/:page(privacy|terms|refund-policy)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -253,6 +253,10 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/refund-policy",
+      "destination": "/refund-policy.html"
+    },
     {
       "source": "/privacy",
       "destination": "/privacy.html"
