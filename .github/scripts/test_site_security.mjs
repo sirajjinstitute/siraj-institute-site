@@ -91,6 +91,7 @@ test('the legal pages ship with no unfilled owner placeholder', () => {
   for (const page of ['privacy', 'terms']) {
     assert.doesNotMatch(readFileSync(`${page}.html`, 'utf8'), /OWNER TO CONFIRM|class="todo"/, `${page}.html`);
   }
+});
 
 test('the site publishes only the official WhatsApp number', () => {
   const app = readdirSync('assets').filter(f => /^app\.[0-9a-f]{8}\.js$/.test(f)).map(f => readFileSync(`assets/${f}`, 'utf8')).join('\n');
