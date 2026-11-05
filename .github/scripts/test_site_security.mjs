@@ -86,3 +86,9 @@ test('the Privacy Policy and Terms pages are published, routed, linked and locke
     assert.equal(headerFor('/:page(privacy|terms)', 'Cross-Origin-Opener-Policy'), 'same-origin');
   }
 });
+
+test('the legal pages ship with no unfilled owner placeholder', () => {
+  for (const page of ['privacy', 'terms']) {
+    assert.doesNotMatch(readFileSync(`${page}.html`, 'utf8'), /OWNER TO CONFIRM|class="todo"/, `${page}.html`);
+  }
+});
