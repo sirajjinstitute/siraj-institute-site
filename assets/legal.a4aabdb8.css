@@ -1,0 +1,31 @@
+/* Privacy Policy and Terms of Service pages. Loaded after styles.css. */
+.lg-body{background:var(--ivory)}
+.lg-bar{background:var(--navy);color:#fff}
+.lg-bar-in{width:min(100% - 2*var(--m),var(--max));margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+.lg-brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;min-height:44px}
+.lg-brand img{width:40px;height:auto}
+.lg-brand strong{font:700 20px/1.1 var(--f-display)}
+.lg-main{width:min(100% - 2*var(--m),780px);margin-inline:auto;padding:48px 0 72px}
+.lg-main h1{font:700 clamp(32px,6vw,46px)/1.15 var(--f-display);color:var(--navy);margin:12px 0 8px}
+.lg-main h2{font:700 clamp(23px,4vw,28px)/1.25 var(--f-display);color:var(--navy);margin:44px 0 10px;padding-top:18px;border-top:1px solid var(--line-gold)}
+.lg-main h3{font:600 18px/1.35 var(--f-text);color:var(--navy);margin:24px 0 6px}
+.lg-main p,.lg-main li{color:var(--ink-soft);overflow-wrap:anywhere}
+.lg-main ul{padding-left:1.25em}
+.lg-main li{margin:6px 0}
+.lg-main a{color:var(--navy-3);text-underline-offset:3px}
+.lg-main a:focus-visible,.lg-brand:focus-visible,.lg-foot a:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
+.lg-eyebrow{font:600 13px/1.2 var(--f-text);letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep);margin:0}
+.lg-meta{font-size:15px;margin:0 0 20px}
+.lg-toc{background:#fff;border:1px solid var(--paper-3);border-radius:var(--r);padding:16px 20px;margin:24px 0}
+.lg-toc h2{margin:0 0 6px;padding:0;border:0;font-size:20px}
+.lg-toc ol{margin:0;padding-left:1.4em}
+.lg-toc li{margin:4px 0}
+.lg-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:15px}
+.lg-table th,.lg-table td{border:1px solid var(--paper-3);padding:10px;text-align:left;vertical-align:top;color:var(--ink-soft)}
+.lg-table th{background:var(--ivory-2);color:var(--navy)}
+.todo{background:#fff1c2;color:#5a3e00;border:1px dashed #b3893a;border-radius:4px;padding:0 4px;font-weight:600}
+.lg-foot{background:var(--navy-950);color:#cfd8e3;padding:28px 0}
+.lg-foot-in{width:min(100% - 2*var(--m),var(--max));margin-inline:auto;display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:space-between;font-size:15px}
+.lg-foot nav{display:flex;flex-wrap:wrap;gap:4px 18px}
+.lg-foot a{color:#fff;display:inline-block;padding:10px 0}
+@media (max-width:560px){.lg-bar .btn{padding-inline:14px}.lg-brand strong{font-size:17px}.lg-table{font-size:14px}.lg-table th,.lg-table td{padding:8px}}

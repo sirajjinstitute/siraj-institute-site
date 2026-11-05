@@ -69,3 +69,20 @@ test('search metadata is complete and consistent', () => {
     assert.ok(html.includes(handle), `${url} also appears on the page`);
   }
 });
+
+test('the Privacy Policy and Terms pages are published, routed, linked and locked down', () => {
+  for (const page of ['privacy', 'terms']) {
+    const file = readFileSync(`${page}.html`, 'utf8');
+    assert.ok(build.includes(`"${page}.html"`), `${page}.html is in the publish allowlist`);
+    assert.ok(config.rewrites.some(r => r.source === `/${page}` && r.destination === `/${page}.html`), `/${page} is routed`);
+    assert.match(html, new RegExp(`<a href="/${page}">`), `the home page footer links /${page}`);
+    assert.match(file, new RegExp(`<link rel="canonical" href="https://suqyainstitute\\.com/${page}">`));
+    // No script at all on the legal pages, so the CSP can forbid every script.
+    assert.doesNotMatch(file, /<script\b/);
+    assert.doesNotMatch(file, /\sstyle="|\son[a-z]+="|javascript:/i);
+    const csp = headerFor('/:page(privacy|terms)', 'Content-Security-Policy');
+    assert.match(csp, /script-src 'none'/);
+    assert.match(csp, /default-src 'self'/);
+    assert.equal(headerFor('/:page(privacy|terms)', 'Cross-Origin-Opener-Policy'), 'same-origin');
+  }
+});

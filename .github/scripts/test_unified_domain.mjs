@@ -40,13 +40,15 @@ test('framework assets, lesson figures and API calls have their own upstream rou
   }
   // No catch-all that would accidentally take over the marketing document/assets.
   assert.ok(config.rewrites.every(r => !['/', '/:path*', '/assets/:path*'].includes(r.source)));
-  assert.ok(config.rewrites.every(r => r.destination.startsWith(upstream + '/')));
+  // The only local rewrites are the two static legal pages.
+  const local = { '/privacy': '/privacy.html', '/terms': '/terms.html' };
+  assert.ok(config.rewrites.every(r => r.destination.startsWith(upstream + '/') || local[r.source] === r.destination));
 });
 
 test('marketing microphone/camera restrictions and report-only CSP do not blanket the LMS', () => {
   for (const entry of config.headers) {
     if (entry.headers.some(h => ['Permissions-Policy', 'Content-Security-Policy-Report-Only'].includes(h.key))) {
-      assert.ok(['/', '/index.html'].includes(entry.source));
+      assert.ok(['/', '/index.html', '/:page(privacy|terms)'].includes(entry.source));
     }
   }
   const common = config.headers.find(h => h.source === '/(.*)').headers;

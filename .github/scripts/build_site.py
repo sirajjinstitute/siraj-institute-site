@@ -20,6 +20,8 @@ import sys
 PUBLIC = [
     "index.html",
     "404.html",
+    "privacy.html",
+    "terms.html",
     "robots.txt",
     "sitemap.xml",
     "site.webmanifest",
