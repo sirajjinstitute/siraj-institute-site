@@ -27,12 +27,12 @@ PUBLIC = [
     "sitemap.xml",
     "site.webmanifest",
     "favicon.ico",
-    "favicon-16x16.png",
-    "favicon-32x32.png",
+    "favicon-48x48.png",
+    "favicon-96x96.png",
+    "favicon-192x192.png",
     "apple-touch-icon.png",
-    "android-chrome-192x192.png",
-    "android-chrome-512x512.png",
-    "logo.png",
+    "icon-192.png",
+    "icon-512.png",
 ]
 # Directories copied whole (content-hashed assets and the self-hosted fonts).
 PUBLIC_DIRS = ["assets"]
