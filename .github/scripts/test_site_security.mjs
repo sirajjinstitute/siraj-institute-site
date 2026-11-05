@@ -70,9 +70,49 @@ test('search metadata is complete and consistent', () => {
   }
 });
 
+test('the Privacy Policy and Terms pages are published, routed, linked and locked down', () => {
+  for (const page of ['privacy', 'terms', 'refund-policy']) {
+    const file = readFileSync(`${page}.html`, 'utf8');
+    assert.ok(build.includes(`"${page}.html"`), `${page}.html is in the publish allowlist`);
+    assert.ok(config.rewrites.some(r => r.source === `/${page}` && r.destination === `/${page}.html`), `/${page} is routed`);
+    assert.match(html, new RegExp(`<a href="/${page}">`), `the home page footer links /${page}`);
+    assert.match(file, new RegExp(`<link rel="canonical" href="https://suqyainstitute\\.com/${page}">`));
+    // No script at all on the legal pages, so the CSP can forbid every script.
+    assert.doesNotMatch(file, /<script\b/);
+    assert.doesNotMatch(file, /\sstyle="|\son[a-z]+="|javascript:/i);
+    const csp = headerFor('/:page(privacy|terms|refund-policy)', 'Content-Security-Policy');
+    assert.match(csp, /script-src 'none'/);
+    assert.match(csp, /default-src 'self'/);
+    assert.equal(headerFor('/:page(privacy|terms|refund-policy)', 'Cross-Origin-Opener-Policy'), 'same-origin');
+  }
+});
+
+test('the legal pages ship with no unfilled owner placeholder', () => {
+  for (const page of ['privacy', 'terms', 'refund-policy']) {
+    assert.doesNotMatch(readFileSync(`${page}.html`, 'utf8'), /OWNER TO CONFIRM|class="todo"/, `${page}.html`);
+  }
+});
+
 test('the site publishes only the official WhatsApp number', () => {
   const app = readdirSync('assets').filter(f => /^app\.[0-9a-f]{8}\.js$/.test(f)).map(f => readFileSync(`assets/${f}`, 'utf8')).join('\n');
   for (const text of [html, notFound, app]) assert.doesNotMatch(text, /1004751455|100[ -]475[ -]1455/);
   assert.equal((html.match(/wa\.me\/201032032598\?/g) ?? []).length, 3);
   assert.match(app, /const waNumber = '201032032598';/);
+});
+
+test('Google Analytics loads only after consent, and the bar offers an equal Reject', () => {
+  const analytics = readdirSync('assets').filter(f => /^analytics\.[0-9a-f]{8}\.js$/.test(f)).map(f => readFileSync(`assets/${f}`, 'utf8'));
+  assert.equal(analytics.length, 1);
+  const js = analytics[0];
+  // The tag and gtag are created only inside startAnalytics, reached only from a stored or fresh "granted".
+  const start = js.indexOf('function startAnalytics');
+  assert.ok(start > 0);
+  assert.ok(js.indexOf('googletagmanager.com') > start && js.indexOf('window.gtag = gtag') > start);
+  assert.match(js, /if \(choice === 'granted'\) startAnalytics\(\);/);
+  assert.match(js, /accepted \? 'granted' : 'denied'/);
+  assert.match(html, /<div class="cookie-bar" id="cookieBar"[^>]*hidden>/);
+  assert.match(html, /data-consent="reject">Reject<\/button>/);
+  assert.match(html, /data-consent="accept">Accept<\/button>/);
+  assert.match(html, /id="cookieSettings"[^>]*>Cookie settings<\/button>/);
+  assert.match(readFileSync('privacy.html', 'utf8'), /Google Analytics loads only if you press &ldquo;Accept&rdquo;/);
 });
