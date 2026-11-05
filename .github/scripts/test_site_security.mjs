@@ -99,3 +99,20 @@ test('the site publishes only the official WhatsApp number', () => {
   assert.equal((html.match(/wa\.me\/201032032598\?/g) ?? []).length, 3);
   assert.match(app, /const waNumber = '201032032598';/);
 });
+
+test('Google Analytics loads only after consent, and the bar offers an equal Reject', () => {
+  const analytics = readdirSync('assets').filter(f => /^analytics\.[0-9a-f]{8}\.js$/.test(f)).map(f => readFileSync(`assets/${f}`, 'utf8'));
+  assert.equal(analytics.length, 1);
+  const js = analytics[0];
+  // The tag and gtag are created only inside startAnalytics, reached only from a stored or fresh "granted".
+  const start = js.indexOf('function startAnalytics');
+  assert.ok(start > 0);
+  assert.ok(js.indexOf('googletagmanager.com') > start && js.indexOf('window.gtag = gtag') > start);
+  assert.match(js, /if \(choice === 'granted'\) startAnalytics\(\);/);
+  assert.match(js, /accepted \? 'granted' : 'denied'/);
+  assert.match(html, /<div class="cookie-bar" id="cookieBar"[^>]*hidden>/);
+  assert.match(html, /data-consent="reject">Reject<\/button>/);
+  assert.match(html, /data-consent="accept">Accept<\/button>/);
+  assert.match(html, /id="cookieSettings"[^>]*>Cookie settings<\/button>/);
+  assert.match(readFileSync('privacy.html', 'utf8'), /Google Analytics loads only if you press &ldquo;Accept&rdquo;/);
+});

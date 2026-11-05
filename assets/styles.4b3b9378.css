@@ -788,3 +788,17 @@ p{text-wrap:pretty}
 .is32{--dd:1.6s !important}
 .app-band{display:flex;align-items:center;gap:18px 22px;flex-wrap:wrap;margin-top:32px;padding:22px 24px;border-radius:20px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(212,170,81,.35)}.app-band-ico{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:14px;background:rgba(212,170,81,.14);color:var(--gold)}.app-band-ico svg{width:28px;height:28px}.app-band-txt{flex:1 1 320px;min-width:0}.app-band-txt h3{margin:0 0 6px;font:600 20px/1.3 var(--f-display);color:#fff}.app-band-txt p{margin:0;font-size:15.5px;color:var(--on-navy-soft);max-width:62ch}@media (max-width:560px){.app-band{padding:20px 18px}.app-band .btn{width:100%}}
 @media (max-width:900px){.foot-top{grid-template-columns:repeat(2,minmax(0,1fr))}.foot-col a,.foot-col h3{overflow-wrap:anywhere}}
+
+/* Analytics consent bar (home page). Accept and Reject look the same, so
+   neither choice is nudged. */
+.cookie-bar{position:fixed;left:16px;right:16px;bottom:16px;z-index:70;max-width:720px;margin-inline:auto;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding:16px 18px;border-radius:14px;background:var(--navy);color:#fff;box-shadow:0 16px 40px rgba(4,16,31,.35);border:1px solid var(--line-gold)}
+.cookie-bar[hidden],.foot-btn[hidden]{display:none}
+.cookie-bar p{flex:1 1 280px;margin:0;font-size:15px;line-height:1.55;color:var(--on-navy-soft)}
+.cookie-bar a{color:var(--gold-light);text-underline-offset:3px}
+.cookie-acts{display:flex;gap:10px;flex:0 0 auto}
+.cookie-btn{min-height:44px;min-width:104px;padding:0 20px;border-radius:999px;border:1px solid var(--gold);background:transparent;color:#fff;font:600 15px/1.2 var(--f-text);cursor:pointer}
+.cookie-btn:hover{background:rgba(212,170,81,.16)}
+.cookie-btn:focus-visible,.cookie-bar a:focus-visible,.foot-btn:focus-visible{outline:3px solid var(--gold-light);outline-offset:3px}
+.foot-btn{display:block;padding:5px 0;border:0;background:none;color:#cfd8e3;font:inherit;font-size:15.5px;text-align:left;cursor:pointer}
+.foot-btn:hover{color:#fff;text-decoration:underline;text-underline-offset:.25em}
+@media (max-width:480px){.cookie-acts{width:100%}.cookie-btn{flex:1}}
