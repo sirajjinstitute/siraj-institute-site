@@ -35,7 +35,7 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 document.getElementById('year').textContent = new Date().getFullYear();
 
 /* WhatsApp trial-booking links */
-const waNumber = '201004751455';
+const waNumber = '201032032598';
 const waMessage = "Assalamu alaikum, I'm interested in booking a free trial lesson with Suqya Institute.";
 const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
 document.querySelectorAll('.wa-link').forEach(el => el.setAttribute('href', waLink));
