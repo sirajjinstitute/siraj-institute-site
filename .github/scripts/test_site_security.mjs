@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 
 const config = JSON.parse(readFileSync('vercel.json', 'utf8'));
 const html = readFileSync('index.html', 'utf8');
@@ -91,4 +91,10 @@ test('the legal pages ship with no unfilled owner placeholder', () => {
   for (const page of ['privacy', 'terms']) {
     assert.doesNotMatch(readFileSync(`${page}.html`, 'utf8'), /OWNER TO CONFIRM|class="todo"/, `${page}.html`);
   }
+
+test('the site publishes only the official WhatsApp number', () => {
+  const app = readdirSync('assets').filter(f => /^app\.[0-9a-f]{8}\.js$/.test(f)).map(f => readFileSync(`assets/${f}`, 'utf8')).join('\n');
+  for (const text of [html, notFound, app]) assert.doesNotMatch(text, /1004751455|100[ -]475[ -]1455/);
+  assert.equal((html.match(/wa\.me\/201032032598\?/g) ?? []).length, 3);
+  assert.match(app, /const waNumber = '201032032598';/);
 });
