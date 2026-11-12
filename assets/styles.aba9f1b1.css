@@ -804,3 +804,52 @@ p{text-wrap:pretty}
 @media (max-width:480px){.cookie-acts{width:100%}.cookie-btn{flex:1}}
 .pricing-note a{color:var(--gold-light);text-underline-offset:3px;display:inline-block;padding:10px 4px}
 .pricing-note a:focus-visible{outline:3px solid var(--gold-light);outline-offset:3px}
+
+/* ---------- teachers ----------
+   No photographs, by decision: each teacher carries a gold eight-point
+   star (the khatam) around their initials. The filter is the portal's
+   radio segment; :has() hides the other group, and a browser without
+   :has() simply shows everyone. */
+.teachers{background:var(--ivory);overflow:hidden}
+.teachers::before{content:"";position:absolute;inset:0;opacity:.05;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' fill='none' stroke='%23b08d3c'%3E%3Crect x='16' y='16' width='24' height='24'/%3E%3Crect x='16' y='16' width='24' height='24' transform='rotate(45 28 28)'/%3E%3Ccircle cx='28' cy='28' r='5'/%3E%3C/svg%3E");pointer-events:none}
+.teachers .wrap{position:relative;max-width:1120px}
+.t-filter{display:flex;width:max-content;margin:0 auto clamp(40px,5vw,56px)}
+.t-filter input:focus-visible+label{outline-color:var(--gold-deep)}
+.teachers:has(#tf-men:checked) [data-group="women"],.teachers:has(#tf-women:checked) [data-group="men"]{display:none}
+.t-groups{display:grid;gap:clamp(52px,6vw,76px)}
+.t-group-title{display:flex;align-items:center;gap:18px;margin-bottom:26px;font:700 clamp(26px,2.6vw,32px)/1.15 var(--f-display);color:var(--navy)}
+.t-group-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line-gold),transparent)}
+.t-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.t-grid>li{display:flex}
+.t-card{position:relative;flex:1;display:flex;flex-direction:column;padding:30px 30px 8px;border-radius:16px;background:#fff;box-shadow:var(--shadow-soft);overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s ease}
+.t-card::before{content:"";position:absolute;left:0;top:0;right:0;height:3px;background:var(--gold-grad);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+@media (hover:hover) and (pointer:fine){.t-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}.t-card:hover::before,.t-card:focus-within::before{transform:scaleX(1)}}
+.t-head{display:flex;align-items:center;gap:18px}
+.t-mark{position:relative;flex:none;display:grid;place-items:center;width:76px;height:76px}
+.t-mark svg{position:absolute;inset:0;width:100%;height:100%}
+.t-mark>span{position:relative;font:700 21px/1 var(--f-display);letter-spacing:.04em;color:var(--gold-light);padding-top:2px}
+.t-card h4{font:700 clamp(23px,2.1vw,26px)/1.15 var(--f-display);color:var(--navy);text-wrap:balance}
+.t-hon{display:block;margin-bottom:6px;font:600 12px/1.3 var(--f-text);letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep)}
+.t-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.t-chips li{font-size:13.5px;font-weight:500;line-height:1.35;padding:6px 12px;border-radius:999px;background:rgba(212,170,81,.13);color:#5a4413}
+.t-bio{flex:1;margin-top:16px;font-size:16px;line-height:1.65;color:var(--ink-soft);max-width:62ch}
+.t-audio{margin-top:16px}
+.t-audio audio{width:100%}
+.t-cta{display:flex;align-items:center;gap:8px;min-height:56px;margin-top:20px;border-top:1px solid rgba(7,28,54,.08);font-weight:600;font-size:15.5px;color:var(--navy);text-decoration:none}
+.t-cta svg{width:18px;height:18px;color:var(--gold-deep);transition:transform .3s var(--ease)}
+.t-cta:hover{text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:.3em}
+.t-cta:hover svg{transform:translateX(4px)}
+.t-close{text-align:center;margin-top:clamp(44px,5vw,60px)}
+@media (max-width:820px){.t-grid{grid-template-columns:1fr}}
+@media (max-width:560px){
+  .t-filter{width:100%}
+  .t-card{padding:24px 22px 4px}
+  .t-head{gap:14px}
+  .t-mark{width:64px;height:64px}
+  .t-mark>span{font-size:18px}
+}
+
+/* Seven menu links (Teachers added) keep the desktop bar on one line:
+   no link wraps, and the brand's tagline steps aside until 1360px. */
+@media (min-width:1024px){.links a{white-space:nowrap}}
+@media (min-width:1024px) and (max-width:1359px){.links,.nav-in{gap:18px}.brand-txt span{display:none}}
