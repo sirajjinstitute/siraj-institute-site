@@ -12,7 +12,7 @@
       imagesrcset="/assets/hero-640.5000eb05.avif 640w, /assets/hero-1024.be4d3ff1.avif 1024w, /assets/hero-1590.82241adb.avif 1590w" imagesizes="100vw">
 
 <title>Suqya Institute — Online Quran Academy, 1-on-1 Lessons</title>
-<meta name="description" content="Suqya Institute is an online Quran academy: live one-to-one Quran and Arabic lessons with native tutors, including Al-Azhar graduates. Parents follow every lesson in the portal. Book a free trial.">
+<meta name="description" content="Suqya Institute is an online Quran academy: live one-to-one Quran and Arabic lessons with male and female teachers, including ijazah holders and Al-Azhar graduates. Parents follow every lesson in the portal. Book a free trial.">
 <link rel="canonical" href="https://suqyainstitute.com/">
 
 <meta property="og:type" content="website">
@@ -105,7 +105,7 @@
 }
 </script>
 
-<link rel="stylesheet" href="/assets/styles.c373b805.css">
+<link rel="stylesheet" href="/assets/styles.aba9f1b1.css">
 <!-- Amiri's Arabic subsets (about 108 KB) stay inert until the visitor
      starts to move or nears the first Arabic word; app.js switches the
      media to "all". <noscript> keeps them for a visitor without script. -->
@@ -128,6 +128,7 @@
       </g>
     </pattern>
     <symbol id="i-star" viewBox="0 0 44 44"><g><rect x="9" y="9" width="26" height="26"/><rect x="9" y="9" width="26" height="26" transform="rotate(45 22 22)"/></g></symbol>
+    <symbol id="i-octa" viewBox="0 0 44 44"><path fill="#0d2747" stroke="#d4aa51" stroke-width="1.5" stroke-linejoin="round" d="M22.00 0.79L28.21 7.00L37.00 7.00L37.00 15.79L43.21 22.00L37.00 28.21L37.00 37.00L28.21 37.00L22.00 43.21L15.79 37.00L7.00 37.00L7.00 28.21L0.79 22.00L7.00 15.79L7.00 7.00L15.79 7.00Z"/><path fill="none" stroke="#d4aa51" stroke-width=".7" stroke-linejoin="round" opacity=".7" d="M22.00 5.03L26.97 10.00L34.00 10.00L34.00 17.03L38.97 22.00L34.00 26.97L34.00 34.00L26.97 34.00L22.00 38.97L17.03 34.00L10.00 34.00L10.00 26.97L5.03 22.00L10.00 17.03L10.00 10.00L17.03 10.00Z"/></symbol>
     <symbol id="i-calendar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g></symbol>
     <symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C9.5 4.6 6.5 4.3 3.5 5v13c3-.7 6-.4 8.5 1.5 2.5-1.9 5.5-2.2 8.5-1.5V5c-3-.7-6-.4-8.5 1.5Zm0 0v13"/></g></symbol>
     <symbol id="i-mic" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></g></symbol>
@@ -167,6 +168,7 @@
     <nav class="links" id="navLinks" aria-label="Main">
       <a href="#about">About</a>
       <a href="#programmes">Programmes</a>
+      <a href="#teachers">Teachers</a>
       <a href="#portal">The portal</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
@@ -680,6 +682,141 @@
   </div>
 </section>
 
+<!-- ============ TEACHERS ============
+     One teacher = one <li> card below, inside the right group. To add a
+     teacher, copy a card in the same group and change its id, initials,
+     name, chips and bio (confirmed text only: no photos, no invented
+     qualifications). The filter is plain radio buttons styled with :has(),
+     so every teacher stays visible without script or in older browsers. -->
+<section class="sec teachers" id="teachers" aria-labelledby="teachers-title">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Our teachers</p>
+      <h2 id="teachers-title">The teachers behind every lesson</h2>
+      <p class="lead">Ijazah holders and university graduates who teach the Quran one to one. Male and female teachers are listed separately; tell us which you prefer when you book the free&nbsp;trial.</p>
+    </div>
+    <fieldset class="seg t-filter reveal">
+      <legend class="sr-only">Show teachers</legend>
+      <input class="sr-only" type="radio" name="t-filter" id="tf-all" value="all" checked>
+      <label for="tf-all">All</label>
+      <input class="sr-only" type="radio" name="t-filter" id="tf-men" value="men">
+      <label for="tf-men">Male</label>
+      <input class="sr-only" type="radio" name="t-filter" id="tf-women" value="women">
+      <label for="tf-women">Female</label>
+    </fieldset>
+    <div class="t-groups">
+      <div class="t-group" data-group="men">
+        <h3 class="t-group-title" id="tg-men">Male teachers</h3>
+        <ul class="t-grid">
+          <li>
+          <article class="t-card reveal" aria-labelledby="t-ibrahim-rafat">
+            <div class="t-head">
+              <span class="t-mark" aria-hidden="true"><svg viewBox="0 0 44 44" focusable="false"><use href="#i-octa"/></svg><span>IR</span></span>
+              <h4 id="t-ibrahim-rafat"><span class="t-hon">Shaykh</span> Ibrahim Rafat</h4>
+            </div>
+            <ul class="t-chips" aria-label="Highlights"><li>Ijazah in the Ten Qira&rsquo;at</li><li>8 years teaching</li><li>Children &amp; adults</li><li>Teaches in English</li></ul>
+            <p class="t-bio">Ijazah in the Ten Qira&rsquo;at. 8 years teaching the Quran, 2 of them with non-Arabic speakers. Teaches children and adults in clear, patient English.</p>
+            <!-- Recitation sample (male teachers only). Hidden until a recording exists.
+                 To publish: add the hashed audio file to the assets folder, put
+                 <audio controls preload="none" src="..."></audio> inside this div
+                 and remove the hidden attribute. Do not load audio before a tap. -->
+            <div class="t-audio" data-audio-slot="ibrahim-rafat" hidden></div>
+            <a href="/apply" class="t-cta">Book a free trial<span class="sr-only"> (Shaykh Ibrahim Rafat)</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </article>
+          </li>
+          <li>
+          <article class="t-card reveal" aria-labelledby="t-mahmoud-suody">
+            <div class="t-head">
+              <span class="t-mark" aria-hidden="true"><svg viewBox="0 0 44 44" focusable="false"><use href="#i-octa"/></svg><span>MS</span></span>
+              <h4 id="t-mahmoud-suody"><span class="t-hon">Shaykh</span> Mahmoud Suody</h4>
+            </div>
+            <ul class="t-chips" aria-label="Highlights"><li>Dar Al-Uloom, Cairo University</li><li>Ijazah in Hafs &lsquo;an &lsquo;Asim</li><li>3 years teaching online</li></ul>
+            <p class="t-bio">Graduate of Dar Al-Uloom, Cairo University (Arabic &amp; Islamic Sciences). Ijazah in Hafs &lsquo;an &lsquo;Asim. 3 years teaching Quran, Arabic and Islamic Studies online to non-Arabic speakers (Al-Arabiyyah Bayna Yadayk, I Love Islam).</p>
+            <!-- Recitation sample (male teachers only). Hidden until a recording exists.
+                 To publish: add the hashed audio file to the assets folder, put
+                 <audio controls preload="none" src="..."></audio> inside this div
+                 and remove the hidden attribute. Do not load audio before a tap. -->
+            <div class="t-audio" data-audio-slot="mahmoud-suody" hidden></div>
+            <a href="/apply" class="t-cta">Book a free trial<span class="sr-only"> (Shaykh Mahmoud Suody)</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </article>
+          </li>
+          <li>
+          <article class="t-card reveal" aria-labelledby="t-muhammad-turfah">
+            <div class="t-head">
+              <span class="t-mark" aria-hidden="true"><svg viewBox="0 0 44 44" focusable="false"><use href="#i-octa"/></svg><span>MT</span></span>
+              <h4 id="t-muhammad-turfah"><span class="t-hon">Shaykh</span> Muhammad Turfah</h4>
+            </div>
+            <ul class="t-chips" aria-label="Highlights"><li>Ijazah holder</li><li>Reading the Ten Qira&rsquo;at</li><li>Has granted ijazahs</li><li>7 years teaching</li></ul>
+            <p class="t-bio">Holds an ijazah and is currently reading the Ten Qira&rsquo;at (major and minor). Has granted ijazahs to students. 7 years teaching the Quran.</p>
+            <!-- Recitation sample (male teachers only). Hidden until a recording exists.
+                 To publish: add the hashed audio file to the assets folder, put
+                 <audio controls preload="none" src="..."></audio> inside this div
+                 and remove the hidden attribute. Do not load audio before a tap. -->
+            <div class="t-audio" data-audio-slot="muhammad-turfah" hidden></div>
+            <a href="/apply" class="t-cta">Book a free trial<span class="sr-only"> (Shaykh Muhammad Turfah)</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </article>
+          </li>
+          <li>
+          <article class="t-card reveal" aria-labelledby="t-muhammed-safwat">
+            <div class="t-head">
+              <span class="t-mark" aria-hidden="true"><svg viewBox="0 0 44 44" focusable="false"><use href="#i-octa"/></svg><span>MS</span></span>
+              <h4 id="t-muhammed-safwat"><span class="t-hon">Shaykh</span> Muhammed Safwat</h4>
+            </div>
+            <ul class="t-chips" aria-label="Highlights"><li>Ijazahs in &lsquo;Asim, Nafi&lsquo; &amp; Hamza</li><li>Quran &amp; Tajweed</li><li>Children &amp; adults</li></ul>
+            <p class="t-bio">Quran and Tajweed teacher with ijazahs in the readings of &lsquo;Asim, Nafi&lsquo; and Hamza. Teaches children and adults alike, combining the time-honoured method of the classical mashayikh with modern techniques, to help every student improve their recitation and memorization, and draw closer to Jannah, in sha Allah.</p>
+            <!-- Recitation sample (male teachers only). Hidden until a recording exists.
+                 To publish: add the hashed audio file to the assets folder, put
+                 <audio controls preload="none" src="..."></audio> inside this div
+                 and remove the hidden attribute. Do not load audio before a tap. -->
+            <div class="t-audio" data-audio-slot="muhammed-safwat" hidden></div>
+            <a href="/apply" class="t-cta">Book a free trial<span class="sr-only"> (Shaykh Muhammed Safwat)</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </article>
+          </li>
+        </ul>
+      </div>
+      <div class="t-group" data-group="women">
+        <h3 class="t-group-title" id="tg-women">Female teachers</h3>
+        <ul class="t-grid">
+          <li>
+          <article class="t-card reveal" aria-labelledby="t-esraa-abdelfattah">
+            <div class="t-head">
+              <span class="t-mark" aria-hidden="true"><svg viewBox="0 0 44 44" focusable="false"><use href="#i-octa"/></svg><span>EA</span></span>
+              <h4 id="t-esraa-abdelfattah"><span class="t-hon">Shaykhah</span> Esraa Abdelfattah</h4>
+            </div>
+            <ul class="t-chips" aria-label="Highlights"><li>BA English &amp; Education</li><li>5 years teaching Quran</li><li>Advanced English</li><li>Game-based lessons</li></ul>
+            <p class="t-bio">BA in English Language &amp; Education, Tanta University. 5 years teaching Quran, 2 years Arabic and 1 year Islamic Studies. Advanced English. Known for playful, game-based lessons for children.</p>
+            <a href="/apply" class="t-cta">Book a free trial<span class="sr-only"> (Shaykhah Esraa Abdelfattah)</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </article>
+          </li>
+          <li>
+          <article class="t-card reveal" aria-labelledby="t-mona-reda">
+            <div class="t-head">
+              <span class="t-mark" aria-hidden="true"><svg viewBox="0 0 44 44" focusable="false"><use href="#i-octa"/></svg><span>MR</span></span>
+              <h4 id="t-mona-reda"><span class="t-hon">Shaykhah</span> Mona Reda</h4>
+            </div>
+            <ul class="t-chips" aria-label="Highlights"><li>Ijazah in Hafs &lsquo;an &lsquo;Asim</li><li>Beginners&rsquo; Quran &amp; Tajweed</li><li>Advanced English</li></ul>
+            <p class="t-bio">BA Arts, Ain Shams University. Ijazah in Hafs &lsquo;an &lsquo;Asim. Teaches beginners Quran and Tajweed. Advanced English.</p>
+            <a href="/apply" class="t-cta">Book a free trial<span class="sr-only"> (Shaykhah Mona Reda)</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </article>
+          </li>
+          <li>
+          <article class="t-card reveal" aria-labelledby="t-khadija-ahmed">
+            <div class="t-head">
+              <span class="t-mark" aria-hidden="true"><svg viewBox="0 0 44 44" focusable="false"><use href="#i-octa"/></svg><span>KA</span></span>
+              <h4 id="t-khadija-ahmed"><span class="t-hon">Shaykhah</span> Khadija Ahmed</h4>
+            </div>
+            <ul class="t-chips" aria-label="Highlights"><li>Al-Azhar graduate</li><li>Ijazahs: Hafs, Qalun &amp; Warsh</li><li>Al-Qa&rsquo;idah An-Nuraniyyah</li></ul>
+            <p class="t-bio">Al-Azhar graduate (Islamic &amp; Arabic Studies, Sharia). Ijazah in Hafs, &lsquo;Asim, and Qalun &amp; Warsh from Nafi&lsquo;. Teaches with Al-Qa&rsquo;idah An-Nuraniyyah and Noor Al-Bayan.</p>
+            <a href="/apply" class="t-cta">Book a free trial<span class="sr-only"> (Shaykhah Khadija Ahmed)</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </article>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <p class="t-close reveal"><a href="/apply" class="btn btn-gold">Book a free trial</a></p>
+  </div>
+</section>
+
 <!-- ============ HOW IT WORKS ============ -->
 <section class="sec how" id="how" aria-labelledby="how-title">
   <div class="wrap">
@@ -863,6 +1000,7 @@
         <a href="https://app.suqyainstitute.com/login">Log in to the portal</a>
         <a href="https://app.suqyainstitute.com/login#install-app">Get the Suqya app</a>
         <a href="#programmes">Programmes</a>
+        <a href="#teachers">Our teachers</a>
         <a href="#pricing">Pricing</a>
         <a href="/privacy">Privacy Policy</a>
         <a href="/terms">Terms of Service</a>
