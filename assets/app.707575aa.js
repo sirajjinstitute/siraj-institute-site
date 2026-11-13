@@ -313,10 +313,6 @@ function initPage() {
   };
   const toCents = amount => Math.round((amount + Number.EPSILON) * 100) / 100;
   const money = amount => `$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  /* Egyptian pound guide price: a fixed owner-set rate (2026-11-04), not a live
-     quote, rounded to the nearest 5 EGP. Billing stays in USD. */
-  const EGP_PER_USD = 52;
-  const egp = amount => `≈ ${(Math.round(amount * EGP_PER_USD / 5) * 5).toLocaleString('en-US')} EGP`;
 
   function quote(students, durationKey, pkg) {
     const dur = durations[durationKey];
@@ -343,12 +339,11 @@ function initPage() {
       const plan = priceGrid.querySelector(`.plan[data-hours="${pkg.monthlyHours}"]`);
       const pctLabel = Math.round(q.pct * 100);
       plan.querySelector('[data-price]').textContent = money(q.monthly);
-      plan.querySelector('[data-egp]').textContent = egp(q.monthly);
       plan.querySelector('[data-per]').textContent = currentStudents > 1 ? '/month per learner' : '/month';
       plan.querySelector('[data-rate]').textContent = q.pct > 0 ? `${money(q.perHour)} (${pctLabel}% off ${money(HOURLY_RATE)})` : money(q.perHour);
       plan.querySelector('[data-billed]').textContent = q.months === 1
         ? 'Billed monthly'
-        : `${money(q.total)} (${egp(q.total)}) every ${q.months} months, ${q.hours} hours`;
+        : `${money(q.total)} every ${q.months} months, ${q.hours} hours`;
       summary = q;
     });
     const learners = `${currentStudents} ${currentStudents === 1 ? 'learner' : 'learners'}`;

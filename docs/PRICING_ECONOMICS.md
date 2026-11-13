@@ -128,10 +128,9 @@ never counted as zero or as perfect.
   often mixed; convert before comparing.
 - No price, discount or billing change ships without explicit owner approval.
 
-## EGP guide price (Owner Decision, 2026-11-04)
+## No EGP prices on the site (Owner Decision, 2026-11-13)
 
-The pricing section shows an approximate Egyptian pound figure next to every USD
-price, for every visitor, at a fixed owner-set rate of 52 EGP per USD (not a live
-rate), rounded to the nearest 5 EGP. Billing and all calculations stay in USD.
-Change the rate only on a new owner instruction: `EGP_PER_USD` in `assets/app.*.js`
-plus the static first-render values in `index.html` (re-hash the asset).
+The marketing site shows prices in USD only. The approximate Egyptian pound figures
+(added 2026-11-04 at 52 EGP per USD) were removed on the owner's instruction; this
+supersedes the 2026-11-04 decision. Billing and all calculations stay in USD. Do not
+re-add an EGP figure without a new owner instruction.
