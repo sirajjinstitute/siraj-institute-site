@@ -97,3 +97,11 @@ test('the guide hero eyebrow uses the light gold that passes AA on navy', () => 
   const css = readFileSync(`assets/${home.match(/styles\.[0-9a-f]{8}\.css/)[0]}`, 'utf8');
   assert.match(css, /\.lp-hero \.eyebrow\{color:var\(--gold\)\}/);
 });
+
+test('owner-confirmed facts only: age 4, no background-check or recording claims, no testimonials', () => {
+  for (const [slug, html] of Object.entries(pages)) {
+    const copy = text(html);
+    assert.doesNotMatch(copy, /\bDBS\b|background[- ]check|lessons are recorded|recorded lessons|testimonial/i, slug);
+    for (const m of copy.matchAll(/from (\d+) years old/g)) assert.equal(m[1], '4', slug);
+  }
+});
