@@ -1,10 +1,13 @@
 /* Google Analytics 4, loaded only after the visitor agrees.
  *
- * Owner decision 2026-11-05: on the home page a consent bar appears on the
- * first visit. Nothing from Google is defined, queued or fetched until the
- * visitor presses "Accept". "Reject" means Google Analytics never loads, and
- * the choice is remembered in this browser. The footer "Cookie settings"
- * button reopens the bar so the choice can be changed.
+ * Owner decision 2026-11-05: Google Analytics is defined, queued and fetched
+ * only for a browser that stored "granted".
+ * Owner decision 2026-11-15: the home page bar is now an informational notice
+ * (single "OK"); advertising pixels are loaded separately by the app loader
+ * for every visitor. "OK" only hides the notice (separate storage key) and
+ * never changes the Google Analytics choice above. The footer "Cookie notice"
+ * button reopens the notice. GA behaviour is otherwise unchanged and is
+ * pending an owner decision, because the bar no longer offers Accept/Reject.
  *
  * Once accepted, the tag still stays off the render-critical path: it is
  * injected after the page load event and an idle gap, so it cannot compete
@@ -18,6 +21,7 @@
   var ALL_IDS = [MEASUREMENT_ID].concat(EXTRA_MEASUREMENT_IDS);
   var TAG_ELEMENT_ID = 'ga4-tag';
   var CHOICE_KEY = 'suqya-analytics-consent';
+  var NOTICE_KEY = 'suqya-cookie-notice';
 
   /* Browser storage can be blocked (private mode, strict settings). Without
      it the bar simply asks again on the next visit; nothing loads unasked. */
@@ -26,6 +30,13 @@
   }
   function saveChoice(value) {
     try { window.localStorage.setItem(CHOICE_KEY, value); } catch (e) { /* not remembered */ }
+  }
+
+  function noticeSeen() {
+    try { return window.localStorage.getItem(NOTICE_KEY) === '1'; } catch (e) { return false; }
+  }
+  function saveNoticeSeen() {
+    try { window.localStorage.setItem(NOTICE_KEY, '1'); } catch (e) { /* not remembered */ }
   }
 
   var started = false;
@@ -111,6 +122,12 @@
     bar.addEventListener('click', function (event) {
       var button = event.target.closest && event.target.closest('[data-consent]');
       if (!button) return;
+      if (button.getAttribute('data-consent') === 'ok') {
+        saveNoticeSeen();
+        hideBar();
+        if (settings && openedFromSettings) settings.focus();
+        return;
+      }
       var accepted = button.getAttribute('data-consent') === 'accept';
       saveChoice(accepted ? 'granted' : 'denied');
       hideBar();
@@ -125,5 +142,5 @@
 
   var choice = readChoice();
   if (choice === 'granted') startAnalytics();
-  else if (choice !== 'denied') showBar();
+  if (!noticeSeen()) showBar();
 })();
