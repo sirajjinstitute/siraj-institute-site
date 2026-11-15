@@ -915,3 +915,5 @@ p{text-wrap:pretty}
 @media (prefers-reduced-motion:reduce){.lp-related a{transition:none}.lp-related a:hover{transform:none}}
 .lp .nav.live:not(.scrolled) .brand{opacity:1;visibility:visible}
 @media (max-width:560px){.lp-hero .eyebrow::after{display:none}}
+.lp-hero .eyebrow{color:var(--gold)}
+.lp-crumbs a{display:inline-block;padding:6px 0}

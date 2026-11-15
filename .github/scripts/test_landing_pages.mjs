@@ -92,3 +92,8 @@ test('guides link to each other and to the home page', () => {
     assert.match(html, /<a href="\/apply" class="btn btn-gold btn-lg">Book a free trial<\/a>/);
   }
 });
+
+test('the guide hero eyebrow uses the light gold that passes AA on navy', () => {
+  const css = readFileSync(`assets/${home.match(/styles\.[0-9a-f]{8}\.css/)[0]}`, 'utf8');
+  assert.match(css, /\.lp-hero \.eyebrow\{color:var\(--gold\)\}/);
+});
