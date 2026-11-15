@@ -77,11 +77,12 @@ test('the Privacy Policy and Terms pages are published, routed, linked and locke
     assert.ok(config.rewrites.some(r => r.source === `/${page}` && r.destination === `/${page}.html`), `/${page} is routed`);
     assert.match(html, new RegExp(`<a href="/${page}">`), `the home page footer links /${page}`);
     assert.match(file, new RegExp(`<link rel="canonical" href="https://suqyainstitute\\.com/${page}">`));
-    // No script at all on the legal pages, so the CSP can forbid every script.
-    assert.doesNotMatch(file, /<script\b/);
+    // The only script on the legal pages is the ad-pixel loader from the app domain; no inline script.
+    assert.deepEqual([...file.matchAll(/<script\b[^>]*>/g)].map(m => m[0]), ['<script src="https://app.suqyainstitute.com/ad-pixels-loader.js" defer>']);
     assert.doesNotMatch(file, /\sstyle="|\son[a-z]+="|javascript:/i);
     const csp = headerFor('/:page(privacy|terms|refund-policy)', 'Content-Security-Policy');
-    assert.match(csp, /script-src 'none'/);
+    assert.doesNotMatch(csp, /script-src[^;]*'(self|unsafe-inline|unsafe-eval)'/);
+    assert.match(csp, /script-src [^;]*https:\/\/app\.suqyainstitute\.com/);
     assert.match(csp, /default-src 'self'/);
     assert.equal(headerFor('/:page(privacy|terms|refund-policy)', 'Cross-Origin-Opener-Policy'), 'same-origin');
   }
@@ -100,7 +101,7 @@ test('the site publishes only the official WhatsApp number', () => {
   assert.match(app, /const waNumber = '201032032598';/);
 });
 
-test('Google Analytics loads only after consent, and the bar offers an equal Reject', () => {
+test('Google Analytics runs for every visitor behind one restore flag, and the home page bar is an informational notice', () => {
   const analytics = readdirSync('assets').filter(f => /^analytics\.[0-9a-f]{8}\.js$/.test(f)).map(f => readFileSync(`assets/${f}`, 'utf8'));
   assert.equal(analytics.length, 1);
   const js = analytics[0];
@@ -108,11 +109,13 @@ test('Google Analytics loads only after consent, and the bar offers an equal Rej
   const start = js.indexOf('function startAnalytics');
   assert.ok(start > 0);
   assert.ok(js.indexOf('googletagmanager.com') > start && js.indexOf('window.gtag = gtag') > start);
-  assert.match(js, /if \(choice === 'granted'\) startAnalytics\(\);/);
+  assert.match(js, /var REQUIRE_ANALYTICS_CONSENT = false;/);
+  assert.match(js, /if \(!REQUIRE_ANALYTICS_CONSENT \|\| choice === 'granted'\) startAnalytics\(\);/);
   assert.match(js, /accepted \? 'granted' : 'denied'/);
   assert.match(html, /<div class="cookie-bar" id="cookieBar"[^>]*hidden>/);
-  assert.match(html, /data-consent="reject">Reject<\/button>/);
-  assert.match(html, /data-consent="accept">Accept<\/button>/);
-  assert.match(html, /id="cookieSettings"[^>]*>Cookie settings<\/button>/);
-  assert.match(readFileSync('privacy.html', 'utf8'), /Google Analytics loads only if you press &ldquo;Accept&rdquo;/);
+  assert.match(html, /data-consent="ok">OK<\/button>/);
+  assert.doesNotMatch(html, /data-consent="(reject|accept)"/);
+  assert.match(html, /id="cookieSettings"[^>]*>Cookie notice<\/button>/);
+  assert.match(readFileSync('privacy.html', 'utf8'), /These pixels run for every visitor/);
+  assert.match(readFileSync('privacy.html', 'utf8'), /never send them your name, email, phone number or any information about your child/);
 });
