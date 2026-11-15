@@ -105,3 +105,7 @@ test('owner-confirmed facts only: age 4, no background-check or recording claims
     for (const m of copy.matchAll(/from (\d+) years old/g)) assert.equal(m[1], '4', slug);
   }
 });
+
+test('the Islamic Studies page never names Darussalam (owner decision)', () => {
+  assert.doesNotMatch(pages['islamic-studies-for-kids'], /darussalam/i);
+});
