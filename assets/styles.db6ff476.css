@@ -853,3 +853,65 @@ p{text-wrap:pretty}
    no link wraps, and the brand's tagline steps aside until 1360px. */
 @media (min-width:1024px){.links a{white-space:nowrap}}
 @media (min-width:1024px) and (max-width:1359px){.links,.nav-in{gap:18px}.brand-txt span{display:none}}
+
+/* ---------------------------------------------------------------------
+   Guides for parents: the six search landing pages and the footer block
+   that links them. The pages reuse the sections above; these rules add
+   only their compact hero, the at-a-glance card, the concern cards, the
+   numbered steps and the related-guides grid.
+   --------------------------------------------------------------------- */
+.foot-guides{margin-top:40px;padding-top:26px;border-top:1px solid rgba(255,255,255,.08)}
+.foot-guides ul{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:4px 28px}
+.foot-guides a{display:block;color:#cfd8e3;text-decoration:none;font-size:15.5px;padding:5px 0}
+.foot-guides a:hover,.foot-guides a[aria-current]{color:#fff;text-decoration:underline;text-underline-offset:.25em}
+
+.lp-hero{position:relative;overflow:hidden;background:radial-gradient(60% 70% at 15% 20%,rgba(212,170,81,.14),transparent 70%),linear-gradient(180deg,#06142a,var(--navy));color:#fff;padding:clamp(112px,13vw,160px) 0 clamp(60px,7vw,92px)}
+.lp-hero .lattice{opacity:.07}
+.lp-hero-in{position:relative;z-index:1;width:min(100% - 2*var(--m),var(--max));margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.85fr);gap:clamp(32px,5vw,72px);align-items:center}
+.lp-crumbs ol{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px;font-size:14px;color:var(--on-navy-soft);margin-bottom:20px}
+.lp-crumbs li+li::before{content:"/";margin-right:6px;opacity:.55}
+.lp-crumbs a{color:inherit;text-underline-offset:.2em}
+.lp-crumbs a:hover{color:#fff}
+.lp-hero h1{font-size:clamp(36px,4.8vw,62px);line-height:1.08;margin-top:14px;max-width:18ch}
+.lp-hero .hero-lead{max-width:56ch}
+.lp-hero :focus-visible{outline-color:var(--gold)}
+.lp-glance{padding:28px 28px 26px;border-radius:22px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px var(--line-gold)}
+.lp-glance-k{font:600 13px/1.2 var(--f-text);letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.lp-glance dl{margin-top:10px}
+.lp-glance dl>div{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.09)}
+.lp-glance dt{color:var(--on-navy-soft);font-size:14.5px;flex:none}
+.lp-glance dd{font-weight:600;font-size:15.5px;text-align:right}
+.lp-glance .btn{width:100%;margin-top:22px}
+.lp-alt{background:var(--ivory-2)}
+.lp-qa{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.lp-q{padding:28px 28px 26px;border-radius:20px;background:#fff;border:1px solid rgba(7,28,54,.08)}
+.lp-q h3{font:600 19px/1.35 var(--f-text);color:var(--navy)}
+.lp-q p{color:var(--ink-soft);font-size:16px;margin-top:10px}
+.lp-q p a,.lp-prose a{color:var(--gold-deep);font-weight:600;text-underline-offset:.2em}
+.lp-steps{list-style:none;padding:0;counter-reset:lp;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.lp-steps li{counter-increment:lp;position:relative;padding:26px 24px;border-radius:20px;background:var(--ivory);border:1px solid rgba(7,28,54,.07)}
+.lp-steps li::before{content:counter(lp);display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--navy);color:var(--gold);font:700 20px/1 var(--f-display)}
+.lp-alt .lp-steps li{background:#fff}
+.lp-steps h3{font:600 19px/1.3 var(--f-text);margin:18px 0 8px;color:var(--navy)}
+.lp-steps p{color:var(--ink-soft);font-size:16px}
+.lp-prose{max-width:760px;margin:0 auto}
+.lp-prose>*+*{margin-top:16px}
+.lp-prose p{color:var(--ink-soft)}
+.lp-checks{list-style:none;padding:0;display:grid;gap:12px}
+.lp-checks li{display:flex;gap:12px;align-items:flex-start}
+.lp-checks svg{flex:none;width:22px;height:22px;margin-top:3px;color:var(--gold-deep)}
+.lp-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;max-width:980px;margin:0 auto}
+.lp-cols>div{padding:28px;border-radius:20px;background:#fff;border:1px solid rgba(7,28,54,.08)}
+.lp-cols h3{font:600 19px/1.3 var(--f-text);color:var(--navy);margin-bottom:14px}
+.lp-related{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:16px}
+.lp-related a{display:flex;flex-direction:column;gap:4px;height:100%;padding:22px 24px;border-radius:18px;background:#fff;border:1px solid rgba(7,28,54,.08);color:var(--navy);text-decoration:none;transition:border-color .25s ease,transform .25s var(--ease)}
+.lp-related a:hover{border-color:rgba(212,170,81,.6);transform:translateY(-3px)}
+.lp-related strong{font-weight:600;font-size:17px}
+.lp-related span{color:var(--ink-soft);font-size:15px}
+@media (max-width:1024px){.lp-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){.lp-hero-in{grid-template-columns:1fr}.lp-glance{max-width:560px}}
+@media (max-width:760px){.lp-qa,.lp-cols{grid-template-columns:1fr}}
+@media (max-width:560px){.lp-steps{grid-template-columns:1fr}.lp-glance{padding:22px 20px}.lp-glance dl>div{flex-direction:column;gap:2px}.lp-glance dd{text-align:left}.lp-q,.lp-cols>div{padding:24px 22px}}
+@media (prefers-reduced-motion:reduce){.lp-related a{transition:none}.lp-related a:hover{transform:none}}
+.lp .nav.live:not(.scrolled) .brand{opacity:1;visibility:visible}
+@media (max-width:560px){.lp-hero .eyebrow::after{display:none}}
