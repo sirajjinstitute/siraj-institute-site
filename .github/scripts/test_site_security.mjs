@@ -101,7 +101,7 @@ test('the site publishes only the official WhatsApp number', () => {
   assert.match(app, /const waNumber = '201032032598';/);
 });
 
-test('Google Analytics loads only after a stored grant, and the home page bar is an informational notice', () => {
+test('Google Analytics runs for every visitor behind one restore flag, and the home page bar is an informational notice', () => {
   const analytics = readdirSync('assets').filter(f => /^analytics\.[0-9a-f]{8}\.js$/.test(f)).map(f => readFileSync(`assets/${f}`, 'utf8'));
   assert.equal(analytics.length, 1);
   const js = analytics[0];
@@ -109,7 +109,8 @@ test('Google Analytics loads only after a stored grant, and the home page bar is
   const start = js.indexOf('function startAnalytics');
   assert.ok(start > 0);
   assert.ok(js.indexOf('googletagmanager.com') > start && js.indexOf('window.gtag = gtag') > start);
-  assert.match(js, /if \(choice === 'granted'\) startAnalytics\(\);/);
+  assert.match(js, /var REQUIRE_ANALYTICS_CONSENT = false;/);
+  assert.match(js, /if \(!REQUIRE_ANALYTICS_CONSENT \|\| choice === 'granted'\) startAnalytics\(\);/);
   assert.match(js, /accepted \? 'granted' : 'denied'/);
   assert.match(html, /<div class="cookie-bar" id="cookieBar"[^>]*hidden>/);
   assert.match(html, /data-consent="ok">OK<\/button>/);

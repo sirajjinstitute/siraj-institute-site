@@ -1,15 +1,13 @@
 /* Google Analytics 4, loaded only after the visitor agrees.
  *
- * Owner decision 2026-11-05: Google Analytics is defined, queued and fetched
- * only for a browser that stored "granted".
- * Owner decision 2026-11-15: the home page bar is now an informational notice
- * (single "OK"); advertising pixels are loaded separately by the app loader
- * for every visitor. "OK" only hides the notice (separate storage key) and
- * never changes the Google Analytics choice above. The footer "Cookie notice"
- * button reopens the notice. GA behaviour is otherwise unchanged and is
- * pending an owner decision, because the bar no longer offers Accept/Reject.
+ * Owner decision 2026-11-15: Google Analytics runs for every visitor, like the
+ * advertising pixels loaded by the app loader, with no consent gate. The
+ * home page bar is an informational notice with a single "OK" that only hides
+ * it (separate storage key). To restore the old gate (GA only after a stored
+ * "granted") set REQUIRE_ANALYTICS_CONSENT to true and bring back the
+ * Accept/Reject buttons in index.html.
  *
- * Once accepted, the tag still stays off the render-critical path: it is
+ * The tag still stays off the render-critical path: it is
  * injected after the page load event and an idle gap, so it cannot compete
  * with the hero image. The page view is sent explicitly once gtag.js loads.
  */
@@ -20,6 +18,7 @@
   var EXTRA_MEASUREMENT_IDS = ['G-667Q0LLEH2'];
   var ALL_IDS = [MEASUREMENT_ID].concat(EXTRA_MEASUREMENT_IDS);
   var TAG_ELEMENT_ID = 'ga4-tag';
+  var REQUIRE_ANALYTICS_CONSENT = false;
   var CHOICE_KEY = 'suqya-analytics-consent';
   var NOTICE_KEY = 'suqya-cookie-notice';
 
@@ -141,6 +140,6 @@
   }
 
   var choice = readChoice();
-  if (choice === 'granted') startAnalytics();
+  if (!REQUIRE_ANALYTICS_CONSENT || choice === 'granted') startAnalytics();
   if (!noticeSeen()) showBar();
 })();
