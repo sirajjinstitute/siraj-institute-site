@@ -43,7 +43,7 @@ test('framework assets, lesson figures and API calls have their own upstream rou
   // The only local rewrites are the static legal pages and the parent guides.
   const local = { '/privacy': '/privacy.html', '/terms': '/terms.html', '/refund-policy': '/refund-policy.html' };
   for (const slug of ['online-quran-classes-for-kids-uk', 'online-quran-classes-for-kids-usa', 'quran-for-non-arabic-speakers',
-    'free-quran-trial-class', 'tajweed-for-kids', 'noorani-qaida-online']) local[`/${slug}`] = `/${slug}.html`;
+    'free-quran-trial-class', 'tajweed-for-kids', 'noorani-qaida-online', 'islamic-studies-for-kids']) local[`/${slug}`] = `/${slug}.html`;
   assert.ok(config.rewrites.every(r => r.destination.startsWith(upstream + '/') || local[r.source] === r.destination));
 });
 

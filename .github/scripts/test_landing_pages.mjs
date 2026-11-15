@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs';
 // index.html. These checks stop the copies drifting from the home page and
 // keep each page's search metadata unique and truthful.
 const SLUGS = ['online-quran-classes-for-kids-uk', 'online-quran-classes-for-kids-usa', 'quran-for-non-arabic-speakers',
-  'free-quran-trial-class', 'tajweed-for-kids', 'noorani-qaida-online'];
+  'free-quran-trial-class', 'tajweed-for-kids', 'noorani-qaida-online', 'islamic-studies-for-kids'];
 const config = JSON.parse(readFileSync('vercel.json', 'utf8'));
 const home = readFileSync('index.html', 'utf8');
 const build = readFileSync('.github/scripts/build_site.py', 'utf8');

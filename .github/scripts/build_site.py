@@ -29,6 +29,7 @@ PUBLIC = [
     "free-quran-trial-class.html",
     "tajweed-for-kids.html",
     "noorani-qaida-online.html",
+    "islamic-studies-for-kids.html",
     "robots.txt",
     "sitemap.xml",
     "site.webmanifest",

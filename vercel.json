@@ -125,7 +125,7 @@
       ]
     },
     {
-      "source": "/:page(online-quran-classes-for-kids-uk|online-quran-classes-for-kids-usa|quran-for-non-arabic-speakers|free-quran-trial-class|tajweed-for-kids|noorani-qaida-online)",
+      "source": "/:page(online-quran-classes-for-kids-uk|online-quran-classes-for-kids-usa|quran-for-non-arabic-speakers|free-quran-trial-class|tajweed-for-kids|noorani-qaida-online|islamic-studies-for-kids)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -309,6 +309,10 @@
     {
       "source": "/noorani-qaida-online",
       "destination": "/noorani-qaida-online.html"
+    },
+    {
+      "source": "/islamic-studies-for-kids",
+      "destination": "/islamic-studies-for-kids.html"
     },
     {
       "source": "/apply",
