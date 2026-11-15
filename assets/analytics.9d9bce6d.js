@@ -1,4 +1,12 @@
-/* Google Analytics 4, loaded only after the visitor agrees.
+/* Google Analytics 4.
+ *
+ * TEMPORARY owner decision 2026-11-15: CONSENT_REQUIRED is false, so Google
+ * Analytics loads for every visitor without asking and the consent bar stays
+ * hidden. To restore the consent gate described below, change that one
+ * constant to true (then re-hash this file and update every reference).
+ *
+ * Gate behaviour when CONSENT_REQUIRED is true (owner decision 2026-11-05):
+ * loaded only after the visitor agrees.
  *
  * Owner decision 2026-11-05: on the home page a consent bar appears on the
  * first visit. Nothing from Google is defined, queued or fetched until the
@@ -11,6 +19,10 @@
  * with the hero image. The page view is sent explicitly once gtag.js loads.
  */
 (function () {
+  /* Single switch. false = analytics always on, no banner (temporary).
+     true = consent bar; nothing loads until the visitor presses "Accept". */
+  var CONSENT_REQUIRED = false;
+
   /* Primary destination is the suqyainstitute.com property; the original
      property stays configured so it keeps receiving data. */
   var MEASUREMENT_ID = 'G-VJNWTGML5Y';
@@ -118,12 +130,17 @@
       if (settings && openedFromSettings) settings.focus();
     });
   }
-  if (settings) {
+  if (settings && CONSENT_REQUIRED) {
     settings.hidden = false;
     settings.addEventListener('click', function () { showBar(true); });
   }
 
-  var choice = readChoice();
-  if (choice === 'granted') startAnalytics();
-  else if (choice !== 'denied') showBar();
+  if (!CONSENT_REQUIRED) {
+    hideBar();
+    startAnalytics();
+  } else {
+    var choice = readChoice();
+    if (choice === 'granted') startAnalytics();
+    else if (choice !== 'denied') showBar();
+  }
 })();

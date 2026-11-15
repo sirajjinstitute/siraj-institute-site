@@ -100,19 +100,29 @@ test('the site publishes only the official WhatsApp number', () => {
   assert.match(app, /const waNumber = '201032032598';/);
 });
 
-test('Google Analytics loads only after consent, and the bar offers an equal Reject', () => {
+test('Google Analytics: consent gate sits behind one CONSENT_REQUIRED flag (currently off, owner decision 2026-11-15)', () => {
   const analytics = readdirSync('assets').filter(f => /^analytics\.[0-9a-f]{8}\.js$/.test(f)).map(f => readFileSync(`assets/${f}`, 'utf8'));
   assert.equal(analytics.length, 1);
   const js = analytics[0];
-  // The tag and gtag are created only inside startAnalytics, reached only from a stored or fresh "granted".
+  // One clearly named switch. Temporary decision: false = load for everyone, no banner.
+  assert.match(js, /var CONSENT_REQUIRED = false;/);
+  // The tag and gtag are still created only inside startAnalytics.
   const start = js.indexOf('function startAnalytics');
   assert.ok(start > 0);
   assert.ok(js.indexOf('googletagmanager.com') > start && js.indexOf('window.gtag = gtag') > start);
+  // Flag off: start immediately and never show the bar or the settings button.
+  assert.match(js, /if \(!CONSENT_REQUIRED\) \{\s*hideBar\(\);\s*startAnalytics\(\);/);
+  assert.match(js, /if \(settings && CONSENT_REQUIRED\) \{\s*settings\.hidden = false;/);
+  // Flag on (restore path): the original consent gate is kept intact.
   assert.match(js, /if \(choice === 'granted'\) startAnalytics\(\);/);
+  assert.match(js, /else if \(choice !== 'denied'\) showBar\(\);/);
   assert.match(js, /accepted \? 'granted' : 'denied'/);
+  // Consent markup stays in the page (hidden) so flipping the flag back works.
   assert.match(html, /<div class="cookie-bar" id="cookieBar"[^>]*hidden>/);
   assert.match(html, /data-consent="reject">Reject<\/button>/);
   assert.match(html, /data-consent="accept">Accept<\/button>/);
-  assert.match(html, /id="cookieSettings"[^>]*>Cookie settings<\/button>/);
-  assert.match(readFileSync('privacy.html', 'utf8'), /Google Analytics loads only if you press &ldquo;Accept&rdquo;/);
+  assert.match(html, /id="cookieSettings"[^>]*hidden>Cookie settings<\/button>/);
+  const privacy = readFileSync('privacy.html', 'utf8');
+  assert.match(privacy, /uses Google Analytics cookies to measure visits/);
+  assert.doesNotMatch(privacy, /loads only if you press/);
 });
