@@ -40,15 +40,17 @@ test('framework assets, lesson figures and API calls have their own upstream rou
   }
   // No catch-all that would accidentally take over the marketing document/assets.
   assert.ok(config.rewrites.every(r => !['/', '/:path*', '/assets/:path*'].includes(r.source)));
-  // The only local rewrites are the two static legal pages.
+  // The only local rewrites are the static legal pages and the parent guides.
   const local = { '/privacy': '/privacy.html', '/terms': '/terms.html', '/refund-policy': '/refund-policy.html' };
+  for (const slug of ['online-quran-classes-for-kids-uk', 'online-quran-classes-for-kids-usa', 'quran-for-non-arabic-speakers',
+    'free-quran-trial-class', 'tajweed-for-kids', 'noorani-qaida-online', 'islamic-studies-for-kids']) local[`/${slug}`] = `/${slug}.html`;
   assert.ok(config.rewrites.every(r => r.destination.startsWith(upstream + '/') || local[r.source] === r.destination));
 });
 
 test('marketing microphone/camera restrictions and report-only CSP do not blanket the LMS', () => {
   for (const entry of config.headers) {
     if (entry.headers.some(h => ['Permissions-Policy', 'Content-Security-Policy-Report-Only'].includes(h.key))) {
-      assert.ok(['/', '/index.html', '/:page(privacy|terms|refund-policy)'].includes(entry.source));
+      assert.ok(['/', '/index.html', '/:page(privacy|terms|refund-policy)'].includes(entry.source) || entry.source.startsWith('/:page(online-quran-classes'));
     }
   }
   const common = config.headers.find(h => h.source === '/(.*)').headers;
