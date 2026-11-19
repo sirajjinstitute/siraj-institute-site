@@ -68,7 +68,9 @@ marketing host stays in the browser. This supersedes "no subdomain" above for
 account paths only.
 
 - Marketing host keeps rewrites for `/apply`, `/jobapp`, `/trial`, `/api`,
-  `/_next`, `/brand`, `/curriculum`, `/app-icons`.
+  `/_next`, `/brand`, `/curriculum`, `/app-icons`, and the single file
+  `/ad-pixels-loader.js` (the proxied `/apply` page loads it with a relative
+  path; without the rewrite no ad pixel runs on `/apply`).
 - `/login`, `/admin`, `/coordinator`, `/supervisor`, `/teacher`, `/student`,
   `/guardian` (and subpaths) are 308 redirects to the app host, so old links
   and bookmarks keep working. The landing "Log in" and "Get the app" links go
