@@ -408,9 +408,12 @@ p{text-wrap:pretty}
 @media (max-width:900px){.foot-top{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1/-1}}
 
 /* ---------- floating WhatsApp ---------- */
-.wa-float{position:fixed;right:18px;bottom:18px;z-index:60;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:#1f8f4e;box-shadow:0 10px 28px rgba(7,28,54,.3);opacity:0;transform:translateY(90px);transition:opacity .3s ease,transform .4s var(--ease)}
+.wa-float{position:fixed;right:18px;bottom:86px;z-index:60;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:#1f8f4e;box-shadow:0 10px 28px rgba(7,28,54,.3);opacity:0;transform:translateY(90px);transition:opacity .3s ease,transform .4s var(--ease)}
 .wa-float svg{width:30px;height:30px}
 .wa-float.show{opacity:1;transform:none}
+.trial-float{position:fixed;right:18px;bottom:18px;z-index:60;min-height:48px;padding:0 24px;box-shadow:0 10px 28px rgba(7,28,54,.3);visibility:hidden;opacity:0}
+.trial-float.show{visibility:visible;opacity:1}
+@media (prefers-reduced-motion:no-preference){.trial-float{transform:translateY(24px);transition:opacity .3s ease,transform .4s var(--ease),visibility 0s .4s}.trial-float.show{transform:none;transition-delay:0s}}
 
 /* ---------- reveal on scroll (content stays visible without script) ---------- */
 @media (prefers-reduced-motion:no-preference){

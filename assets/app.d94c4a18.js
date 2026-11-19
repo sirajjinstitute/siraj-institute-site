@@ -51,6 +51,7 @@ const trackEvent = (name, parameters = {}) => {
 
 const analyticsLocation = el => {
   if (el.id === 'waFloat' || el.closest('#waFloat')) return 'floating_whatsapp';
+  if (el.id === 'trialFloat') return 'floating_trial';
   if (el.closest('.nav')) return 'navigation';
   if (el.closest('.hero')) return 'hero';
   if (el.closest('footer')) return 'footer';
@@ -131,6 +132,22 @@ const onScroll = () => {
 };
 onScroll();
 window.addEventListener('scroll', onScroll, { passive: true });
+
+/* Floating "Book a free trial": a copy of the hero button (same /apply
+   destination, so the same apply_click event) that appears only once the
+   hero button has scrolled out of view above the viewport. */
+const heroTrial = document.querySelector('.hero-actions a[href="/apply"]');
+if (heroTrial && typeof IntersectionObserver === 'function') {
+  const trialFloat = document.createElement('a');
+  trialFloat.href = '/apply';
+  trialFloat.id = 'trialFloat';
+  trialFloat.className = 'btn btn-gold trial-float';
+  trialFloat.textContent = 'Book a free trial';
+  document.body.appendChild(trialFloat);
+  new IntersectionObserver(([entry]) => {
+    trialFloat.classList.toggle('show', !entry.isIntersecting && entry.boundingClientRect.top < 0);
+  }).observe(heroTrial);
+}
 
 /* Everything below waits for the first paint, so none of it can hold back
    the hero text (the LCP element). The static HTML is already complete:
