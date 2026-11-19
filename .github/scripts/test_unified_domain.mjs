@@ -68,6 +68,13 @@ test('private portals and API responses opt out of search indexing', () => {
   assert.equal(rule.headers[0].value, 'noindex, nofollow');
 });
 
+test('the proxied /apply page can load its ad-pixel loader', () => {
+  // /apply (served by the LMS) loads "/ad-pixels-loader.js" with a relative
+  // path; without this rewrite it is a 404 here and no pixel runs on /apply.
+  assert.equal(config.rewrites.find(r => r.source === '/ad-pixels-loader.js')?.destination,
+    `${upstream}/ad-pixels-loader.js`);
+});
+
 test('the marketing host is not installable as the portal app', () => {
   // The portal manifest (scope "/") lives on the app host only; serving it
   // here made the installed app capture every link to the marketing site.
