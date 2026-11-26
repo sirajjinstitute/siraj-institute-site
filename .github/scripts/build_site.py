@@ -31,6 +31,7 @@ PUBLIC = [
     "noorani-qaida-online.html",
     "islamic-studies-for-kids.html",
     "robots.txt",
+    "llms.txt",
     "sitemap.xml",
     "site.webmanifest",
     "favicon.ico",
